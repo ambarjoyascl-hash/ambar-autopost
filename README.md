@@ -104,6 +104,8 @@ Doc **`meta/credentials`** — credenciales (ver §2).
 
 ## 4. Despliegue en Vercel
 
+> Guía detallada paso a paso con checklist de variables: **`DEPLOY.md`**.
+
 1. `npm install firebase-admin`
 2. Variables de entorno (ver `.env.example`):
    - `META_APP_ID`, `META_APP_SECRET`
