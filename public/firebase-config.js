@@ -11,12 +11,13 @@ import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-
 /* 1) Firebase → ⚙️ Configuración del proyecto → Tus apps (Web) → "Config".
       Pega aquí ese objeto (usa el MISMO proyecto de tu autopost).            */
 export const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_PROYECTO.firebaseapp.com",
-  projectId: "TU_PROYECTO",
-  storageBucket: "TU_PROYECTO.appspot.com",
-  messagingSenderId: "TU_SENDER_ID",
-  appId: "TU_APP_ID",
+  apiKey: "AIzaSyDaeO7iG7ASEwsHzQMuXbHh1MNN_oyhgvY",
+  authDomain: "ambar-joyas-cl.firebaseapp.com",
+  projectId: "ambar-joyas-cl",
+  storageBucket: "ambar-joyas-cl.firebasestorage.app",
+  messagingSenderId: "233511708224",
+  appId: "1:233511708224:web:6225b4e2e8bd21592a61a5",
+  measurementId: "G-RD8T65P7GQ",
 };
 
 /* 2) Tus datos.                                                              */
