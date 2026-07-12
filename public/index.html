@@ -3,137 +3,111 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Ámbar Joyas — Oro en Panamá, envíos a Chile</title>
-<meta name="description" content="Compra oro y joyas en Panamá con envío a todo Chile. Pide desde el catálogo o encarga tu pieza a medida. Pago y coordinación por WhatsApp." />
-
-<!-- Open Graph: así se ve bonito cuando pegas el link en Instagram / WhatsApp -->
+<title>Ámbar Joyas — Oro con envío a Chile</title>
+<meta name="description" content="Compra oro y joyas con envío a todo Chile. Regístrate, mira el catálogo en vivo y paga con Mercado Pago." />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Ámbar Joyas — Oro en Panamá 🇵🇦 → Chile 🇨🇱" />
-<meta property="og:description" content="Oro y joyas desde Panamá con envío a Chile. Pide lo que quieras por WhatsApp." />
+<meta property="og:title" content="Ámbar Joyas — Oro 🇵🇦 → Chile 🇨🇱" />
+<meta property="og:description" content="Catálogo en vivo. Registro y pago seguro con Mercado Pago." />
 <meta name="theme-color" content="#0e0b06" />
-
 <style>
-  /* ─────────────────────────  CONFIG DE ESTILO  ───────────────────────── */
   :root{
-    --bg:        #0e0b06;
-    --bg-soft:   #171106;
-    --card:      #1c1508;
-    --card-2:    #241a09;
-    --line:      #3a2c11;
-    --gold:      #e7bd63;
-    --gold-2:    #f6dfa0;
-    --gold-deep: #b8862f;
-    --text:      #f3ead6;
-    --muted:     #b9ab8c;
-    --ok:        #37c26b;
-    --radius:    18px;
-    --maxw:      1080px;
-    --shadow:    0 10px 40px rgba(0,0,0,.45);
+    --bg:#0e0b06;--bg-soft:#171106;--card:#1c1508;--card-2:#241a09;--line:#3a2c11;
+    --gold:#e7bd63;--gold-2:#f6dfa0;--gold-deep:#b8862f;--text:#f3ead6;--muted:#b9ab8c;
+    --ok:#37c26b;--err:#d5674f;--mp:#00b1ea;--radius:18px;--maxw:1080px;
+    --shadow:0 10px 40px rgba(0,0,0,.45);
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0}
-  body{
-    background:
-      radial-gradient(1200px 700px at 50% -10%, #2a1e08 0%, transparent 60%),
-      var(--bg);
-    color:var(--text);
-    font-family:'Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
-    line-height:1.5;
-    -webkit-font-smoothing:antialiased;
-    padding-bottom:120px;
-  }
-  a{color:inherit}
-  img{max-width:100%;display:block}
+  body{background:radial-gradient(1200px 700px at 50% -10%,#2a1e08 0%,transparent 60%),var(--bg);
+    color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;
+    line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:120px}
+  a{color:inherit}img{max-width:100%;display:block}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 18px}
 
-  /* ─────────────────────────  HEADER / HERO  ───────────────────────── */
-  header{position:sticky;top:0;z-index:40;
-    background:rgba(14,11,6,.82);backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line)}
-  .bar{display:flex;align-items:center;justify-content:space-between;
-    height:60px;max-width:var(--maxw);margin:0 auto;padding:0 18px}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.3px}
+  header{position:sticky;top:0;z-index:40;background:rgba(14,11,6,.82);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .bar{display:flex;align-items:center;justify-content:space-between;height:60px;
+    max-width:var(--maxw);margin:0 auto;padding:0 18px;gap:10px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700}
   .brand .logo{width:34px;height:34px;border-radius:50%;
     background:radial-gradient(circle at 30% 30%,var(--gold-2),var(--gold-deep));
-    box-shadow:0 0 0 2px rgba(231,189,99,.25), inset 0 -3px 6px rgba(0,0,0,.3)}
+    box-shadow:0 0 0 2px rgba(231,189,99,.25),inset 0 -3px 6px rgba(0,0,0,.3)}
   .brand b{background:linear-gradient(90deg,var(--gold-2),var(--gold));
     -webkit-background-clip:text;background-clip:text;color:transparent}
-  .cart-btn{position:relative;border:1px solid var(--line);background:var(--card);
-    color:var(--text);border-radius:999px;padding:9px 14px 9px 12px;font-size:14px;
-    display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600}
-  .cart-btn:active{transform:scale(.97)}
-  .cart-count{min-width:20px;height:20px;padding:0 5px;border-radius:999px;
-    background:var(--gold);color:#241a09;font-size:12px;font-weight:800;
-    display:inline-flex;align-items:center;justify-content:center}
+  .hbtns{display:flex;align-items:center;gap:8px}
+  .icon-btn{position:relative;border:1px solid var(--line);background:var(--card);
+    color:var(--text);border-radius:999px;padding:9px 13px;font-size:14px;cursor:pointer;
+    display:flex;align-items:center;gap:7px;font-weight:600}
+  .icon-btn:active{transform:scale(.97)}
+  .cart-count{min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:var(--gold);
+    color:#241a09;font-size:12px;font-weight:800;display:inline-flex;align-items:center;justify-content:center}
 
-  .hero{padding:44px 0 26px;text-align:center}
-  .hero .flags{font-size:15px;letter-spacing:2px;color:var(--muted);margin-bottom:14px}
-  .hero h1{font-size:clamp(30px,7vw,52px);line-height:1.05;margin:0 0 14px;
-    font-weight:800;letter-spacing:-.5px}
+  .banner{background:#3a2c11;color:var(--gold-2);text-align:center;font-size:13.5px;
+    padding:10px 16px;border-bottom:1px solid var(--line)}
+  .banner b{color:var(--gold)}
+
+  .hero{padding:40px 0 22px;text-align:center}
+  .hero .flags{font-size:15px;letter-spacing:2px;color:var(--muted);margin-bottom:12px}
+  .hero h1{font-size:clamp(28px,7vw,50px);line-height:1.05;margin:0 0 12px;font-weight:800;letter-spacing:-.5px}
   .hero h1 .g{background:linear-gradient(90deg,var(--gold-2),var(--gold),var(--gold-deep));
     -webkit-background-clip:text;background-clip:text;color:transparent}
-  .hero p{max-width:620px;margin:0 auto;color:var(--muted);font-size:17px}
-  .trust{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:22px 0 4px}
+  .hero p{max-width:620px;margin:0 auto;color:var(--muted);font-size:16.5px}
+  .trust{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin:20px 0 4px}
   .chip{border:1px solid var(--line);background:var(--card);border-radius:999px;
-    padding:8px 14px;font-size:13.5px;color:var(--text);display:flex;gap:7px;align-items:center}
+    padding:8px 13px;font-size:13px;display:flex;gap:6px;align-items:center}
   .chip b{color:var(--gold)}
 
-  /* ─────────────────────────  FILTROS  ───────────────────────── */
-  .filters{display:flex;gap:8px;overflow-x:auto;padding:22px 18px 6px;
-    max-width:var(--maxw);margin:0 auto;scrollbar-width:none}
+  .filters{display:flex;gap:8px;overflow-x:auto;padding:20px 18px 6px;max-width:var(--maxw);
+    margin:0 auto;scrollbar-width:none}
   .filters::-webkit-scrollbar{display:none}
   .filters button{white-space:nowrap;border:1px solid var(--line);background:transparent;
-    color:var(--muted);border-radius:999px;padding:9px 16px;font-size:14px;
-    cursor:pointer;font-weight:600;transition:.15s}
+    color:var(--muted);border-radius:999px;padding:9px 16px;font-size:14px;cursor:pointer;font-weight:600}
   .filters button.active{background:var(--gold);color:#241a09;border-color:var(--gold)}
 
-  /* ─────────────────────────  CATÁLOGO  ───────────────────────── */
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-    gap:16px;padding:18px 0 6px}
-  .card{background:linear-gradient(180deg,var(--card),var(--card-2));
-    border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
-    display:flex;flex-direction:column;box-shadow:var(--shadow)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;padding:18px 0 6px}
+  .card{background:linear-gradient(180deg,var(--card),var(--card-2));border:1px solid var(--line);
+    border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
   .thumb{aspect-ratio:1/1;position:relative;overflow:hidden;
     background:radial-gradient(circle at 50% 35%,#2c2009,#140e05)}
-  .thumb .emoji{position:absolute;inset:0;display:flex;align-items:center;
-    justify-content:center;font-size:74px;filter:drop-shadow(0 6px 12px rgba(0,0,0,.5))}
+  .thumb .emoji{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:74px;filter:drop-shadow(0 6px 12px rgba(0,0,0,.5))}
   .thumb img{width:100%;height:100%;object-fit:cover}
-  .karat{position:absolute;top:10px;left:10px;background:rgba(14,11,6,.72);
-    border:1px solid var(--line);color:var(--gold);font-size:12px;font-weight:800;
-    padding:4px 9px;border-radius:999px;backdrop-filter:blur(4px)}
+  .karat{position:absolute;top:10px;left:10px;background:rgba(14,11,6,.72);border:1px solid var(--line);
+    color:var(--gold);font-size:12px;font-weight:800;padding:4px 9px;border-radius:999px;backdrop-filter:blur(4px)}
+  .soldout{position:absolute;inset:0;background:rgba(10,8,4,.6);display:flex;align-items:center;
+    justify-content:center;color:var(--muted);font-weight:700;font-size:14px}
   .card .body{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}
-  .card h3{margin:0;font-size:16.5px;font-weight:700}
+  .card h3{margin:0;font-size:16px;font-weight:700}
   .card .desc{margin:0;color:var(--muted);font-size:13.5px;flex:1}
   .card .meta{display:flex;gap:8px;font-size:12px;color:var(--muted);flex-wrap:wrap}
   .card .meta span{border:1px solid var(--line);border-radius:8px;padding:2px 7px}
-  .card .foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:2px}
-  .price{font-size:19px;font-weight:800;color:var(--gold-2)}
+  .card .foot{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .price{font-size:18px;font-weight:800;color:var(--gold-2)}
   .price small{font-size:12px;color:var(--muted);font-weight:600}
-  .add{border:none;background:linear-gradient(90deg,var(--gold),var(--gold-deep));
-    color:#211806;font-weight:800;border-radius:12px;padding:10px 14px;cursor:pointer;
-    font-size:14px;white-space:nowrap;transition:.15s}
+  .add{border:none;background:linear-gradient(90deg,var(--gold),var(--gold-deep));color:#211806;
+    font-weight:800;border-radius:12px;padding:10px 14px;cursor:pointer;font-size:14px;white-space:nowrap}
   .add:active{transform:scale(.96)}
   .add.in{background:var(--card-2);color:var(--gold);border:1px solid var(--gold)}
+  .add:disabled{opacity:.5}
 
-  /* ─────────────────────────  A MEDIDA  ───────────────────────── */
-  .custom{margin:40px 0 8px;background:linear-gradient(135deg,#211806,#120c05);
-    border:1px solid var(--line);border-radius:22px;padding:26px 22px}
-  .custom h2{margin:0 0 6px;font-size:24px}
-  .custom p{margin:0 0 16px;color:var(--muted)}
-  .custom textarea{width:100%;min-height:96px;resize:vertical;background:var(--bg-soft);
-    border:1px solid var(--line);border-radius:14px;color:var(--text);padding:13px 14px;
-    font-size:15px;font-family:inherit}
+  .state{text-align:center;color:var(--muted);padding:60px 20px}
+  .state .big{font-size:48px;margin-bottom:12px}
+
+  .custom{margin:36px 0 8px;background:linear-gradient(135deg,#211806,#120c05);border:1px solid var(--line);
+    border-radius:22px;padding:24px 20px}
+  .custom h2{margin:0 0 6px;font-size:22px}
+  .custom p{margin:0 0 14px;color:var(--muted)}
+  .custom textarea{width:100%;min-height:90px;resize:vertical;background:var(--bg-soft);border:1px solid var(--line);
+    border-radius:14px;color:var(--text);padding:13px 14px;font-size:15px;font-family:inherit}
   .custom textarea::placeholder{color:#7d7358}
   .custom .row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
-  .btn-line{border:1px solid var(--gold);background:transparent;color:var(--gold);
-    font-weight:700;border-radius:12px;padding:12px 18px;cursor:pointer;font-size:15px}
-  .btn-line:active{transform:scale(.97)}
+  .btn-line{border:1px solid var(--gold);background:transparent;color:var(--gold);font-weight:700;
+    border-radius:12px;padding:12px 18px;cursor:pointer;font-size:15px}
 
-  /* ─────────────────────────  CÓMO FUNCIONA  ───────────────────────── */
-  .how{margin:44px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+  .how{margin:40px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
   .step{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
-  .step .n{width:30px;height:30px;border-radius:50%;background:var(--gold);color:#211806;
-    font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+  .step .n{width:30px;height:30px;border-radius:50%;background:var(--gold);color:#211806;font-weight:800;
+    display:flex;align-items:center;justify-content:center;margin-bottom:10px}
   .step h4{margin:0 0 4px;font-size:16px}
   .step p{margin:0;color:var(--muted);font-size:14px}
 
@@ -141,72 +115,86 @@
     border-top:1px solid var(--line);margin-top:30px}
   footer a{color:var(--gold);text-decoration:none}
 
-  /* ─────────────────────────  CARRITO (drawer)  ───────────────────────── */
-  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);opacity:0;visibility:hidden;
-    transition:.2s;z-index:50}
+  /* Drawers y modales */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);opacity:0;visibility:hidden;transition:.2s;z-index:50}
   .overlay.open{opacity:1;visibility:visible}
-  .drawer{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);
-    background:var(--bg-soft);border-left:1px solid var(--line);z-index:60;
-    transform:translateX(100%);transition:transform .25s ease;display:flex;flex-direction:column}
+  .drawer{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:var(--bg-soft);
+    border-left:1px solid var(--line);z-index:60;transform:translateX(100%);transition:transform .25s;
+    display:flex;flex-direction:column}
   .drawer.open{transform:translateX(0)}
-  .drawer .dhead{display:flex;align-items:center;justify-content:space-between;
-    padding:18px;border-bottom:1px solid var(--line)}
-  .drawer .dhead h3{margin:0;font-size:19px}
+  .dhead{display:flex;align-items:center;justify-content:space-between;padding:18px;border-bottom:1px solid var(--line)}
+  .dhead h3{margin:0;font-size:19px}
   .x{background:none;border:none;color:var(--muted);font-size:26px;cursor:pointer;line-height:1}
   .ditems{flex:1;overflow-y:auto;padding:12px 16px}
-  .empty{text-align:center;color:var(--muted);padding:50px 20px}
-  .empty .big{font-size:44px;margin-bottom:10px}
+  .empty{text-align:center;color:var(--muted);padding:50px 20px}.empty .big{font-size:44px;margin-bottom:10px}
   .li{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
-  .li .ic{width:52px;height:52px;border-radius:12px;flex:none;display:flex;align-items:center;
-    justify-content:center;font-size:26px;background:radial-gradient(circle at 40% 30%,#2c2009,#140e05);
-    border:1px solid var(--line);overflow:hidden}
+  .li .ic{width:52px;height:52px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center;
+    font-size:26px;background:radial-gradient(circle at 40% 30%,#2c2009,#140e05);border:1px solid var(--line);overflow:hidden}
   .li .ic img{width:100%;height:100%;object-fit:cover}
-  .li .info{flex:1;min-width:0}
-  .li .info h4{margin:0 0 2px;font-size:14.5px}
+  .li .info{flex:1;min-width:0}.li .info h4{margin:0 0 2px;font-size:14.5px}
   .li .info .p{color:var(--gold-2);font-weight:700;font-size:14px}
   .li .info .cust{color:var(--muted);font-size:12.5px;white-space:pre-wrap}
   .qty{display:flex;align-items:center;gap:8px;margin-top:6px}
-  .qty button{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);
-    background:var(--card);color:var(--text);font-size:16px;cursor:pointer;font-weight:700}
+  .qty button{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--card);
+    color:var(--text);font-size:16px;cursor:pointer;font-weight:700}
   .qty span{min-width:22px;text-align:center;font-weight:700}
   .rm{margin-left:auto;background:none;border:none;color:#c46a5a;font-size:12.5px;cursor:pointer}
   .dfoot{border-top:1px solid var(--line);padding:16px}
   .form label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
-  .form input, .form select{width:100%;background:var(--card);border:1px solid var(--line);
-    border-radius:11px;color:var(--text);padding:11px 12px;font-size:15px;font-family:inherit}
+  .form input,.form select{width:100%;background:var(--card);border:1px solid var(--line);border-radius:11px;
+    color:var(--text);padding:11px 12px;font-size:15px;font-family:inherit}
   .totrow{display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 4px}
-  .totrow .t{font-size:15px;color:var(--muted)}
-  .totrow .v{font-size:24px;font-weight:800;color:var(--gold-2)}
+  .totrow .t{font-size:15px;color:var(--muted)}.totrow .v{font-size:24px;font-weight:800;color:var(--gold-2)}
   .note{font-size:11.5px;color:var(--muted);margin:6px 0 12px}
-  .checkout{width:100%;border:none;border-radius:14px;padding:15px;font-size:16.5px;
-    font-weight:800;cursor:pointer;background:linear-gradient(90deg,#25d366,#128c4a);
-    color:#04220f;display:flex;align-items:center;justify-content:center;gap:9px}
-  .checkout:active{transform:scale(.98)}
-  .checkout:disabled{opacity:.5;cursor:not-allowed}
+  .pay{width:100%;border:none;border-radius:14px;padding:15px;font-size:16px;font-weight:800;cursor:pointer;
+    background:var(--mp);color:#05263a;display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:9px}
+  .pay:disabled{opacity:.5;cursor:not-allowed}
+  .wa{width:100%;border:none;border-radius:14px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;
+    background:linear-gradient(90deg,#25d366,#128c4a);color:#04220f;display:flex;align-items:center;justify-content:center;gap:9px}
+  .pay:active,.wa:active{transform:scale(.98)}
 
-  /* Barra flotante móvil */
-  .float{position:fixed;left:0;right:0;bottom:0;z-index:45;padding:12px 16px calc(12px + env(safe-area-inset-bottom));
-    background:linear-gradient(0deg,var(--bg) 60%,transparent);
-    display:none}
+  .modal{position:fixed;left:50%;top:50%;translate:-50% -50%;width:min(400px,92%);background:var(--bg-soft);
+    border:1px solid var(--line);border-radius:20px;z-index:70;padding:24px;opacity:0;visibility:hidden;
+    transition:.18s;box-shadow:var(--shadow)}
+  .modal.open{opacity:1;visibility:visible}
+  .modal h3{margin:0 0 4px;font-size:22px}
+  .modal .sub{color:var(--muted);font-size:14px;margin:0 0 16px}
+  .modal .form input{margin-bottom:4px}
+  .modal .primary{width:100%;border:none;border-radius:12px;padding:13px;font-size:16px;font-weight:800;
+    cursor:pointer;background:linear-gradient(90deg,var(--gold),var(--gold-deep));color:#211806;margin-top:16px}
+  .modal .switch{text-align:center;margin-top:14px;font-size:14px;color:var(--muted)}
+  .modal .switch a{color:var(--gold);cursor:pointer;font-weight:700}
+  .modal .err{color:var(--err);font-size:13.5px;margin-top:10px;min-height:18px}
+  .modal .close{position:absolute;top:14px;right:16px}
+
+  .result{position:fixed;left:50%;top:50%;translate:-50% -50%;width:min(380px,92%);z-index:75;
+    background:var(--bg-soft);border:1px solid var(--line);border-radius:20px;padding:28px 24px;text-align:center;
+    opacity:0;visibility:hidden;transition:.2s;box-shadow:var(--shadow)}
+  .result.open{opacity:1;visibility:visible}
+  .result .ico{font-size:52px;margin-bottom:10px}
+  .result h3{margin:0 0 8px;font-size:22px}
+  .result p{color:var(--muted);margin:0 0 18px}
+  .result button{border:none;border-radius:12px;padding:12px 22px;font-weight:800;cursor:pointer;
+    background:var(--gold);color:#211806}
+
+  .float{position:fixed;left:0;right:0;bottom:0;z-index:45;
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    background:linear-gradient(0deg,var(--bg) 60%,transparent);display:none}
   .float.show{display:block}
-  .float button{width:100%;max-width:var(--maxw);margin:0 auto;border:none;border-radius:14px;
-    padding:15px;font-size:16px;font-weight:800;cursor:pointer;
-    background:linear-gradient(90deg,var(--gold),var(--gold-deep));color:#211806;
-    display:flex;align-items:center;justify-content:center;gap:10px}
+  .float button{width:100%;max-width:var(--maxw);margin:0 auto;border:none;border-radius:14px;padding:15px;
+    font-size:16px;font-weight:800;cursor:pointer;background:linear-gradient(90deg,var(--gold),var(--gold-deep));
+    color:#211806;display:flex;align-items:center;justify-content:center;gap:10px}
 
-  .toast{position:fixed;left:50%;bottom:90px;translate:-50% 20px;
-    background:#241a09;border:1px solid var(--gold);color:var(--gold-2);padding:11px 18px;
-    border-radius:999px;font-size:14px;font-weight:600;z-index:80;opacity:0;pointer-events:none;
-    transition:.25s}
+  .toast{position:fixed;left:50%;bottom:90px;translate:-50% 20px;background:#241a09;border:1px solid var(--gold);
+    color:var(--gold-2);padding:11px 18px;border-radius:999px;font-size:14px;font-weight:600;z-index:80;
+    opacity:0;pointer-events:none;transition:.25s}
   .toast.show{opacity:1;translate:-50% 0}
 
   @media (max-width:520px){
     .grid{grid-template-columns:repeat(2,1fr);gap:11px}
-    .thumb .emoji{font-size:52px}
-    .card h3{font-size:14.5px}
-    .card .desc{display:none}
-    .price{font-size:16px}
-    .add{padding:9px 10px;font-size:12.5px}
+    .thumb .emoji{font-size:52px}.card h3{font-size:14px}.card .desc{display:none}
+    .price{font-size:15.5px}.add{padding:9px 10px;font-size:12.5px}
+    .icon-btn span.lbl{display:none}
   }
 </style>
 </head>
@@ -215,21 +203,24 @@
 <header>
   <div class="bar">
     <div class="brand"><span class="logo"></span>Ámbar <b>Joyas</b></div>
-    <button class="cart-btn" id="cartBtn" aria-label="Ver pedido">
-      🛒 <span id="cartCount" class="cart-count" style="display:none">0</span>
-    </button>
+    <div class="hbtns">
+      <button class="icon-btn" id="accountBtn">👤 <span class="lbl" id="accountLbl">Ingresar</span></button>
+      <button class="icon-btn" id="cartBtn" aria-label="Ver pedido">🛒 <span id="cartCount" class="cart-count" style="display:none">0</span></button>
+    </div>
   </div>
 </header>
+
+<div class="banner" id="cfgBanner" style="display:none">⚠️ La tienda todavía no está conectada. Edita <b>public/firebase-config.js</b> con tus datos de Firebase.</div>
 
 <div class="wrap">
   <section class="hero">
     <div class="flags">PANAMÁ 🇵🇦 &nbsp;→&nbsp; CHILE 🇨🇱</div>
-    <h1>Oro de verdad,<br><span class="g">directo desde Panamá</span></h1>
-    <p>Elige una pieza del catálogo o <b style="color:var(--gold)">encarga la tuya a medida</b>. Tú armas tu pedido y me llega al WhatsApp para coordinar precio final, pago y envío a tu ciudad en Chile.</p>
+    <h1>Oro de verdad,<br><span class="g">con envío a todo Chile</span></h1>
+    <p>Regístrate, mira el catálogo <b style="color:var(--gold)">en vivo</b> y paga seguro con <b style="color:var(--gold)">Mercado Pago</b>. ¿Buscas algo especial? Encárgalo a medida.</p>
     <div class="trust">
       <div class="chip">✅ Oro <b>certificado</b></div>
+      <div class="chip">💳 Pago con <b>Mercado Pago</b></div>
       <div class="chip">✈️ Envíos a <b>todo Chile</b></div>
-      <div class="chip">💬 Coordinación por <b>WhatsApp</b></div>
       <div class="chip">🔒 Compra <b>segura</b></div>
     </div>
   </section>
@@ -239,327 +230,343 @@
 
 <div class="wrap">
   <section class="grid" id="grid"></section>
+  <div class="state" id="state" style="display:none"></div>
 
-  <!-- Pedido a medida -->
   <section class="custom">
     <h2>¿No ves lo que buscas? 👑</h2>
-    <p>Pídeme <b>lo que quieras</b>: una cadena de X gramos, un anillo con tu inicial, argollas de matrimonio, oro por peso para inversión… descríbelo y lo cotizo.</p>
-    <textarea id="customText" placeholder="Ej: Quiero una cadena de oro 18k de 20 gramos, modelo cubano, largo 55 cm. ¿Precio y tiempo de envío a Santiago?"></textarea>
+    <p>Pídeme <b>lo que quieras</b>: una cadena de X gramos, un anillo con tu inicial, oro por peso para inversión… descríbelo y lo cotizo por WhatsApp.</p>
+    <textarea id="customText" placeholder="Ej: Quiero una cadena de oro 18k de 20 gramos, modelo cubano, largo 55 cm. ¿Precio y envío a Santiago?"></textarea>
     <div class="row">
-      <button class="btn-line" id="addCustom">＋ Agregar al pedido</button>
-      <button class="btn-line" id="quickCustom">💬 Preguntar directo por WhatsApp</button>
+      <button class="btn-line" id="quickCustom">💬 Consultar por WhatsApp</button>
     </div>
   </section>
 
-  <!-- Cómo funciona -->
   <section class="how">
-    <div class="step"><div class="n">1</div><h4>Arma tu pedido</h4><p>Agrega piezas del catálogo o describe la tuya a medida.</p></div>
-    <div class="step"><div class="n">2</div><h4>Envíame por WhatsApp</h4><p>Con un toque me llega todo el detalle. Sin cuentas ni registros.</p></div>
-    <div class="step"><div class="n">3</div><h4>Coordinamos y envío</h4><p>Confirmo precio final, pago y despacho a tu ciudad en Chile.</p></div>
+    <div class="step"><div class="n">1</div><h4>Regístrate</h4><p>Crea tu cuenta en segundos con tu correo.</p></div>
+    <div class="step"><div class="n">2</div><h4>Elige tu oro</h4><p>Catálogo en vivo: lo que subo aparece al instante.</p></div>
+    <div class="step"><div class="n">3</div><h4>Paga y recibe</h4><p>Pago seguro con Mercado Pago y envío a tu ciudad.</p></div>
   </section>
 </div>
 
 <footer>
   <p><b style="color:var(--text)">Ámbar Joyas</b> · Oro y joyas · Panamá → Chile</p>
   <p>Escríbeme por <a id="footWa" href="#">WhatsApp</a> · <a id="footIg" href="#" target="_blank" rel="noopener">Instagram</a></p>
-  <p style="opacity:.6;font-size:11.5px;margin-top:8px">Los precios son referenciales y se confirman al coordinar el pedido.</p>
+  <p style="opacity:.6;font-size:11.5px;margin-top:8px">Los precios y el stock se confirman al momento del pago.</p>
 </footer>
 
-<!-- Barra flotante -->
-<div class="float" id="float">
-  <button id="floatBtn">🛒 Ver pedido · <span id="floatTotal">$0</span></button>
-</div>
+<div class="float" id="float"><button id="floatBtn">🛒 Ver pedido · <span id="floatTotal">$0</span></button></div>
 
 <!-- Carrito -->
 <div class="overlay" id="overlay"></div>
 <aside class="drawer" id="drawer" aria-label="Tu pedido">
-  <div class="dhead">
-    <h3>Tu pedido</h3>
-    <button class="x" id="closeDrawer" aria-label="Cerrar">×</button>
-  </div>
+  <div class="dhead"><h3>Tu pedido</h3><button class="x" id="closeDrawer">×</button></div>
   <div class="ditems" id="ditems"></div>
   <div class="dfoot" id="dfoot"></div>
 </aside>
 
+<!-- Modal login/registro -->
+<div class="overlay" id="authOverlay"></div>
+<div class="modal" id="authModal" role="dialog" aria-label="Cuenta">
+  <button class="x close" id="authClose">×</button>
+  <h3 id="authTitle">Crear cuenta</h3>
+  <p class="sub" id="authSub">Regístrate para comprar y seguir tus pedidos.</p>
+  <div class="form">
+    <div id="nameWrap"><label>Nombre</label><input id="authName" placeholder="Tu nombre y apellido" autocomplete="name"></div>
+    <label>Correo</label><input id="authEmail" type="email" placeholder="tucorreo@mail.com" autocomplete="email">
+    <label>Contraseña</label><input id="authPass" type="password" placeholder="Mínimo 6 caracteres" autocomplete="current-password">
+  </div>
+  <div class="err" id="authErr"></div>
+  <button class="primary" id="authSubmit">Crear cuenta</button>
+  <div class="switch" id="authSwitch">¿Ya tienes cuenta? <a id="authToggle">Inicia sesión</a></div>
+</div>
+
+<!-- Resultado de pago -->
+<div class="result" id="result">
+  <div class="ico" id="resIco">✅</div>
+  <h3 id="resTitle"></h3>
+  <p id="resText"></p>
+  <button id="resClose">Entendido</button>
+</div>
+
 <div class="toast" id="toast"></div>
 
-<script>
-/* ═══════════════════════════════════════════════════════════════════════
-   ⚙️  CONFIGURACIÓN — edita SOLO esta parte
-   ═══════════════════════════════════════════════════════════════════════ */
-const CONFIG = {
-  // 📱 TU WhatsApp en formato internacional, SOLO números (sin +, sin espacios).
-  //    Ej: Panamá +507 6000-0000  ->  "50760000000"
-  //        Chile   +56 9 1234-5678 ->  "56912345678"
-  whatsapp: "50700000000",     // ← ⚠️ CÁMBIALO POR TU NÚMERO REAL
+<script type="module">
+import { auth, db, isConfigured, APP_CONFIG } from "./firebase-config.js";
+import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  instagram: "https://instagram.com/ambar.joyas",  // ← tu Instagram
-  currency:  "USD",            // Panamá usa dólar (Balboa = USD)
-  currencySymbol: "$",
-};
-
-/* ═══════════════════════════════════════════════════════════════════════
-   🛍️  CATÁLOGO — agrega, quita o edita tus productos aquí
-        - id: único, sin espacios
-        - emoji: se muestra si no pones foto (image)
-        - image: (opcional) URL de una foto tuya, ideal cuadrada
-        - price: número. Ponlo en el mismo tipo de moneda que CONFIG.currency
-        - unit:  texto opcional bajo el precio ("c/u", "por gramo", etc.)
-   ═══════════════════════════════════════════════════════════════════════ */
-const PRODUCTS = [
-  { id:"cadena-cubana-18k", cat:"Cadenas", name:"Cadena Cubana 18k", emoji:"⛓️",
-    desc:"Eslabón cubano macizo. Elegante y resistente, la más pedida.",
-    karat:"18k", grams:"15 g aprox.", price:1290, unit:"desde" },
-
-  { id:"cadena-fina-18k", cat:"Cadenas", name:"Cadena Fina 18k", emoji:"📿",
-    desc:"Cadenita delgada tipo veneciana, perfecta para el día a día.",
-    karat:"18k", grams:"4 g aprox.", price:390, unit:"desde" },
-
-  { id:"anillo-sello", cat:"Anillos", name:"Anillo de Sello", emoji:"💍",
-    desc:"Anillo sólido, se puede grabar tu inicial o iniciales.",
-    karat:"18k", grams:"8 g aprox.", price:640, unit:"desde" },
-
-  { id:"argollas-matrimonio", cat:"Anillos", name:"Argollas de Matrimonio", emoji:"💑",
-    desc:"Par de argollas lisas o con detalle. Grabado incluido.",
-    karat:"18k", grams:"par", price:880, unit:"el par" },
-
-  { id:"aros-argolla", cat:"Aros", name:"Aros de Argolla", emoji:"⭕",
-    desc:"Argollas clásicas, livianas y brillantes. Varios tamaños.",
-    karat:"18k", grams:"3 g aprox.", price:310, unit:"el par" },
-
-  { id:"aros-punto-luz", cat:"Aros", name:"Aros Punto de Luz", emoji:"✨",
-    desc:"Con circón o brillante. El regalo seguro.",
-    karat:"18k", grams:"par", price:260, unit:"el par" },
-
-  { id:"pulsera-eslabon", cat:"Pulseras", name:"Pulsera de Eslabón", emoji:"🔗",
-    desc:"Pulsera de oro con broche seguro. Ajustamos el largo.",
-    karat:"18k", grams:"7 g aprox.", price:560, unit:"desde" },
-
-  { id:"dije-inicial", cat:"Dijes", name:"Dije de Inicial", emoji:"🔤",
-    desc:"Tu letra en oro. Combínalo con una de nuestras cadenas.",
-    karat:"18k", grams:"1.5 g", price:150, unit:"c/u" },
-
-  { id:"dije-virgen", cat:"Dijes", name:"Medalla / Dije", emoji:"🪙",
-    desc:"Medallas de santos, corazones y más modelos disponibles.",
-    karat:"18k", grams:"2 g aprox.", price:180, unit:"desde" },
-
-  { id:"oro-inversion", cat:"Inversión", name:"Oro por Gramo (inversión)", emoji:"🥇",
-    desc:"Oro fino para inversión. Cotización del día según peso.",
-    karat:"24k", grams:"por gramo", price:85, unit:"por gramo · ref." },
-];
-
-/* ═══════════════════════════════════════════════════════════════════════
-   A partir de aquí no necesitas tocar nada. 🙌
-   ═══════════════════════════════════════════════════════════════════════ */
-const money = n => CONFIG.currencySymbol + Number(n).toLocaleString("es-CL");
 const $ = s => document.querySelector(s);
-const LS_KEY = "ambar_cart_v1";
+const money = n => APP_CONFIG.currencySymbol + Number(n||0).toLocaleString("es-CL");
+const LS_KEY = "ambar_cart_v2";
 
+let PRODUCTS = [];
 let cart = [];
 try { cart = JSON.parse(localStorage.getItem(LS_KEY)) || []; } catch(e){ cart = []; }
 let activeCat = "Todo";
+let user = null;
+let form = { city:"" };
+try { form = {...form, ...(JSON.parse(localStorage.getItem("ambar_form"))||{})}; } catch(e){}
 
-/* ---------- Links de contacto ---------- */
-$("#footWa").href = "https://wa.me/" + CONFIG.whatsapp;
-$("#footIg").href = CONFIG.instagram;
+/* Links de contacto */
+$("#footWa").href = "https://wa.me/" + APP_CONFIG.whatsapp;
+$("#footIg").href = APP_CONFIG.instagram;
 
-/* ---------- Filtros ---------- */
+/* ── Catálogo en tiempo real ── */
+function subscribeProducts(){
+  if(!isConfigured){
+    $("#cfgBanner").style.display = "block";
+    showState("⚙️","Conecta tu Firebase para ver el catálogo aquí.");
+    return;
+  }
+  onSnapshot(query(collection(db,"products"), orderBy("createdAt","desc")),
+    snap => {
+      PRODUCTS = snap.docs.map(d => ({ id:d.id, ...d.data() })).filter(p => p.visible !== false);
+      renderFilters(); renderGrid(); renderAll();
+    },
+    err => { console.error(err); showState("😕","No se pudo cargar el catálogo. Revisa las reglas de Firestore."); }
+  );
+}
+function showState(icon,msg){ $("#grid").innerHTML=""; const s=$("#state"); s.style.display="block";
+  s.innerHTML = `<div class="big">${icon}</div>${msg}`; }
+
 function renderFilters(){
-  const cats = ["Todo", ...[...new Set(PRODUCTS.map(p=>p.cat))]];
-  $("#filters").innerHTML = cats.map(c =>
-    `<button class="${c===activeCat?'active':''}" data-cat="${c}">${c}</button>`).join("");
-  $("#filters").querySelectorAll("button").forEach(b=>{
-    b.onclick = ()=>{ activeCat = b.dataset.cat; renderFilters(); renderGrid(); };
-  });
+  const cats = ["Todo", ...[...new Set(PRODUCTS.map(p=>p.category).filter(Boolean))]];
+  $("#filters").innerHTML = cats.map(c=>`<button class="${c===activeCat?'active':''}" data-cat="${c}">${c}</button>`).join("");
+  $("#filters").querySelectorAll("button").forEach(b=> b.onclick=()=>{ activeCat=b.dataset.cat; renderFilters(); renderGrid(); });
 }
 
-/* ---------- Catálogo ---------- */
 function renderGrid(){
-  const list = activeCat==="Todo" ? PRODUCTS : PRODUCTS.filter(p=>p.cat===activeCat);
+  const list = activeCat==="Todo" ? PRODUCTS : PRODUCTS.filter(p=>p.category===activeCat);
+  if(!list.length){ showState("✨","Aún no hay productos publicados. ¡Vuelve pronto!"); return; }
+  $("#state").style.display="none";
   $("#grid").innerHTML = list.map(p=>{
     const inCart = cart.some(i=>i.id===p.id);
-    const media = p.image
-      ? `<img src="${p.image}" alt="${p.name}" loading="lazy">`
-      : `<div class="emoji">${p.emoji||"✨"}</div>`;
-    return `
-    <article class="card">
-      <div class="thumb">
-        ${media}
-        ${p.karat?`<div class="karat">${p.karat}</div>`:""}
-      </div>
+    const out = p.available === false;
+    const media = p.imageUrl ? `<img src="${p.imageUrl}" alt="${esc(p.name)}" loading="lazy">`
+                             : `<div class="emoji">${p.emoji||"✨"}</div>`;
+    const priceHtml = Number(p.price)>0
+      ? `${money(p.price)} <small>${esc(p.unit||"")}</small>`
+      : `<small>A cotizar</small>`;
+    const btn = out
+      ? `<button class="add" disabled>Agotado</button>`
+      : Number(p.price)>0
+        ? `<button class="add ${inCart?'in':''}" data-add="${p.id}">${inCart?'✓ Agregado':'＋ Agregar'}</button>`
+        : `<button class="add" data-ask="${p.id}">Consultar</button>`;
+    return `<article class="card">
+      <div class="thumb">${media}${p.karat?`<div class="karat">${esc(p.karat)}</div>`:""}${out?`<div class="soldout">Agotado</div>`:""}</div>
       <div class="body">
-        <h3>${p.name}</h3>
-        <p class="desc">${p.desc||""}</p>
-        <div class="meta">${p.grams?`<span>⚖️ ${p.grams}</span>`:""}</div>
-        <div class="foot">
-          <div class="price">${money(p.price)} <small>${p.unit||""}</small></div>
-          <button class="add ${inCart?'in':''}" data-add="${p.id}">${inCart?'✓ Agregado':'＋ Agregar'}</button>
-        </div>
-      </div>
-    </article>`;
+        <h3>${esc(p.name||"")}</h3>
+        <p class="desc">${esc(p.desc||"")}</p>
+        <div class="meta">${p.grams?`<span>⚖️ ${esc(p.grams)}</span>`:""}</div>
+        <div class="foot"><div class="price">${priceHtml}</div>${btn}</div>
+      </div></article>`;
   }).join("");
-  $("#grid").querySelectorAll("[data-add]").forEach(b=>{
-    b.onclick = ()=> addToCart(b.dataset.add);
+  $("#grid").querySelectorAll("[data-add]").forEach(b=> b.onclick=()=>addToCart(b.dataset.add));
+  $("#grid").querySelectorAll("[data-ask]").forEach(b=> b.onclick=()=>{
+    const p = PRODUCTS.find(x=>x.id===b.dataset.ask);
+    askWhatsApp(`¡Hola! Me interesa "${p?.name}". ¿Me puedes cotizar?`);
   });
 }
 
-/* ---------- Carrito ---------- */
+/* ── Carrito ── */
 function save(){ localStorage.setItem(LS_KEY, JSON.stringify(cart)); }
-
 function addToCart(id){
-  const p = PRODUCTS.find(x=>x.id===id);
-  if(!p) return;
+  const p = PRODUCTS.find(x=>x.id===id); if(!p) return;
   const ex = cart.find(i=>i.id===id);
-  if(ex){ ex.qty++; } else {
-    cart.push({ id:p.id, name:p.name, price:p.price, unit:p.unit, emoji:p.emoji, image:p.image, karat:p.karat, qty:1 });
-  }
+  if(ex) ex.qty++; else cart.push({ id:p.id, name:p.name, price:Number(p.price)||0, unit:p.unit,
+    emoji:p.emoji, image:p.imageUrl, karat:p.karat, qty:1 });
   save(); renderAll(); toast(`${p.name} agregado ✓`);
 }
-function addCustom(text){
-  const t = (text||"").trim();
-  if(!t){ toast("Escribe qué quieres encargar ✍️"); $("#customText").focus(); return false; }
-  cart.push({ id:"custom-"+Date.now(), name:"Pedido a medida", custom:t, price:0, emoji:"👑", qty:1 });
-  save(); renderAll(); toast("Encargo agregado ✓"); return true;
-}
-function changeQty(idx, d){
-  cart[idx].qty += d;
-  if(cart[idx].qty<=0) cart.splice(idx,1);
-  save(); renderAll();
-}
+function changeQty(idx,d){ cart[idx].qty+=d; if(cart[idx].qty<=0) cart.splice(idx,1); save(); renderAll(); }
 function removeItem(idx){ cart.splice(idx,1); save(); renderAll(); }
-
 const cartCount = ()=> cart.reduce((s,i)=>s+i.qty,0);
 const cartTotal = ()=> cart.reduce((s,i)=>s+(i.price||0)*i.qty,0);
 
-/* ---------- Render carrito / drawer ---------- */
 function renderDrawer(){
   if(cart.length===0){
-    $("#ditems").innerHTML = `<div class="empty"><div class="big">🛒</div>
-      Tu pedido está vacío.<br>Agrega piezas del catálogo o un encargo a medida.</div>`;
-    $("#dfoot").innerHTML = "";
-    return;
+    $("#ditems").innerHTML=`<div class="empty"><div class="big">🛒</div>Tu pedido está vacío.<br>Agrega piezas del catálogo.</div>`;
+    $("#dfoot").innerHTML=""; return;
   }
   $("#ditems").innerHTML = cart.map((i,idx)=>{
     const ic = i.image ? `<img src="${i.image}" alt="">` : (i.emoji||"✨");
-    const priceLine = i.custom ? `<div class="p">A cotizar</div>`
-                               : `<div class="p">${money(i.price)} ${i.unit?`<span style="color:var(--muted);font-weight:500">${i.unit}</span>`:""}</div>`;
-    const custLine = i.custom ? `<div class="cust">“${i.custom}”</div>` : "";
-    return `
-    <div class="li">
-      <div class="ic">${ic}</div>
-      <div class="info">
-        <h4>${i.name}${i.karat?` · ${i.karat}`:""}</h4>
-        ${priceLine}${custLine}
-        <div class="qty">
-          <button data-q="-" data-i="${idx}">−</button>
-          <span>${i.qty}</span>
-          <button data-q="+" data-i="${idx}">＋</button>
-          <button class="rm" data-rm="${idx}">Quitar</button>
-        </div>
-      </div>
-    </div>`;
+    const p = i.price>0 ? `<div class="p">${money(i.price)}</div>` : `<div class="p">A cotizar</div>`;
+    return `<div class="li"><div class="ic">${ic}</div><div class="info">
+      <h4>${esc(i.name)}${i.karat?` · ${esc(i.karat)}`:""}</h4>${p}
+      <div class="qty"><button data-q="-" data-i="${idx}">−</button><span>${i.qty}</span>
+      <button data-q="+" data-i="${idx}">＋</button><button class="rm" data-rm="${idx}">Quitar</button></div>
+    </div></div>`;
   }).join("");
-
+  const hasPayable = cart.some(i=>i.price>0);
   $("#dfoot").innerHTML = `
     <div class="form">
-      <label>Tu nombre</label>
-      <input id="cName" placeholder="Nombre y apellido" value="${esc(form.name)}">
       <label>Ciudad de entrega (Chile)</label>
-      <input id="cCity" placeholder="Ej: Santiago, Viña del Mar, Concepción…" value="${esc(form.city)}">
-      <label>¿Cómo prefieres que te contacte? (opcional)</label>
-      <input id="cContact" placeholder="Tu WhatsApp o @ de Instagram" value="${esc(form.contact)}">
+      <input id="cCity" placeholder="Ej: Santiago, Viña del Mar…" value="${esc(form.city)}">
     </div>
-    <div class="totrow"><span class="t">Estimado del pedido</span><span class="v">${money(cartTotal())}</span></div>
-    <p class="note">💡 Es un estimado. El precio final del oro se confirma según el peso y la cotización del día al coordinar por WhatsApp.</p>
-    <button class="checkout" id="checkout">💬 Enviar pedido por WhatsApp</button>`;
-
-  // eventos
-  $("#ditems").querySelectorAll("[data-q]").forEach(b=>{
-    b.onclick=()=>changeQty(+b.dataset.i, b.dataset.q==="+"?1:-1);
-  });
-  $("#ditems").querySelectorAll("[data-rm]").forEach(b=>{
-    b.onclick=()=>removeItem(+b.dataset.rm);
-  });
-  bindFormInputs();
-  $("#checkout").onclick = checkout;
+    <div class="totrow"><span class="t">Total</span><span class="v">${money(cartTotal())}</span></div>
+    <p class="note">💡 El stock y el precio final se confirman al pagar. El envío se coordina luego por WhatsApp.</p>
+    ${hasPayable?`<button class="pay" id="payBtn">💳 Pagar con Mercado Pago</button>`:""}
+    <button class="wa" id="waBtn">💬 Coordinar por WhatsApp</button>`;
+  $("#ditems").querySelectorAll("[data-q]").forEach(b=> b.onclick=()=>changeQty(+b.dataset.i, b.dataset.q==="+"?1:-1));
+  $("#ditems").querySelectorAll("[data-rm]").forEach(b=> b.onclick=()=>removeItem(+b.dataset.rm));
+  const city = $("#cCity"); if(city) city.oninput=()=>{ form.city=city.value; localStorage.setItem("ambar_form",JSON.stringify(form)); };
+  if($("#payBtn")) $("#payBtn").onclick = payWithMercadoPago;
+  $("#waBtn").onclick = waCheckout;
 }
 
-/* ---------- Datos del cliente (persisten mientras escribe) ---------- */
-let form = { name:"", city:"", contact:"" };
-try { form = {...form, ...(JSON.parse(localStorage.getItem("ambar_form"))||{})}; } catch(e){}
-function esc(s){ return (s||"").replace(/"/g,"&quot;"); }
-function bindFormInputs(){
-  const map = {cName:"name", cCity:"city", cContact:"contact"};
-  Object.entries(map).forEach(([el,key])=>{
-    const node = $("#"+el); if(!node) return;
-    node.oninput = ()=>{ form[key]=node.value; localStorage.setItem("ambar_form",JSON.stringify(form)); };
-  });
+/* ── Pago con Mercado Pago ── */
+async function payWithMercadoPago(){
+  const payable = cart.filter(i=>i.price>0);
+  if(!payable.length){ toast("No hay productos pagables en línea"); return; }
+  if(!user){ openAuth("login","Inicia sesión para pagar tu pedido"); return; }
+  const btn = $("#payBtn"); btn.disabled=true; const old=btn.textContent; btn.textContent="Redirigiendo a Mercado Pago…";
+  try{
+    const r = await fetch("/api/create-preference",{ method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        items: payable.map(i=>({ id:i.id, qty:i.qty })),
+        customer: { uid:user.uid, name:user.displayName||"", email:user.email, city:form.city||"" }
+      })});
+    const d = await r.json();
+    if(d.init_point){ window.location.href = d.init_point; }
+    else { console.error(d); toast(d.message || "No se pudo iniciar el pago"); btn.disabled=false; btn.textContent=old; }
+  }catch(e){ console.error(e); toast("Error de conexión con el pago"); btn.disabled=false; btn.textContent=old; }
 }
 
-/* ---------- Enviar a WhatsApp ---------- */
-function checkout(){
+/* ── Coordinar por WhatsApp (incluye todo el carrito) ── */
+function waCheckout(){
   if(cart.length===0){ toast("Agrega algo primero 🙂"); return; }
-  let m = "¡Hola Ámbar Joyas! ✨ Quiero hacer este pedido:\n\n";
-  cart.forEach((i,n)=>{
-    m += `${n+1}) ${i.name}${i.karat?` (${i.karat})`:""} — cantidad: ${i.qty}\n`;
-    if(i.custom)      m += `   👑 A medida: ${i.custom}\n`;
-    else if(i.price)  m += `   ${money(i.price)} ${i.unit||""}\n`;
-  });
-  const est = cartTotal();
-  if(est>0) m += `\n💰 Estimado: ${money(est)} (a confirmar según peso y cotización del día)\n`;
-  m += `\n— Mis datos —\n`;
-  m += `Nombre: ${form.name||"(por indicar)"}\n`;
-  m += `Ciudad en Chile: ${form.city||"(por indicar)"}\n`;
-  if(form.contact) m += `Contacto: ${form.contact}\n`;
-  m += `\nQuedo atenta/o para coordinar pago y envío 🙌`;
-
-  const url = "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(m);
-  window.open(url, "_blank");
+  let m = "¡Hola Ámbar Joyas! ✨ Quiero coordinar este pedido:\n\n";
+  cart.forEach((i,n)=>{ m += `${n+1}) ${i.name}${i.karat?` (${i.karat})`:""} — x${i.qty}${i.price>0?` — ${money(i.price)}`:" — a cotizar"}\n`; });
+  const t = cartTotal(); if(t>0) m += `\nTotal aprox: ${money(t)}\n`;
+  if(user) m += `\nMi cuenta: ${user.displayName||user.email}\n`;
+  if(form.city) m += `Ciudad en Chile: ${form.city}\n`;
+  askWhatsApp(m);
 }
+function askWhatsApp(text){ window.open("https://wa.me/"+APP_CONFIG.whatsapp+"?text="+encodeURIComponent(text),"_blank"); }
 
-/* ---------- Render global ---------- */
+/* ── Render global ── */
 function renderAll(){
   const n = cartCount();
-  $("#cartCount").textContent = n;
-  $("#cartCount").style.display = n>0 ? "inline-flex" : "none";
+  $("#cartCount").textContent = n; $("#cartCount").style.display = n>0?"inline-flex":"none";
   $("#floatTotal").textContent = money(cartTotal());
   $("#float").classList.toggle("show", n>0);
-  renderGrid();
-  renderDrawer();
+  renderGrid(); renderDrawer();
+}
+function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+/* ── Drawer ── */
+const openDrawer=()=>{ $("#drawer").classList.add("open"); $("#overlay").classList.add("open"); };
+const closeDrawer=()=>{ $("#drawer").classList.remove("open"); $("#overlay").classList.remove("open"); };
+$("#cartBtn").onclick=openDrawer; $("#floatBtn").onclick=openDrawer;
+$("#closeDrawer").onclick=closeDrawer; $("#overlay").onclick=closeDrawer;
+
+/* ── Autenticación ── */
+let authMode = "register";
+function openAuth(mode, subMsg){
+  if(!isConfigured){ toast("Conecta Firebase primero"); return; }
+  authMode = mode || "register"; setAuthMode();
+  if(subMsg) $("#authSub").textContent = subMsg;
+  $("#authErr").textContent=""; $("#authModal").classList.add("open"); $("#authOverlay").classList.add("open");
+}
+function closeAuth(){ $("#authModal").classList.remove("open"); $("#authOverlay").classList.remove("open"); }
+function setAuthMode(){
+  const reg = authMode==="register";
+  $("#authTitle").textContent = reg ? "Crear cuenta" : "Iniciar sesión";
+  $("#authSub").textContent = reg ? "Regístrate para comprar y seguir tus pedidos." : "Ingresa a tu cuenta.";
+  $("#authSubmit").textContent = reg ? "Crear cuenta" : "Entrar";
+  $("#nameWrap").style.display = reg ? "block" : "none";
+  $("#authSwitch").innerHTML = reg
+    ? '¿Ya tienes cuenta? <a id="authToggle">Inicia sesión</a>'
+    : '¿No tienes cuenta? <a id="authToggle">Regístrate</a>';
+  $("#authToggle").onclick = ()=>{ authMode = reg?"login":"register"; setAuthMode(); $("#authErr").textContent=""; };
+  $("#authPass").setAttribute("autocomplete", reg?"new-password":"current-password");
+}
+async function submitAuth(){
+  const name = $("#authName").value.trim();
+  const email = $("#authEmail").value.trim();
+  const pass = $("#authPass").value;
+  const err = $("#authErr");
+  if(!email || !pass){ err.textContent="Completa correo y contraseña."; return; }
+  const btn = $("#authSubmit"); btn.disabled=true;
+  try{
+    if(authMode==="register"){
+      if(!name){ err.textContent="Escribe tu nombre."; btn.disabled=false; return; }
+      const cred = await createUserWithEmailAndPassword(auth, email, pass);
+      await updateProfile(cred.user, { displayName:name });
+      user = cred.user;
+    } else {
+      await signInWithEmailAndPassword(auth, email, pass);
+    }
+    closeAuth();
+    toast("¡Listo! Sesión iniciada ✓");
+  }catch(e){ err.textContent = authError(e.code); }
+  finally{ btn.disabled=false; }
+}
+function authError(code){
+  const map = {
+    "auth/invalid-email":"El correo no es válido.",
+    "auth/email-already-in-use":"Ese correo ya tiene cuenta. Inicia sesión.",
+    "auth/weak-password":"La contraseña debe tener al menos 6 caracteres.",
+    "auth/invalid-credential":"Correo o contraseña incorrectos.",
+    "auth/wrong-password":"Contraseña incorrecta.",
+    "auth/user-not-found":"No existe una cuenta con ese correo.",
+    "auth/too-many-requests":"Demasiados intentos. Espera un momento.",
+    "auth/operation-not-allowed":"Activa el inicio de sesión por correo en Firebase.",
+  };
+  return map[code] || "No se pudo completar. Inténtalo de nuevo.";
+}
+$("#authSubmit").onclick = submitAuth;
+$("#authClose").onclick = closeAuth; $("#authOverlay").onclick = closeAuth;
+$("#authPass").addEventListener("keydown", e=>{ if(e.key==="Enter") submitAuth(); });
+
+$("#accountBtn").onclick = ()=>{
+  if(user){
+    if(confirm(`Sesión: ${user.displayName||user.email}\n\n¿Cerrar sesión?`)) signOut(auth);
+  } else openAuth("register");
+};
+
+if(isConfigured){
+  onAuthStateChanged(auth, u=>{
+    user = u;
+    $("#accountLbl").textContent = u ? (u.displayName ? u.displayName.split(" ")[0] : "Mi cuenta") : "Ingresar";
+    renderDrawer();
+  });
 }
 
-/* ---------- Drawer open/close ---------- */
-function openDrawer(){ $("#drawer").classList.add("open"); $("#overlay").classList.add("open"); }
-function closeDrawer(){ $("#drawer").classList.remove("open"); $("#overlay").classList.remove("open"); }
-$("#cartBtn").onclick = openDrawer;
-$("#floatBtn").onclick = openDrawer;
-$("#closeDrawer").onclick = closeDrawer;
-$("#overlay").onclick = closeDrawer;
-
-/* ---------- Pedido a medida (botones) ---------- */
-$("#addCustom").onclick = ()=>{ if(addCustom($("#customText").value)){ $("#customText").value=""; openDrawer(); } };
+/* ── Consulta a medida ── */
 $("#quickCustom").onclick = ()=>{
   const t = $("#customText").value.trim();
   const base = "¡Hola Ámbar Joyas! ✨ Quiero encargar algo a medida";
-  const m = t ? `${base}:\n\n${t}` : base + ". ¿Me ayudas a cotizarlo?";
-  window.open("https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent(m), "_blank");
+  askWhatsApp(t ? `${base}:\n\n${t}` : base + ". ¿Me ayudas a cotizarlo?");
 };
 
-/* ---------- Toast ---------- */
+/* ── Resultado del pago (al volver de Mercado Pago) ── */
+function handleReturn(){
+  const p = new URLSearchParams(location.search);
+  const st = p.get("status"); if(!st) return;
+  const cfg = {
+    success:{ico:"✅",title:"¡Pago recibido!",text:"Gracias por tu compra. Te contactaré por WhatsApp para coordinar el envío a tu ciudad. 💛",clear:true},
+    pending:{ico:"⏳",title:"Pago en proceso",text:"Tu pago se está procesando. Te aviso apenas se confirme.",clear:false},
+    failure:{ico:"❌",title:"El pago no se completó",text:"No se concretó el pago. Puedes intentar de nuevo o escribirme por WhatsApp.",clear:false},
+  }[st];
+  if(!cfg) return;
+  if(cfg.clear){ cart=[]; save(); }
+  $("#resIco").textContent=cfg.ico; $("#resTitle").textContent=cfg.title; $("#resText").textContent=cfg.text;
+  $("#result").classList.add("open"); $("#overlay").classList.add("open");
+  history.replaceState({}, "", location.pathname);
+}
+$("#resClose").onclick=()=>{ $("#result").classList.remove("open"); $("#overlay").classList.remove("open"); };
+
+/* ── Toast ── */
 let toastT;
-function toast(msg){
-  const el = $("#toast"); el.textContent = msg; el.classList.add("show");
-  clearTimeout(toastT); toastT = setTimeout(()=>el.classList.remove("show"), 1900);
-}
+function toast(msg){ const el=$("#toast"); el.textContent=msg; el.classList.add("show");
+  clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove("show"),1900); }
 
-/* ---------- Init ---------- */
-renderFilters();
+/* ── Init ── */
+setAuthMode();
+subscribeProducts();
 renderAll();
-
-/* Aviso amable si aún no se configuró el WhatsApp */
-if(CONFIG.whatsapp === "50700000000"){
-  console.warn("⚠️ Recuerda cambiar CONFIG.whatsapp por tu número real en public/index.html");
-}
+handleReturn();
 </script>
 </body>
 </html>

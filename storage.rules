@@ -1,0 +1,15 @@
+rules_version = '2';
+
+// Reglas de Firebase Storage para las fotos de productos.
+// ⚠️ Reemplaza TU_CORREO_ADMIN@gmail.com por tu correo real y pega esto en:
+//    Firebase → Storage → Reglas.
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Fotos de productos: todos las ven; solo la admin puede subir/borrar.
+    match /products/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null
+        && request.auth.token.email == 'TU_CORREO_ADMIN@gmail.com';
+    }
+  }
+}

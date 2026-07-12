@@ -158,37 +158,68 @@ Tres formas, no excluyentes:
 $0 de Meta (la API es gratis). Solo pagas tu hosting (Vercel + Firebase, que ya usas).
 
 ---
+## 9. Tienda de oro con registro y pago (Mercado Pago) 🛒
 
-## 9. Tienda para vender oro (el link que pegas en Instagram) 🛒
+La tienda es una web que se despliega junto con este proyecto en Vercel. Tiene:
 
-Archivo: **`public/index.html`**. Es la página web donde tus clientes de Chile
-arman su pedido y te lo envían por WhatsApp. Ya se despliega sola con Vercel:
-queda en la **raíz de tu dominio** (ej. `https://tu-proyecto.vercel.app/`). Ese es
-el link que pones en tu bio de Instagram o en las stories.
+- **`public/index.html`** — la tienda pública (el link para tu bio de Instagram).
+  Catálogo en vivo, registro/login de clientes y pago con Mercado Pago.
+- **`public/admin.html`** — tu panel privado (`tudominio.vercel.app/admin.html`)
+  para subir fotos y precios al instante y ver los pedidos.
+- **`public/firebase-config.js`** — el ÚNICO archivo que editas para conectar todo.
+- **`api/create-preference.js`** y **`api/mp-webhook.js`** — el pago con Mercado Pago.
 
-### Cómo funciona (para el cliente)
-1. Entra al link, ve tu catálogo de oro.
-2. Agrega piezas al carrito **o** escribe un encargo "a medida" (lo que quiera).
-3. Pone su nombre y ciudad de Chile y toca **"Enviar pedido por WhatsApp"**.
-4. Se le abre WhatsApp con **todo el pedido escrito**, listo para enviártelo.
+Cuando subes o cambias un producto en el panel, aparece **al instante** en todos
+los teléfonos (Firestore en tiempo real).
 
-No necesita registrarse ni pagar en la web: tú coordinas precio final, pago y
-envío por WhatsApp. Cero backend, cero comisiones.
+### 9.1 ⚠️ Importante sobre Mercado Pago
 
-### Lo que TIENES que personalizar (todo en `public/index.html`, arriba)
-1. **Tu número de WhatsApp** — en `CONFIG.whatsapp`. Va en formato internacional,
-   **solo números**, sin `+` ni espacios. Ejemplos:
-   - Panamá `+507 6000-0000` → `"50760000000"`
-   - Chile `+56 9 1234 5678` → `"56912345678"`
-2. **Tu Instagram** — en `CONFIG.instagram`.
-3. **Tus productos** — en la lista `PRODUCTS`. Cada uno tiene: nombre, descripción,
-   quilates (`karat`), peso (`grams`), precio (`price`) y categoría (`cat`).
-   - Para poner **fotos reales**: agrega `image:"https://…/tu-foto.jpg"` al producto
-     (idealmente cuadrada). Si no pones foto, se muestra el `emoji`.
+Mercado Pago **no opera en Panamá**. Funciona en Chile, Argentina, Brasil, México,
+Colombia, Perú y Uruguay. Como tus clientes son chilenos, usa una cuenta de
+**Mercado Pago Chile** (los pagos serán en **pesos chilenos, CLP**). Si no puedes
+tener cuenta MP de Chile, deja la tienda funcionando con el botón **"Coordinar por
+WhatsApp"** (que ya está incluido) hasta resolver la cuenta.
 
-### Probarla local
-Abre `public/index.html` en tu navegador (doble clic) — funciona tal cual.
-En el celular se ve como app.
+### 9.2 Puesta en marcha (una sola vez)
 
-> Los precios de la web son **referenciales**; el total final del oro se confirma
-> según peso y cotización del día, y así se lo aclara al cliente automáticamente.
+1. **Firebase** (usa el mismo proyecto del autopost o crea uno):
+   - **Authentication** → activa el proveedor **Correo/contraseña**.
+   - **Firestore Database** → créala (modo producción).
+   - **Storage** → actívalo (para las fotos).
+   - ⚙️ **Configuración del proyecto → Tus apps → app Web** → copia el objeto
+     `firebaseConfig` y pégalo en `public/firebase-config.js`.
+2. En `public/firebase-config.js` completa también `APP_CONFIG`:
+   `adminEmail` (tu correo de administradora), `whatsapp`, `instagram`.
+3. **Crea tu cuenta de admin**: entra a la tienda, toca **👤 Ingresar → Crear
+   cuenta** usando ese mismo correo (o créala en Firebase → Authentication).
+4. **Reglas de seguridad** (reemplaza `TU_CORREO_ADMIN@gmail.com` por tu correo):
+   - Pega `firestore.rules` en Firebase → Firestore → **Reglas**.
+   - Pega `storage.rules` en Firebase → Storage → **Reglas**.
+5. **Mercado Pago** → en Vercel agrega la variable de entorno:
+   - `MP_ACCESS_TOKEN` = tu *Access Token* (Mercado Pago → Tus integraciones →
+     tu app → Credenciales). Usa las de **prueba** para testear y las de
+     **producción** para cobrar de verdad.
+   - `MP_CURRENCY` = `CLP` (opcional).
+6. `vercel deploy --prod`.
+
+### 9.3 Cómo se usa
+
+- **Tú (admin):** entra a `tudominio.vercel.app/admin.html`, inicia sesión y en
+  **🛍️ Productos** agregas nombre, precio (CLP), fotos, quilates, etc. En
+  **📦 Pedidos** ves cada compra con su estado (Pagado / Pendiente / Rechazado).
+  - Precio `0` = pieza **"a cotizar"** (el cliente consulta por WhatsApp).
+  - "Disponible" desactivado = se muestra **Agotado**. "Visible" desactivado = se
+    oculta de la tienda.
+- **Tus clientes:** entran al link, se registran, agregan al carrito y tocan
+  **💳 Pagar con Mercado Pago**. Al aprobarse el pago, el pedido queda **Pagado**
+  en tu panel y coordinas el envío por WhatsApp.
+
+### 9.4 Notas
+
+- Las claves de `firebaseConfig` (web) son **públicas por diseño**; lo que protege
+  tus datos son las **reglas de seguridad**. El `MP_ACCESS_TOKEN` es secreto y vive
+  solo en Vercel (nunca en el navegador).
+- Los precios se recalculan en el servidor desde Firestore antes de cobrar, así
+  nadie puede alterar el monto desde el navegador.
+- El panel y el pago necesitan estar **desplegados** (o un servidor local); no
+  funcionan abriendo el archivo con doble clic (`file://`).
