@@ -3,152 +3,90 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Ámbar Joyas — Tienda</title>
-<meta name="description" content="Joyas y accesorios de Ámbar Joyas. Mira el catálogo, arma tu pedido y paga seguro. Envíos a todo Chile." />
+<title>Ámbar Oro — Live de Oro</title>
+<meta name="description" content="Compra oro en vivo. Piezas únicas que subimos durante el live. Toca comprar y paga seguro. Envíos a todo Chile." />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Ámbar Joyas ✨" />
-<meta property="og:description" content="Catálogo en vivo · Pago seguro · Envíos a todo Chile" />
+<meta property="og:title" content="Ámbar Oro — Live de Oro ✨" />
+<meta property="og:description" content="Piezas únicas en vivo · Compra segura · Envíos a todo Chile" />
 <meta name="theme-color" content="#0e0b06" />
 <style>
   :root{
     --bg:#0e0b06;--bg-soft:#171106;--card:#1c1508;--card-2:#241a09;--line:#3a2c11;
     --gold:#e7bd63;--gold-2:#f6dfa0;--gold-deep:#b8862f;--text:#f3ead6;--muted:#b9ab8c;
-    --ok:#37c26b;--radius:18px;--maxw:1080px;--shadow:0 10px 40px rgba(0,0,0,.45);
+    --ok:#37c26b;--live:#e5484d;--radius:18px;--maxw:1080px;--shadow:0 10px 40px rgba(0,0,0,.45);
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0}
   body{background:radial-gradient(1200px 700px at 50% -10%,#2a1e08 0%,transparent 60%),var(--bg);
     color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;
-    line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:120px}
-  a{color:inherit}img{max-width:100%;display:block}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 18px}
+    line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:40px}
+  a{color:inherit}img,video{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 16px}
 
-  header{position:sticky;top:0;z-index:40;background:rgba(14,11,6,.82);
+  header{position:sticky;top:0;z-index:40;background:rgba(14,11,6,.85);
     backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-  .bar{display:flex;align-items:center;justify-content:space-between;height:60px;
-    max-width:var(--maxw);margin:0 auto;padding:0 18px;gap:10px}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:700}
-  .brand .logo{width:34px;height:34px;border-radius:50%;
+  .bar{display:flex;align-items:center;justify-content:space-between;height:58px;max-width:var(--maxw);margin:0 auto;padding:0 16px;gap:10px}
+  .brand{display:flex;align-items:center;gap:9px;font-weight:700}
+  .brand .logo{width:32px;height:32px;border-radius:50%;
     background:radial-gradient(circle at 30% 30%,var(--gold-2),var(--gold-deep));
     box-shadow:0 0 0 2px rgba(231,189,99,.25),inset 0 -3px 6px rgba(0,0,0,.3)}
-  .brand b{background:linear-gradient(90deg,var(--gold-2),var(--gold));
-    -webkit-background-clip:text;background-clip:text;color:transparent}
-  .hbtns{display:flex;align-items:center;gap:8px}
-  .icon-btn{position:relative;border:1px solid var(--line);background:var(--card);color:var(--text);
-    border-radius:999px;padding:9px 13px;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:7px;font-weight:600}
-  .icon-btn:active{transform:scale(.97)}
-  .cart-count{min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:var(--gold);
-    color:#241a09;font-size:12px;font-weight:800;display:inline-flex;align-items:center;justify-content:center}
+  .brand b{background:linear-gradient(90deg,var(--gold-2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .live-badge{display:none;align-items:center;gap:6px;font-size:12px;font-weight:800;color:#fff;
+    background:var(--live);padding:5px 10px;border-radius:999px;letter-spacing:.5px}
+  .live-badge.on{display:inline-flex}
+  .live-badge .dot{width:8px;height:8px;border-radius:50%;background:#fff;animation:blink 1s infinite}
+  @keyframes blink{50%{opacity:.25}}
+  .acct{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:8px 12px;font-size:13px;text-decoration:none;font-weight:600}
 
-  .hero{padding:40px 0 22px;text-align:center}
-  .hero .flags{font-size:15px;letter-spacing:2px;color:var(--muted);margin-bottom:12px}
-  .hero h1{font-size:clamp(28px,7vw,50px);line-height:1.05;margin:0 0 12px;font-weight:800;letter-spacing:-.5px}
-  .hero h1 .g{background:linear-gradient(90deg,var(--gold-2),var(--gold),var(--gold-deep));
-    -webkit-background-clip:text;background-clip:text;color:transparent}
-  .hero p{max-width:620px;margin:0 auto;color:var(--muted);font-size:16.5px}
-  .trust{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin:20px 0 4px}
-  .chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 13px;
-    font-size:13px;display:flex;gap:6px;align-items:center}.chip b{color:var(--gold)}
+  .banner{background:#3a2c11;color:var(--gold-2);text-align:center;font-size:13px;padding:10px 14px;border-bottom:1px solid var(--line)}
+  .banner b{color:var(--gold)}
 
-  .search{max-width:var(--maxw);margin:14px auto 0;padding:0 18px}
-  .search input{width:100%;background:var(--card);border:1px solid var(--line);border-radius:14px;
-    color:var(--text);padding:13px 15px;font-size:15.5px;font-family:inherit}
-  .search input::placeholder{color:#7d7358}
+  .hero{text-align:center;padding:30px 0 8px}
+  .hero h1{font-size:clamp(26px,7vw,44px);margin:0 0 8px;font-weight:800;letter-spacing:-.5px}
+  .hero h1 .g{background:linear-gradient(90deg,var(--gold-2),var(--gold),var(--gold-deep));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{color:var(--muted);margin:0 auto;max-width:560px;font-size:15.5px}
 
-  .filters{display:flex;gap:8px;overflow-x:auto;padding:14px 18px 6px;max-width:var(--maxw);margin:0 auto;scrollbar-width:none}
-  .filters::-webkit-scrollbar{display:none}
-  .filters button{white-space:nowrap;border:1px solid var(--line);background:transparent;color:var(--muted);
-    border-radius:999px;padding:9px 16px;font-size:14px;cursor:pointer;font-weight:600}
-  .filters button.active{background:var(--gold);color:#241a09;border-color:var(--gold)}
-
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;padding:14px 0 6px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;padding:20px 0}
   .card{background:linear-gradient(180deg,var(--card),var(--card-2));border:1px solid var(--line);
-    border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
-  .thumb{aspect-ratio:1/1;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 35%,#2c2009,#140e05)}
-  .thumb .emoji{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:64px;
-    filter:drop-shadow(0 6px 12px rgba(0,0,0,.5))}
-  .thumb img{width:100%;height:100%;object-fit:cover}
-  .soldout{position:absolute;inset:0;background:rgba(10,8,4,.6);display:flex;align-items:center;justify-content:center;
-    color:var(--muted);font-weight:700}
-  .card .body{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}
-  .card h3{margin:0;font-size:15.5px;font-weight:700}
-  .card .desc{margin:0;color:var(--muted);font-size:13px;flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .card .cat{font-size:11.5px;color:var(--muted)}
-  .card .foot{display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .price{font-size:18px;font-weight:800;color:var(--gold-2)}
-  .add{border:none;background:linear-gradient(90deg,var(--gold),var(--gold-deep));color:#211806;font-weight:800;
-    border-radius:12px;padding:10px 14px;cursor:pointer;font-size:14px;white-space:nowrap}
-  .add:active{transform:scale(.96)}.add.in{background:var(--card-2);color:var(--gold);border:1px solid var(--gold)}
-  .add:disabled{opacity:.5}
+    border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);position:relative}
+  .card.new{animation:pop .4s ease}
+  @keyframes pop{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+  .media{aspect-ratio:1/1;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 35%,#2c2009,#140e05)}
+  .media img,.media video{width:100%;height:100%;object-fit:cover}
+  .media .emoji{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:64px}
+  .vtag{position:absolute;top:10px;right:10px;background:rgba(14,11,6,.72);border:1px solid var(--line);color:var(--gold);
+    font-size:11px;font-weight:800;padding:3px 8px;border-radius:999px;backdrop-filter:blur(4px)}
+  .sold{position:absolute;inset:0;background:rgba(10,8,4,.66);display:flex;align-items:center;justify-content:center}
+  .sold span{border:2px solid var(--live);color:#fff;background:rgba(229,72,77,.85);font-weight:800;padding:6px 16px;
+    border-radius:8px;transform:rotate(-8deg);font-size:16px;letter-spacing:1px}
+  .body{padding:14px;display:flex;flex-direction:column;gap:10px;flex:1}
+  .body h3{margin:0;font-size:16px;font-weight:700}
+  .body .desc{margin:0;color:var(--muted);font-size:13px}
+  .body .foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .price{font-size:20px;font-weight:800;color:var(--gold-2)}
+  .buy{border:none;background:linear-gradient(90deg,var(--gold),var(--gold-deep));color:#211806;font-weight:800;
+    border-radius:12px;padding:11px 16px;cursor:pointer;font-size:14.5px;white-space:nowrap}
+  .buy:active{transform:scale(.96)}.buy:disabled{opacity:.5;cursor:not-allowed}
 
-  .state{text-align:center;color:var(--muted);padding:60px 20px}.state .big{font-size:48px;margin-bottom:12px}
-  .skl{background:linear-gradient(180deg,var(--card),var(--card-2));border:1px solid var(--line);border-radius:var(--radius);
-    overflow:hidden}.skl .t{aspect-ratio:1/1;background:#1f1708;animation:pulse 1.2s infinite}
-  .skl .b{padding:14px}.skl .l{height:12px;background:#221909;border-radius:6px;margin:8px 0}
-  @keyframes pulse{50%{opacity:.55}}
+  .state{text-align:center;color:var(--muted);padding:60px 20px}.state .big{font-size:50px;margin-bottom:12px}
+  .wait{display:inline-block;width:26px;height:26px;border:3px solid var(--line);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
 
-  .custom{margin:36px 0 8px;background:linear-gradient(135deg,#211806,#120c05);border:1px solid var(--line);
-    border-radius:22px;padding:24px 20px}
-  .custom h2{margin:0 0 6px;font-size:22px}.custom p{margin:0 0 14px;color:var(--muted)}
-  .custom textarea{width:100%;min-height:88px;resize:vertical;background:var(--bg-soft);border:1px solid var(--line);
-    border-radius:14px;color:var(--text);padding:13px 14px;font-size:15px;font-family:inherit}
-  .custom textarea::placeholder{color:#7d7358}
-  .btn-line{margin-top:12px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-weight:700;
-    border-radius:12px;padding:12px 18px;cursor:pointer;font-size:15px}
+  .wa-help{margin:8px 0 26px;text-align:center}
+  .wa-help a{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(90deg,#25d366,#128c4a);
+    color:#04220f;font-weight:800;border-radius:12px;padding:12px 20px;text-decoration:none;font-size:15px}
 
-  .how{margin:40px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
-  .step{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
-  .step .n{width:30px;height:30px;border-radius:50%;background:var(--gold);color:#211806;font-weight:800;
-    display:flex;align-items:center;justify-content:center;margin-bottom:10px}
-  .step h4{margin:0 0 4px;font-size:16px}.step p{margin:0;color:var(--muted);font-size:14px}
-
-  footer{text-align:center;color:var(--muted);font-size:13px;padding:30px 18px 10px;border-top:1px solid var(--line);margin-top:30px}
+  footer{text-align:center;color:var(--muted);font-size:13px;padding:24px 16px 10px;border-top:1px solid var(--line)}
   footer a{color:var(--gold);text-decoration:none}
 
-  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);opacity:0;visibility:hidden;transition:.2s;z-index:50}
-  .overlay.open{opacity:1;visibility:visible}
-  .drawer{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:var(--bg-soft);
-    border-left:1px solid var(--line);z-index:60;transform:translateX(100%);transition:transform .25s;display:flex;flex-direction:column}
-  .drawer.open{transform:translateX(0)}
-  .dhead{display:flex;align-items:center;justify-content:space-between;padding:18px;border-bottom:1px solid var(--line)}
-  .dhead h3{margin:0;font-size:19px}
-  .x{background:none;border:none;color:var(--muted);font-size:26px;cursor:pointer;line-height:1}
-  .ditems{flex:1;overflow-y:auto;padding:12px 16px}
-  .empty{text-align:center;color:var(--muted);padding:50px 20px}.empty .big{font-size:44px;margin-bottom:10px}
-  .li{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
-  .li .ic{width:52px;height:52px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center;font-size:24px;
-    background:radial-gradient(circle at 40% 30%,#2c2009,#140e05);border:1px solid var(--line);overflow:hidden}
-  .li .ic img{width:100%;height:100%;object-fit:cover}
-  .li .info{flex:1;min-width:0}.li .info h4{margin:0 0 2px;font-size:14px}.li .info .p{color:var(--gold-2);font-weight:700;font-size:14px}
-  .qty{display:flex;align-items:center;gap:8px;margin-top:6px}
-  .qty button{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);
-    font-size:16px;cursor:pointer;font-weight:700}.qty span{min-width:22px;text-align:center;font-weight:700}
-  .rm{margin-left:auto;background:none;border:none;color:#c46a5a;font-size:12.5px;cursor:pointer}
-  .dfoot{border-top:1px solid var(--line);padding:16px}
-  .totrow{display:flex;justify-content:space-between;align-items:baseline;margin:2px 0 4px}
-  .totrow .t{font-size:15px;color:var(--muted)}.totrow .v{font-size:24px;font-weight:800;color:var(--gold-2)}
-  .note{font-size:11.5px;color:var(--muted);margin:6px 0 12px}
-  .pay{width:100%;border:none;border-radius:14px;padding:15px;font-size:16px;font-weight:800;cursor:pointer;
-    background:linear-gradient(90deg,var(--gold),var(--gold-deep));color:#211806;display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:9px}
-  .wa{width:100%;border:none;border-radius:14px;padding:13px;font-size:15px;font-weight:800;cursor:pointer;
-    background:linear-gradient(90deg,#25d366,#128c4a);color:#04220f;display:flex;align-items:center;justify-content:center;gap:9px}
-  .pay:active,.wa:active{transform:scale(.98)}
-
-  .float{position:fixed;left:0;right:0;bottom:0;z-index:45;padding:12px 16px calc(12px + env(safe-area-inset-bottom));
-    background:linear-gradient(0deg,var(--bg) 60%,transparent);display:none}
-  .float.show{display:block}
-  .float button{width:100%;max-width:var(--maxw);margin:0 auto;border:none;border-radius:14px;padding:15px;font-size:16px;
-    font-weight:800;cursor:pointer;background:linear-gradient(90deg,var(--gold),var(--gold-deep));color:#211806;
-    display:flex;align-items:center;justify-content:center;gap:10px}
-
-  .toast{position:fixed;left:50%;bottom:90px;translate:-50% 20px;background:#241a09;border:1px solid var(--gold);
-    color:var(--gold-2);padding:11px 18px;border-radius:999px;font-size:14px;font-weight:600;z-index:80;opacity:0;pointer-events:none;transition:.25s}
+  .toast{position:fixed;left:50%;bottom:24px;translate:-50% 20px;background:#241a09;border:1px solid var(--gold);
+    color:var(--gold-2);padding:12px 18px;border-radius:999px;font-size:14px;font-weight:600;z-index:80;opacity:0;pointer-events:none;transition:.25s;max-width:90%}
   .toast.show{opacity:1;translate:-50% 0}
 
   @media (max-width:520px){
-    .grid{grid-template-columns:repeat(2,1fr);gap:11px}.thumb .emoji{font-size:46px}
-    .card h3{font-size:13.5px}.card .desc{display:none}.price{font-size:15px}.add{padding:9px 10px;font-size:12.5px}
-    .icon-btn span.lbl{display:none}
+    .grid{grid-template-columns:repeat(2,1fr);gap:11px}
+    .media .emoji{font-size:44px}.body{padding:11px;gap:8px}.body h3{font-size:14px}.body .desc{display:none}
+    .price{font-size:16.5px}.buy{padding:10px 12px;font-size:13px}
   }
 </style>
 </head>
@@ -156,233 +94,109 @@
 
 <header>
   <div class="bar">
-    <div class="brand"><span class="logo"></span>Ámbar <b>Joyas</b></div>
-    <div class="hbtns">
-      <a class="icon-btn" id="accountBtn" href="#">👤 <span class="lbl">Mi cuenta</span></a>
-      <button class="icon-btn" id="cartBtn" aria-label="Ver pedido">🛒 <span id="cartCount" class="cart-count" style="display:none">0</span></button>
+    <div class="brand"><span class="logo"></span>Ámbar <b>Oro</b>
+      <span class="live-badge" id="liveBadge"><span class="dot"></span>EN VIVO</span>
     </div>
+    <a class="acct" id="acctBtn" href="#">👤 Mi cuenta</a>
   </div>
 </header>
 
+<div class="banner" id="cfgBanner" style="display:none">⚙️ La app aún no está conectada. Edita <b>public/firebase-config.js</b> con tus datos de Firebase.</div>
+
 <div class="wrap">
   <section class="hero">
-    <div class="flags">✨ ENVÍOS A TODO CHILE 🇨🇱</div>
-    <h1>Joyas que <span class="g">brillan contigo</span></h1>
-    <p>Mira el catálogo, arma tu pedido y paga seguro. ¿Buscas algo especial? Encárgalo a medida por WhatsApp.</p>
-    <div class="trust">
-      <div class="chip">💳 Pago <b>seguro</b></div>
-      <div class="chip">✈️ Envíos a <b>todo Chile</b></div>
-      <div class="chip">⭐ Piezas <b>únicas</b></div>
-    </div>
+    <h1>Oro en <span class="g">vivo</span> ✨</h1>
+    <p>Piezas únicas que subimos durante el live. Cuando veas una que te guste, toca <b style="color:var(--gold)">Comprar</b> — se paga seguro y enviamos a todo Chile 🇨🇱.</p>
   </section>
-</div>
 
-<div class="search"><input id="q" type="search" placeholder="Buscar… (ej: aros, collar, corazón)" autocomplete="off"></div>
-<div class="filters" id="filters"></div>
-
-<div class="wrap">
   <section class="grid" id="grid"></section>
   <div class="state" id="state" style="display:none"></div>
 
-  <section class="custom">
-    <h2>¿Buscas algo especial? 👑</h2>
-    <p>Cuéntame qué quieres (un modelo, una piedra, un regalo con presupuesto) y te ayudo por WhatsApp.</p>
-    <textarea id="customText" placeholder="Ej: Busco un collar con corazón, tono plata, para regalo. ¿Qué me recomiendas?"></textarea>
-    <div><button class="btn-line" id="quickCustom">💬 Consultar por WhatsApp</button></div>
-  </section>
-
-  <section class="how">
-    <div class="step"><div class="n">1</div><h4>Elige tus joyas</h4><p>Catálogo en vivo, siempre actualizado.</p></div>
-    <div class="step"><div class="n">2</div><h4>Paga seguro</h4><p>Con Mercado Pago, tarjetas y más, en tu checkout.</p></div>
-    <div class="step"><div class="n">3</div><h4>Recíbelas</h4><p>Enviamos a tu ciudad en todo Chile.</p></div>
-  </section>
+  <div class="wa-help">
+    <a id="waBtn" href="#">💬 ¿Dudas? Escríbeme por WhatsApp</a>
+  </div>
 </div>
 
 <footer>
-  <p><b style="color:var(--text)">Ámbar Joyas</b> · Joyas y accesorios · Chile</p>
-  <p>Escríbenos por <a id="footWa" href="#">WhatsApp</a> · <a id="footIg" href="#" target="_blank" rel="noopener">Instagram</a></p>
-  <p style="opacity:.6;font-size:11.5px;margin-top:8px">El pago y el envío se completan de forma segura en el checkout.</p>
+  <p><b style="color:var(--text)">Ámbar Oro</b> · Compra de oro en vivo · Chile</p>
+  <p>El pago y el envío se completan de forma segura en el checkout.</p>
 </footer>
-
-<div class="float" id="float"><button id="floatBtn">🛒 Ver pedido · <span id="floatTotal">$0</span></button></div>
-
-<div class="overlay" id="overlay"></div>
-<aside class="drawer" id="drawer" aria-label="Tu pedido">
-  <div class="dhead"><h3>Tu pedido</h3><button class="x" id="closeDrawer">×</button></div>
-  <div class="ditems" id="ditems"></div>
-  <div class="dfoot" id="dfoot"></div>
-</aside>
 
 <div class="toast" id="toast"></div>
 
-<script>
-/* ═══════════════════════════════════════════════════════════════════════
-   ⚙️  Edita SOLO esto. Los productos y el pago vienen de tu Shopify.
-   ═══════════════════════════════════════════════════════════════════════ */
-const CONFIG = {
-  shopDomain: "https://www.ambarjoyas.cl",   // tu tienda Shopify (para el checkout)
-  whatsapp:   "56900000000",                 // ⚠️ tu WhatsApp: solo números, con código país
-  instagram:  "https://instagram.com/ambarjoyas.cl",  // ⚠️ tu Instagram
-  currencySymbol: "$",
-};
-/* ═══════════════════════════════════════════════════════════════════════ */
+<script type="module">
+import { db, projectId, isConfigured, APP_CONFIG } from "./firebase-config.js";
+import { collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const $ = s => document.querySelector(s);
-const money = n => CONFIG.currencySymbol + Number(n||0).toLocaleString("es-CL");
+const money = n => APP_CONFIG.currencySymbol + Number(n||0).toLocaleString("es-CL");
 const esc = s => String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const LS_KEY = "ambar_cart_shop_v1";
 
-let DOMAIN = CONFIG.shopDomain.replace(/\/$/,"");
-let PRODUCTS = [];
-let cart = [];
-try { cart = JSON.parse(localStorage.getItem(LS_KEY)) || []; } catch(e){ cart = []; }
-let activeCat = "Todo";
-let term = "";
+let ITEMS = [];
+let firstLoad = true;
 
-$("#footWa").href = "https://wa.me/" + CONFIG.whatsapp;
-$("#footIg").href = CONFIG.instagram;
-$("#accountBtn").href = DOMAIN + "/account";
+$("#waBtn").href = "https://wa.me/" + APP_CONFIG.whatsapp + "?text=" + encodeURIComponent("¡Hola Ámbar Oro! Tengo una consulta sobre el live ✨");
+$("#acctBtn").href = (APP_CONFIG.shopDomain||"").replace(/\/$/,"") + "/account";
 
-/* ── Cargar catálogo desde Shopify (vía /api/products) ── */
-async function loadProducts(){
-  showSkeleton();
-  try{
-    const r = await fetch("/api/products");
-    const d = await r.json();
-    if(d.domain) { DOMAIN = d.domain; $("#accountBtn").href = DOMAIN + "/account"; }
-    PRODUCTS = Array.isArray(d.products) ? d.products : [];
-    if(!PRODUCTS.length){ showState("✨","Aún no hay productos publicados. ¡Vuelve pronto!"); return; }
-    renderFilters(); renderGrid();
-  }catch(e){
-    console.error(e);
-    showState("😕","No pudimos cargar el catálogo ahora. Recarga en un momento o escríbenos por WhatsApp.");
-  }
-}
-function showSkeleton(){
-  $("#state").style.display="none";
-  $("#grid").innerHTML = Array.from({length:6}).map(()=>`<div class="skl"><div class="t"></div><div class="b"><div class="l" style="width:80%"></div><div class="l" style="width:40%"></div></div></div>`).join("");
-}
 function showState(icon,msg){ $("#grid").innerHTML=""; const s=$("#state"); s.style.display="block"; s.innerHTML=`<div class="big">${icon}</div>${msg}`; }
 
-/* ── Filtros y búsqueda ── */
-function renderFilters(){
-  const cats = ["Todo", ...[...new Set(PRODUCTS.map(p=>p.category).filter(Boolean))].sort()];
-  $("#filters").innerHTML = cats.map(c=>`<button class="${c===activeCat?'active':''}" data-cat="${esc(c)}">${esc(c)}</button>`).join("");
-  $("#filters").querySelectorAll("button").forEach(b=> b.onclick=()=>{ activeCat=b.dataset.cat; renderFilters(); renderGrid(); });
+/* ── Catálogo del live en tiempo real ── */
+function start(){
+  if(!isConfigured){ $("#cfgBanner").style.display="block"; showState("⚙️","Conecta Firebase para ver las piezas del live."); return; }
+  showState('<span class="wait"></span>',"Cargando el live…");
+  onSnapshot(query(collection(db,"liveItems"), orderBy("createdAt","desc")),
+    snap=>{
+      ITEMS = snap.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.visible!==false);
+      render();
+      $("#liveBadge").classList.toggle("on", ITEMS.some(i=>i.sold!==true));
+      firstLoad = false;
+    },
+    err=>{ console.error(err); showState("😕","No se pudo cargar. Revisa las reglas de Firestore o recarga."); }
+  );
 }
-function visibleList(){
-  let list = activeCat==="Todo" ? PRODUCTS : PRODUCTS.filter(p=>p.category===activeCat);
-  if(term){ const t=term.toLowerCase();
-    list = list.filter(p=>(p.name||"").toLowerCase().includes(t) || (p.desc||"").toLowerCase().includes(t) || (p.category||"").toLowerCase().includes(t)); }
-  return list;
-}
-$("#q").oninput = e=>{ term = e.target.value.trim(); renderGrid(); };
 
-function renderGrid(){
-  const list = visibleList();
-  if(!list.length){ showState("🔎","No encontramos productos con eso. Prueba otra palabra o categoría."); return; }
+function render(){
+  if(!ITEMS.length){ showState("⏳","Aún no hay piezas. ¡Empiezan a aparecer cuando arranque el live!"); return; }
   $("#state").style.display="none";
-  $("#grid").innerHTML = list.map(p=>{
-    const inCart = cart.some(i=>i.id===p.id);
-    const media = p.image ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy">` : `<div class="emoji">💍</div>`;
-    const btn = p.available===false
-      ? `<button class="add" disabled>Agotado</button>`
-      : `<button class="add ${inCart?'in':''}" data-add="${esc(p.id)}">${inCart?'✓ Agregado':'＋ Agregar'}</button>`;
-    return `<article class="card">
-      <div class="thumb">${media}${p.available===false?`<div class="soldout">Agotado</div>`:""}</div>
+  $("#grid").innerHTML = ITEMS.map(it=>{
+    const media = it.mediaType==="video"
+      ? `<video src="${esc(it.mediaUrl)}" muted loop autoplay playsinline preload="metadata"></video><div class="vtag">▶ VIDEO</div>`
+      : (it.mediaUrl ? `<img src="${esc(it.mediaUrl)}" alt="${esc(it.title)}" loading="lazy">` : `<div class="emoji">🥇</div>`);
+    const sold = it.sold===true;
+    const btn = sold
+      ? `<button class="buy" disabled>Vendida</button>`
+      : `<button class="buy" data-buy="${esc(it.id)}">Comprar</button>`;
+    return `<article class="card ${firstLoad?'':'new'}">
+      <div class="media">${media}${sold?`<div class="sold"><span>VENDIDA</span></div>`:""}</div>
       <div class="body">
-        <div class="cat">${esc(p.category||"")}</div>
-        <h3>${esc(p.name||"")}</h3>
-        <p class="desc">${esc(p.desc||"")}</p>
-        <div class="foot"><div class="price">${money(p.price)}</div>${btn}</div>
+        <h3>${esc(it.title||"Pieza de oro")}</h3>
+        ${it.desc?`<p class="desc">${esc(it.desc)}</p>`:""}
+        <div class="foot"><div class="price">${money(it.price)}</div>${btn}</div>
       </div></article>`;
   }).join("");
-  $("#grid").querySelectorAll("[data-add]").forEach(b=> b.onclick=()=>addToCart(b.dataset.add));
+  $("#grid").querySelectorAll("[data-buy]").forEach(b=> b.onclick=()=>buy(b.dataset.buy, b));
 }
 
-/* ── Carrito ── */
-function save(){ localStorage.setItem(LS_KEY, JSON.stringify(cart)); }
-function addToCart(id){
-  const p = PRODUCTS.find(x=>x.id===id); if(!p) return;
-  const ex = cart.find(i=>i.id===id);
-  if(ex) ex.qty++; else cart.push({ id:p.id, variantId:p.variantId, name:p.name, price:p.price, image:p.image, qty:1 });
-  save(); renderAll(); toast(`${p.name} agregado ✓`);
-}
-function changeQty(idx,d){ cart[idx].qty+=d; if(cart[idx].qty<=0) cart.splice(idx,1); save(); renderAll(); }
-function removeItem(idx){ cart.splice(idx,1); save(); renderAll(); }
-const cartCount = ()=> cart.reduce((s,i)=>s+i.qty,0);
-const cartTotal = ()=> cart.reduce((s,i)=>s+(i.price||0)*i.qty,0);
-
-function renderDrawer(){
-  if(cart.length===0){
-    $("#ditems").innerHTML=`<div class="empty"><div class="big">🛒</div>Tu pedido está vacío.<br>Agrega joyas del catálogo.</div>`;
-    $("#dfoot").innerHTML=""; return;
-  }
-  $("#ditems").innerHTML = cart.map((i,idx)=>{
-    const ic = i.image ? `<img src="${esc(i.image)}" alt="">` : "💍";
-    return `<div class="li"><div class="ic">${ic}</div><div class="info">
-      <h4>${esc(i.name)}</h4><div class="p">${money(i.price)}</div>
-      <div class="qty"><button data-q="-" data-i="${idx}">−</button><span>${i.qty}</span>
-      <button data-q="+" data-i="${idx}">＋</button><button class="rm" data-rm="${idx}">Quitar</button></div>
-    </div></div>`;
-  }).join("");
-  $("#dfoot").innerHTML = `
-    <div class="totrow"><span class="t">Total</span><span class="v">${money(cartTotal())}</span></div>
-    <p class="note">🔒 El pago se completa de forma segura en el checkout de la tienda (Mercado Pago, tarjetas y más). El envío se calcula ahí.</p>
-    <button class="pay" id="payBtn">🛍️ Ir a pagar</button>
-    <button class="wa" id="waBtn">💬 Coordinar por WhatsApp</button>`;
-  $("#ditems").querySelectorAll("[data-q]").forEach(b=> b.onclick=()=>changeQty(+b.dataset.i, b.dataset.q==="+"?1:-1));
-  $("#ditems").querySelectorAll("[data-rm]").forEach(b=> b.onclick=()=>removeItem(+b.dataset.rm));
-  $("#payBtn").onclick = goCheckout;
-  $("#waBtn").onclick = waCheckout;
+/* ── Comprar: crea el link de pago (draft order Shopify) y redirige ── */
+async function buy(id, btn){
+  const it = ITEMS.find(x=>x.id===id); if(!it) return;
+  btn.disabled=true; const old=btn.textContent; btn.textContent="Un momento…";
+  try{
+    const r = await fetch("/api/checkout",{ method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ projectId, items:[{ id, qty:1 }] })});
+    const d = await r.json();
+    if(d.invoice_url){ window.location.href = d.invoice_url; return; }
+    if(d.error==="sold"){ toast(d.message||"Esa pieza ya se vendió 😢"); }
+    else if(d.error==="not_configured"){ toast("Falta conectar el cobro (token de Shopify)."); }
+    else { toast("No se pudo iniciar el pago. Intenta de nuevo."); }
+    console.error(d); btn.disabled=false; btn.textContent=old;
+  }catch(e){ console.error(e); toast("Error de conexión."); btn.disabled=false; btn.textContent=old; }
 }
 
-/* ── Pago: al checkout de Shopify (donde está tu Mercado Pago) ── */
-function goCheckout(){
-  const items = cart.filter(i=>i.variantId);
-  if(!items.length){ toast("No hay productos para pagar"); return; }
-  const path = items.map(i=>`${i.variantId}:${i.qty}`).join(",");
-  window.location.href = `${DOMAIN}/cart/${path}`;
-}
-
-/* ── WhatsApp (coordinar / consultar) ── */
-function waCheckout(){
-  if(cart.length===0){ toast("Agrega algo primero 🙂"); return; }
-  let m = "¡Hola Ámbar Joyas! ✨ Quiero coordinar este pedido:\n\n";
-  cart.forEach((i,n)=>{ m += `${n+1}) ${i.name} — x${i.qty} — ${money(i.price)}\n`; });
-  const t = cartTotal(); if(t>0) m += `\nTotal aprox: ${money(t)}\n`;
-  askWhatsApp(m);
-}
-function askWhatsApp(text){ window.open("https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent(text),"_blank"); }
-$("#quickCustom").onclick = ()=>{
-  const t = $("#customText").value.trim();
-  const base = "¡Hola Ámbar Joyas! ✨ Quiero una consulta";
-  askWhatsApp(t ? `${base}:\n\n${t}` : base + ". ¿Me ayudas?");
-};
-
-/* ── Render global ── */
-function renderAll(){
-  const n = cartCount();
-  $("#cartCount").textContent = n; $("#cartCount").style.display = n>0?"inline-flex":"none";
-  $("#floatTotal").textContent = money(cartTotal());
-  $("#float").classList.toggle("show", n>0);
-  renderGrid(); renderDrawer();
-}
-
-/* ── Drawer ── */
-const openDrawer=()=>{ $("#drawer").classList.add("open"); $("#overlay").classList.add("open"); };
-const closeDrawer=()=>{ $("#drawer").classList.remove("open"); $("#overlay").classList.remove("open"); };
-$("#cartBtn").onclick=openDrawer; $("#floatBtn").onclick=openDrawer;
-$("#closeDrawer").onclick=closeDrawer; $("#overlay").onclick=closeDrawer;
-
-/* ── Toast ── */
 let toastT;
-function toast(msg){ const el=$("#toast"); el.textContent=msg; el.classList.add("show");
-  clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove("show"),1900); }
+function toast(msg){ const el=$("#toast"); el.textContent=msg; el.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove("show"),2600); }
 
-/* ── Init ── */
-loadProducts();
-renderAll();
+start();
 </script>
 </body>
 </html>

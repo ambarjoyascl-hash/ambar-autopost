@@ -158,36 +158,42 @@ Tres formas, no excluyentes:
 $0 de Meta (la API es gratis). Solo pagas tu hosting (Vercel + Firebase, que ya usas).
 
 ---
-## 9. Tienda para Instagram (conectada a tu Shopify) 🛒
+## 9. App de Oro para vender EN VIVO 🥇🔴
 
-Archivo principal: **`public/index.html`** — una tienda con tu diseño, pensada
-para el link de tu bio de Instagram. Se despliega junto a este proyecto en Vercel
-y queda en la **raíz de tu dominio** (ej. `https://tu-proyecto.vercel.app/`).
+Una app aparte de tu catálogo de Shopify, hecha para tus **lives de oro**: subes
+fotos y videos de cada pieza al momento, aparecen al instante para quienes miran,
+y ellos tocan **Comprar** y pagan por tu Shopify (tu Mercado Pago). Se despliega
+en Vercel junto a este proyecto.
 
-### Cómo funciona
-- **Catálogo en vivo desde tu Shopify:** `api/products.js` lee tus productos reales
-  (fotos, precios y stock) desde el endpoint público `products.json` de tu tienda.
-  Lo que publicas/editas en Shopify aparece solo en la app — sin cargar nada dos veces.
-- **Pago con tu Mercado Pago:** al tocar "Ir a pagar", el cliente va al **checkout
-  de tu Shopify** (donde ya tienes Mercado Pago, tarjetas, etc.). Tú no manejas
-  tokens ni pagos aparte: usa el que ya te funciona.
-- **Cuentas de cliente:** el botón "Mi cuenta" y el checkout usan las cuentas de tu
-  propia Shopify (registro e inicio de sesión incluidos).
-- **WhatsApp:** botón para consultas y pedidos a medida.
+- **`public/index.html`** — el live (link para tu bio/stories de Instagram).
+  Muestra en tiempo real las piezas que subes, con foto o video, y botón Comprar.
+- **`public/admin.html`** — tu panel (`/admin.html`): subes **foto o video** +
+  precio + nombre; marcas **Vendida**; borras. Solo entras tú.
+- **`api/checkout.js`** — genera el link de pago de cada pieza con un *draft order*
+  de Shopify (así cobras por tu tienda aunque la pieza no esté en el catálogo).
+- **`public/firebase-config.js`** — el único archivo que editas.
 
-### Lo que personalizas (todo arriba de `public/index.html`, en `CONFIG`)
-1. `shopDomain` — tu dominio de Shopify (por defecto `https://www.ambarjoyas.cl`).
-2. `whatsapp` — tu número, solo dígitos con código país (Chile `56…`).
-3. `instagram` — el link a tu perfil.
+### Cómo se usa en el live
+1. Abres `/admin.html` desde el celular, subes la pieza (foto/video) y su precio.
+2. Aparece al instante en el link del live.
+3. El cliente toca **Comprar** → va al checkout de tu Shopify y paga (Mercado Pago).
+   Tú ves el pedido en Shopify. Marca la pieza **Vendida** para que no la compren dos veces.
 
-> Opcional: en Vercel puedes definir `SHOPIFY_STORE_DOMAIN` para que la API apunte
-> a otra tienda; si no, usa `www.ambarjoyas.cl`.
+### Puesta en marcha (una sola vez)
+1. **Firebase** (usa el MISMO proyecto de tu autopost):
+   - Activa **Authentication → Correo/contraseña**, **Firestore** y **Storage**.
+   - Pega tu `firebaseConfig` (⚙️ → Tus apps → Web) y tu correo admin en
+     `public/firebase-config.js`.
+   - Pega `firestore.rules` y `storage.rules` (reemplaza el correo admin).
+   - Crea tu cuenta admin en Authentication (o reutiliza la que ya tengas).
+2. **Shopify** (para cobrar): en Vercel agrega
+   - `SHOPIFY_ADMIN_TOKEN` = token de Admin API con `write_draft_orders`
+     (Shopify → Configuración → Apps y canales → Desarrollar apps → crear app).
+   - `SHOPIFY_STORE_DOMAIN` = `ambar-8632.myshopify.com`.
+3. Desplegar.
 
-### Ventajas de este enfoque
-- **Cero mantención doble:** administras productos, stock y pedidos en Shopify (como
-  ya lo haces), y la app se actualiza sola.
-- **Cero configuración de pagos/registro:** todo corre sobre tu Shopify existente.
-- La app es tuya, con tu look para Instagram, pero cobra de verdad desde el día uno.
-
-> Nota: el catálogo se ve solo con el sitio **desplegado** (necesita `/api/products`);
-> no funciona abriendo el archivo con doble clic.
+### Notas
+- El precio se valida en el servidor leyendo la pieza desde Firestore; nadie puede
+  cambiar el monto desde el navegador.
+- Videos: clips cortos (20–30 s) cargan más rápido durante el live.
+- Esta app NO usa tu catálogo de Shopify; solo lo usa para **cobrar**.
