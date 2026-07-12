@@ -156,3 +156,41 @@ Tres formas, no excluyentes:
 ## 8. Costo
 
 $0 de Meta (la API es gratis). Solo pagas tu hosting (Vercel + Firebase, que ya usas).
+
+---
+## 9. App de Oro para vender EN VIVO 🥇🔴 (todo en Vercel, sin Firebase)
+
+App aparte de tu catálogo de Shopify, para tus **lives de oro**: subes fotos y
+videos de cada pieza al momento, aparecen al instante para quienes miran, y ellos
+tocan **Comprar** y pagan por tu Shopify (Mercado Pago). Todo el almacenamiento
+vive en **Vercel** (Vercel Blob) — no usa Firebase.
+
+- **`public/index.html`** — el live (link para Instagram). Se refresca solo cada
+  4 s; muestra foto/video de cada pieza y botón Comprar.
+- **`public/admin.html`** — tu panel (`/admin.html`): entras con **contraseña**,
+  subes **foto o video** + precio + nombre, marcas **Vendida**, borras.
+- **`api/upload.js`** — sube el archivo directo a Vercel Blob (soporta videos).
+- **`api/items.js` / `api/admin.js`** — catálogo del live (guardado en Blob).
+- **`api/checkout.js`** — genera el link de pago con un *draft order* de Shopify.
+- **`lib/store.js`** — guarda las piezas en Vercel Blob.
+
+### Puesta en marcha (una sola vez, todo en Vercel)
+1. **Publica el repo en Vercel** (vercel.com/new → importa `ambar-autopost`).
+2. **Crea un Blob store:** en tu proyecto → pestaña **Storage** → **Create Database**
+   → **Blob** → conéctalo al proyecto. Vercel agrega solo `BLOB_READ_WRITE_TOKEN`.
+3. **Variables de entorno** (Settings → Environment Variables):
+   - `ADMIN_PASSWORD` = la contraseña con la que entrarás al panel.
+   - `SHOPIFY_ADMIN_TOKEN` = token de Admin API con `write_draft_orders`
+     (Shopify → Configuración → Apps y canales → Desarrollar apps → crear app).
+   - `SHOPIFY_STORE_DOMAIN` = `ambar-8632.myshopify.com`.
+4. Redeploy. Listo: tienda en `/`, panel en `/admin.html`.
+
+### Cómo se usa en el live
+1. Abres `/admin.html` en el celular, entras con tu contraseña.
+2. Subes la pieza (foto/video) + precio → aparece al instante en el live.
+3. El cliente toca **Comprar** → paga en el checkout de tu Shopify (Mercado Pago).
+   Marca la pieza **Vendida** para que no la compren dos veces.
+
+### Notas
+- El precio se valida en el servidor (desde Vercel Blob); nadie lo cambia desde el navegador.
+- No usa tu catálogo de Shopify; a Shopify solo lo usa para **cobrar**.
