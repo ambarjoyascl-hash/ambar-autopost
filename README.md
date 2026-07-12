@@ -158,68 +158,36 @@ Tres formas, no excluyentes:
 $0 de Meta (la API es gratis). Solo pagas tu hosting (Vercel + Firebase, que ya usas).
 
 ---
-## 9. Tienda de oro con registro y pago (Mercado Pago) 🛒
+## 9. Tienda para Instagram (conectada a tu Shopify) 🛒
 
-La tienda es una web que se despliega junto con este proyecto en Vercel. Tiene:
+Archivo principal: **`public/index.html`** — una tienda con tu diseño, pensada
+para el link de tu bio de Instagram. Se despliega junto a este proyecto en Vercel
+y queda en la **raíz de tu dominio** (ej. `https://tu-proyecto.vercel.app/`).
 
-- **`public/index.html`** — la tienda pública (el link para tu bio de Instagram).
-  Catálogo en vivo, registro/login de clientes y pago con Mercado Pago.
-- **`public/admin.html`** — tu panel privado (`tudominio.vercel.app/admin.html`)
-  para subir fotos y precios al instante y ver los pedidos.
-- **`public/firebase-config.js`** — el ÚNICO archivo que editas para conectar todo.
-- **`api/create-preference.js`** y **`api/mp-webhook.js`** — el pago con Mercado Pago.
+### Cómo funciona
+- **Catálogo en vivo desde tu Shopify:** `api/products.js` lee tus productos reales
+  (fotos, precios y stock) desde el endpoint público `products.json` de tu tienda.
+  Lo que publicas/editas en Shopify aparece solo en la app — sin cargar nada dos veces.
+- **Pago con tu Mercado Pago:** al tocar "Ir a pagar", el cliente va al **checkout
+  de tu Shopify** (donde ya tienes Mercado Pago, tarjetas, etc.). Tú no manejas
+  tokens ni pagos aparte: usa el que ya te funciona.
+- **Cuentas de cliente:** el botón "Mi cuenta" y el checkout usan las cuentas de tu
+  propia Shopify (registro e inicio de sesión incluidos).
+- **WhatsApp:** botón para consultas y pedidos a medida.
 
-Cuando subes o cambias un producto en el panel, aparece **al instante** en todos
-los teléfonos (Firestore en tiempo real).
+### Lo que personalizas (todo arriba de `public/index.html`, en `CONFIG`)
+1. `shopDomain` — tu dominio de Shopify (por defecto `https://www.ambarjoyas.cl`).
+2. `whatsapp` — tu número, solo dígitos con código país (Chile `56…`).
+3. `instagram` — el link a tu perfil.
 
-### 9.1 ⚠️ Importante sobre Mercado Pago
+> Opcional: en Vercel puedes definir `SHOPIFY_STORE_DOMAIN` para que la API apunte
+> a otra tienda; si no, usa `www.ambarjoyas.cl`.
 
-Mercado Pago **no opera en Panamá**. Funciona en Chile, Argentina, Brasil, México,
-Colombia, Perú y Uruguay. Como tus clientes son chilenos, usa una cuenta de
-**Mercado Pago Chile** (los pagos serán en **pesos chilenos, CLP**). Si no puedes
-tener cuenta MP de Chile, deja la tienda funcionando con el botón **"Coordinar por
-WhatsApp"** (que ya está incluido) hasta resolver la cuenta.
+### Ventajas de este enfoque
+- **Cero mantención doble:** administras productos, stock y pedidos en Shopify (como
+  ya lo haces), y la app se actualiza sola.
+- **Cero configuración de pagos/registro:** todo corre sobre tu Shopify existente.
+- La app es tuya, con tu look para Instagram, pero cobra de verdad desde el día uno.
 
-### 9.2 Puesta en marcha (una sola vez)
-
-1. **Firebase** (usa el mismo proyecto del autopost o crea uno):
-   - **Authentication** → activa el proveedor **Correo/contraseña**.
-   - **Firestore Database** → créala (modo producción).
-   - **Storage** → actívalo (para las fotos).
-   - ⚙️ **Configuración del proyecto → Tus apps → app Web** → copia el objeto
-     `firebaseConfig` y pégalo en `public/firebase-config.js`.
-2. En `public/firebase-config.js` completa también `APP_CONFIG`:
-   `adminEmail` (tu correo de administradora), `whatsapp`, `instagram`.
-3. **Crea tu cuenta de admin**: entra a la tienda, toca **👤 Ingresar → Crear
-   cuenta** usando ese mismo correo (o créala en Firebase → Authentication).
-4. **Reglas de seguridad** (reemplaza `TU_CORREO_ADMIN@gmail.com` por tu correo):
-   - Pega `firestore.rules` en Firebase → Firestore → **Reglas**.
-   - Pega `storage.rules` en Firebase → Storage → **Reglas**.
-5. **Mercado Pago** → en Vercel agrega la variable de entorno:
-   - `MP_ACCESS_TOKEN` = tu *Access Token* (Mercado Pago → Tus integraciones →
-     tu app → Credenciales). Usa las de **prueba** para testear y las de
-     **producción** para cobrar de verdad.
-   - `MP_CURRENCY` = `CLP` (opcional).
-6. `vercel deploy --prod`.
-
-### 9.3 Cómo se usa
-
-- **Tú (admin):** entra a `tudominio.vercel.app/admin.html`, inicia sesión y en
-  **🛍️ Productos** agregas nombre, precio (CLP), fotos, quilates, etc. En
-  **📦 Pedidos** ves cada compra con su estado (Pagado / Pendiente / Rechazado).
-  - Precio `0` = pieza **"a cotizar"** (el cliente consulta por WhatsApp).
-  - "Disponible" desactivado = se muestra **Agotado**. "Visible" desactivado = se
-    oculta de la tienda.
-- **Tus clientes:** entran al link, se registran, agregan al carrito y tocan
-  **💳 Pagar con Mercado Pago**. Al aprobarse el pago, el pedido queda **Pagado**
-  en tu panel y coordinas el envío por WhatsApp.
-
-### 9.4 Notas
-
-- Las claves de `firebaseConfig` (web) son **públicas por diseño**; lo que protege
-  tus datos son las **reglas de seguridad**. El `MP_ACCESS_TOKEN` es secreto y vive
-  solo en Vercel (nunca en el navegador).
-- Los precios se recalculan en el servidor desde Firestore antes de cobrar, así
-  nadie puede alterar el monto desde el navegador.
-- El panel y el pago necesitan estar **desplegados** (o un servidor local); no
-  funcionan abriendo el archivo con doble clic (`file://`).
+> Nota: el catálogo se ve solo con el sitio **desplegado** (necesita `/api/products`);
+> no funciona abriendo el archivo con doble clic.
