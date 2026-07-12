@@ -22,9 +22,9 @@ export const firebaseConfig = {
 /* 2) Tus datos.                                                              */
 export const APP_CONFIG = {
   businessName: "Ámbar Oro",
-  adminEmail: "TU_CORREO_ADMIN@gmail.com", // solo este correo entra al panel
-  whatsapp: "56900000000",                 // solo números, con código país
-  instagram: "https://instagram.com/ambarjoyas.cl",
+  adminEmail: "ginastrauss03@gmail.com", // solo este correo entra al panel
+  whatsapp: "56977669288",               // +56 9 7766 9288
+  instagram: "https://instagram.com/ambarjoyas.cl", // ← confírmame tu Instagram
   shopDomain: "https://www.ambarjoyas.cl", // para "Mi cuenta" (checkout Shopify)
   currencySymbol: "$",
 };

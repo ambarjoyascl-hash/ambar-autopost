@@ -1,14 +1,14 @@
 rules_version = '2';
 
 // Reglas de Firestore para la app de oro live de Ámbar.
-// ⚠️ Reemplaza TU_CORREO_ADMIN@gmail.com por tu correo real (el mismo de
+// ⚠️ Reemplaza ginastrauss03@gmail.com por tu correo real (el mismo de
 //    firebase-config.js). Pega esto en Firebase → Firestore Database → Reglas.
 service cloud.firestore {
   match /databases/{database}/documents {
 
     function isAdmin() {
       return request.auth != null
-        && request.auth.token.email == 'TU_CORREO_ADMIN@gmail.com';
+        && request.auth.token.email == 'ginastrauss03@gmail.com';
     }
 
     // Piezas del live: todos las ven (lectura pública, también la usa el cobro
