@@ -156,3 +156,39 @@ Tres formas, no excluyentes:
 ## 8. Costo
 
 $0 de Meta (la API es gratis). Solo pagas tu hosting (Vercel + Firebase, que ya usas).
+
+---
+
+## 9. Tienda para vender oro (el link que pegas en Instagram) 🛒
+
+Archivo: **`public/index.html`**. Es la página web donde tus clientes de Chile
+arman su pedido y te lo envían por WhatsApp. Ya se despliega sola con Vercel:
+queda en la **raíz de tu dominio** (ej. `https://tu-proyecto.vercel.app/`). Ese es
+el link que pones en tu bio de Instagram o en las stories.
+
+### Cómo funciona (para el cliente)
+1. Entra al link, ve tu catálogo de oro.
+2. Agrega piezas al carrito **o** escribe un encargo "a medida" (lo que quiera).
+3. Pone su nombre y ciudad de Chile y toca **"Enviar pedido por WhatsApp"**.
+4. Se le abre WhatsApp con **todo el pedido escrito**, listo para enviártelo.
+
+No necesita registrarse ni pagar en la web: tú coordinas precio final, pago y
+envío por WhatsApp. Cero backend, cero comisiones.
+
+### Lo que TIENES que personalizar (todo en `public/index.html`, arriba)
+1. **Tu número de WhatsApp** — en `CONFIG.whatsapp`. Va en formato internacional,
+   **solo números**, sin `+` ni espacios. Ejemplos:
+   - Panamá `+507 6000-0000` → `"50760000000"`
+   - Chile `+56 9 1234 5678` → `"56912345678"`
+2. **Tu Instagram** — en `CONFIG.instagram`.
+3. **Tus productos** — en la lista `PRODUCTS`. Cada uno tiene: nombre, descripción,
+   quilates (`karat`), peso (`grams`), precio (`price`) y categoría (`cat`).
+   - Para poner **fotos reales**: agrega `image:"https://…/tu-foto.jpg"` al producto
+     (idealmente cuadrada). Si no pones foto, se muestra el `emoji`.
+
+### Probarla local
+Abre `public/index.html` en tu navegador (doble clic) — funciona tal cual.
+En el celular se ve como app.
+
+> Los precios de la web son **referenciales**; el total final del oro se confirma
+> según peso y cotización del día, y así se lo aclara al cliente automáticamente.
