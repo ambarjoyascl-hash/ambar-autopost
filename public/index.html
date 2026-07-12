@@ -22,70 +22,48 @@
     line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:40px}
   a{color:inherit}img,video{max-width:100%;display:block}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 16px}
-
-  header{position:sticky;top:0;z-index:40;background:rgba(14,11,6,.85);
-    backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  header{position:sticky;top:0;z-index:40;background:rgba(14,11,6,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
   .bar{display:flex;align-items:center;justify-content:space-between;height:58px;max-width:var(--maxw);margin:0 auto;padding:0 16px;gap:10px}
   .brand{display:flex;align-items:center;gap:9px;font-weight:700}
-  .brand .logo{width:32px;height:32px;border-radius:50%;
-    background:radial-gradient(circle at 30% 30%,var(--gold-2),var(--gold-deep));
-    box-shadow:0 0 0 2px rgba(231,189,99,.25),inset 0 -3px 6px rgba(0,0,0,.3)}
+  .brand .logo{width:32px;height:32px;border-radius:50%;background:radial-gradient(circle at 30% 30%,var(--gold-2),var(--gold-deep));box-shadow:0 0 0 2px rgba(231,189,99,.25),inset 0 -3px 6px rgba(0,0,0,.3)}
   .brand b{background:linear-gradient(90deg,var(--gold-2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .live-badge{display:none;align-items:center;gap:6px;font-size:12px;font-weight:800;color:#fff;
-    background:var(--live);padding:5px 10px;border-radius:999px;letter-spacing:.5px}
+  .live-badge{display:none;align-items:center;gap:6px;font-size:12px;font-weight:800;color:#fff;background:var(--live);padding:5px 10px;border-radius:999px;letter-spacing:.5px}
   .live-badge.on{display:inline-flex}
   .live-badge .dot{width:8px;height:8px;border-radius:50%;background:#fff;animation:blink 1s infinite}
   @keyframes blink{50%{opacity:.25}}
   .acct{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:8px 12px;font-size:13px;text-decoration:none;font-weight:600}
-
-  .banner{background:#3a2c11;color:var(--gold-2);text-align:center;font-size:13px;padding:10px 14px;border-bottom:1px solid var(--line)}
-  .banner b{color:var(--gold)}
-
   .hero{text-align:center;padding:30px 0 8px}
   .hero h1{font-size:clamp(26px,7vw,44px);margin:0 0 8px;font-weight:800;letter-spacing:-.5px}
   .hero h1 .g{background:linear-gradient(90deg,var(--gold-2),var(--gold),var(--gold-deep));-webkit-background-clip:text;background-clip:text;color:transparent}
   .hero p{color:var(--muted);margin:0 auto;max-width:560px;font-size:15.5px}
-
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;padding:20px 0}
-  .card{background:linear-gradient(180deg,var(--card),var(--card-2));border:1px solid var(--line);
-    border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);position:relative}
+  .card{background:linear-gradient(180deg,var(--card),var(--card-2));border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);position:relative}
   .card.new{animation:pop .4s ease}
   @keyframes pop{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
   .media{aspect-ratio:1/1;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 35%,#2c2009,#140e05)}
   .media img,.media video{width:100%;height:100%;object-fit:cover}
   .media .emoji{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:64px}
-  .vtag{position:absolute;top:10px;right:10px;background:rgba(14,11,6,.72);border:1px solid var(--line);color:var(--gold);
-    font-size:11px;font-weight:800;padding:3px 8px;border-radius:999px;backdrop-filter:blur(4px)}
+  .vtag{position:absolute;top:10px;right:10px;background:rgba(14,11,6,.72);border:1px solid var(--line);color:var(--gold);font-size:11px;font-weight:800;padding:3px 8px;border-radius:999px;backdrop-filter:blur(4px)}
   .sold{position:absolute;inset:0;background:rgba(10,8,4,.66);display:flex;align-items:center;justify-content:center}
-  .sold span{border:2px solid var(--live);color:#fff;background:rgba(229,72,77,.85);font-weight:800;padding:6px 16px;
-    border-radius:8px;transform:rotate(-8deg);font-size:16px;letter-spacing:1px}
+  .sold span{border:2px solid var(--live);color:#fff;background:rgba(229,72,77,.85);font-weight:800;padding:6px 16px;border-radius:8px;transform:rotate(-8deg);font-size:16px;letter-spacing:1px}
   .body{padding:14px;display:flex;flex-direction:column;gap:10px;flex:1}
   .body h3{margin:0;font-size:16px;font-weight:700}
   .body .desc{margin:0;color:var(--muted);font-size:13px}
   .body .foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
   .price{font-size:20px;font-weight:800;color:var(--gold-2)}
-  .buy{border:none;background:linear-gradient(90deg,var(--gold),var(--gold-deep));color:#211806;font-weight:800;
-    border-radius:12px;padding:11px 16px;cursor:pointer;font-size:14.5px;white-space:nowrap}
+  .buy{border:none;background:linear-gradient(90deg,var(--gold),var(--gold-deep));color:#211806;font-weight:800;border-radius:12px;padding:11px 16px;cursor:pointer;font-size:14.5px;white-space:nowrap}
   .buy:active{transform:scale(.96)}.buy:disabled{opacity:.5;cursor:not-allowed}
-
   .state{text-align:center;color:var(--muted);padding:60px 20px}.state .big{font-size:50px;margin-bottom:12px}
   .wait{display:inline-block;width:26px;height:26px;border:3px solid var(--line);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
-
   .wa-help{margin:8px 0 26px;text-align:center}
-  .wa-help a{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(90deg,#25d366,#128c4a);
-    color:#04220f;font-weight:800;border-radius:12px;padding:12px 20px;text-decoration:none;font-size:15px}
-
+  .wa-help a{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(90deg,#25d366,#128c4a);color:#04220f;font-weight:800;border-radius:12px;padding:12px 20px;text-decoration:none;font-size:15px}
   footer{text-align:center;color:var(--muted);font-size:13px;padding:24px 16px 10px;border-top:1px solid var(--line)}
-  footer a{color:var(--gold);text-decoration:none}
-
-  .toast{position:fixed;left:50%;bottom:24px;translate:-50% 20px;background:#241a09;border:1px solid var(--gold);
-    color:var(--gold-2);padding:12px 18px;border-radius:999px;font-size:14px;font-weight:600;z-index:80;opacity:0;pointer-events:none;transition:.25s;max-width:90%}
+  .toast{position:fixed;left:50%;bottom:24px;translate:-50% 20px;background:#241a09;border:1px solid var(--gold);color:var(--gold-2);padding:12px 18px;border-radius:999px;font-size:14px;font-weight:600;z-index:80;opacity:0;pointer-events:none;transition:.25s;max-width:90%}
   .toast.show{opacity:1;translate:-50% 0}
-
   @media (max-width:520px){
-    .grid{grid-template-columns:repeat(2,1fr);gap:11px}
-    .media .emoji{font-size:44px}.body{padding:11px;gap:8px}.body h3{font-size:14px}.body .desc{display:none}
+    .grid{grid-template-columns:repeat(2,1fr);gap:11px}.media .emoji{font-size:44px}
+    .body{padding:11px;gap:8px}.body h3{font-size:14px}.body .desc{display:none}
     .price{font-size:16.5px}.buy{padding:10px 12px;font-size:13px}
   }
 </style>
@@ -101,8 +79,6 @@
   </div>
 </header>
 
-<div class="banner" id="cfgBanner" style="display:none">⚙️ La app aún no está conectada. Edita <b>public/firebase-config.js</b> con tus datos de Firebase.</div>
-
 <div class="wrap">
   <section class="hero">
     <h1>Oro en <span class="g">vivo</span> ✨</h1>
@@ -112,9 +88,7 @@
   <section class="grid" id="grid"></section>
   <div class="state" id="state" style="display:none"></div>
 
-  <div class="wa-help">
-    <a id="waBtn" href="#">💬 ¿Dudas? Escríbeme por WhatsApp</a>
-  </div>
+  <div class="wa-help"><a id="waBtn" href="#">💬 ¿Dudas? Escríbeme por WhatsApp</a></div>
 </div>
 
 <footer>
@@ -124,79 +98,85 @@
 
 <div class="toast" id="toast"></div>
 
-<script type="module">
-import { db, projectId, isConfigured, APP_CONFIG } from "./firebase-config.js";
-import { collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+<script>
+/* ═══ Edita solo esto ═══ */
+const CONFIG = {
+  whatsapp:   "56977669288",
+  instagram:  "https://instagram.com/ambarjoyas.cl",
+  shopDomain: "https://www.ambarjoyas.cl",
+  currencySymbol: "$",
+};
+/* ═══════════════════════ */
 
 const $ = s => document.querySelector(s);
-const money = n => APP_CONFIG.currencySymbol + Number(n||0).toLocaleString("es-CL");
+const money = n => CONFIG.currencySymbol + Number(n||0).toLocaleString("es-CL");
 const esc = s => String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 let ITEMS = [];
 let firstLoad = true;
+let seen = new Set();
 
-$("#waBtn").href = "https://wa.me/" + APP_CONFIG.whatsapp + "?text=" + encodeURIComponent("¡Hola Ámbar Oro! Tengo una consulta sobre el live ✨");
-$("#acctBtn").href = (APP_CONFIG.shopDomain||"").replace(/\/$/,"") + "/account";
+$("#waBtn").href = "https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent("¡Hola Ámbar Oro! Tengo una consulta sobre el live ✨");
+$("#acctBtn").href = CONFIG.shopDomain.replace(/\/$/,"") + "/account";
 
 function showState(icon,msg){ $("#grid").innerHTML=""; const s=$("#state"); s.style.display="block"; s.innerHTML=`<div class="big">${icon}</div>${msg}`; }
 
-/* ── Catálogo del live en tiempo real ── */
-function start(){
-  if(!isConfigured){ $("#cfgBanner").style.display="block"; showState("⚙️","Conecta Firebase para ver las piezas del live."); return; }
-  showState('<span class="wait"></span>',"Cargando el live…");
-  onSnapshot(query(collection(db,"liveItems"), orderBy("createdAt","desc")),
-    snap=>{
-      ITEMS = snap.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.visible!==false);
-      render();
-      $("#liveBadge").classList.toggle("on", ITEMS.some(i=>i.sold!==true));
-      firstLoad = false;
-    },
-    err=>{ console.error(err); showState("😕","No se pudo cargar. Revisa las reglas de Firestore o recarga."); }
-  );
+async function load(){
+  try{
+    const r = await fetch("/api/items", { cache:"no-store" });
+    const d = await r.json();
+    ITEMS = Array.isArray(d.items) ? d.items : [];
+    ITEMS.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+    render();
+    $("#liveBadge").classList.toggle("on", ITEMS.some(i=>!i.sold));
+    firstLoad = false;
+  }catch(e){
+    if(firstLoad) showState("😕","No se pudo cargar. Recarga en un momento.");
+  }
 }
 
 function render(){
   if(!ITEMS.length){ showState("⏳","Aún no hay piezas. ¡Empiezan a aparecer cuando arranque el live!"); return; }
   $("#state").style.display="none";
   $("#grid").innerHTML = ITEMS.map(it=>{
+    const isNew = !firstLoad && !seen.has(it.id);
     const media = it.mediaType==="video"
       ? `<video src="${esc(it.mediaUrl)}" muted loop autoplay playsinline preload="metadata"></video><div class="vtag">▶ VIDEO</div>`
       : (it.mediaUrl ? `<img src="${esc(it.mediaUrl)}" alt="${esc(it.title)}" loading="lazy">` : `<div class="emoji">🥇</div>`);
-    const sold = it.sold===true;
-    const btn = sold
+    const btn = it.sold
       ? `<button class="buy" disabled>Vendida</button>`
       : `<button class="buy" data-buy="${esc(it.id)}">Comprar</button>`;
-    return `<article class="card ${firstLoad?'':'new'}">
-      <div class="media">${media}${sold?`<div class="sold"><span>VENDIDA</span></div>`:""}</div>
+    return `<article class="card ${isNew?'new':''}">
+      <div class="media">${media}${it.sold?`<div class="sold"><span>VENDIDA</span></div>`:""}</div>
       <div class="body">
         <h3>${esc(it.title||"Pieza de oro")}</h3>
         ${it.desc?`<p class="desc">${esc(it.desc)}</p>`:""}
         <div class="foot"><div class="price">${money(it.price)}</div>${btn}</div>
       </div></article>`;
   }).join("");
+  ITEMS.forEach(i=>seen.add(i.id));
   $("#grid").querySelectorAll("[data-buy]").forEach(b=> b.onclick=()=>buy(b.dataset.buy, b));
 }
 
-/* ── Comprar: crea el link de pago (draft order Shopify) y redirige ── */
 async function buy(id, btn){
-  const it = ITEMS.find(x=>x.id===id); if(!it) return;
   btn.disabled=true; const old=btn.textContent; btn.textContent="Un momento…";
   try{
-    const r = await fetch("/api/checkout",{ method:"POST", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({ projectId, items:[{ id, qty:1 }] })});
+    const r = await fetch("/api/checkout",{ method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ items:[{ id, qty:1 }] })});
     const d = await r.json();
     if(d.invoice_url){ window.location.href = d.invoice_url; return; }
-    if(d.error==="sold"){ toast(d.message||"Esa pieza ya se vendió 😢"); }
+    if(d.error==="sold"){ toast(d.message||"Esa pieza ya se vendió 😢"); load(); }
     else if(d.error==="not_configured"){ toast("Falta conectar el cobro (token de Shopify)."); }
     else { toast("No se pudo iniciar el pago. Intenta de nuevo."); }
-    console.error(d); btn.disabled=false; btn.textContent=old;
-  }catch(e){ console.error(e); toast("Error de conexión."); btn.disabled=false; btn.textContent=old; }
+    btn.disabled=false; btn.textContent=old;
+  }catch(e){ toast("Error de conexión."); btn.disabled=false; btn.textContent=old; }
 }
 
 let toastT;
 function toast(msg){ const el=$("#toast"); el.textContent=msg; el.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove("show"),2600); }
 
-start();
+showState('<span class="wait"></span>',"Cargando el live…");
+load();
+setInterval(load, 4000);   // refresco en vivo
 </script>
 </body>
 </html>

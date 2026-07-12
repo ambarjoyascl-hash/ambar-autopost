@@ -158,42 +158,39 @@ Tres formas, no excluyentes:
 $0 de Meta (la API es gratis). Solo pagas tu hosting (Vercel + Firebase, que ya usas).
 
 ---
-## 9. App de Oro para vender EN VIVO 🥇🔴
+## 9. App de Oro para vender EN VIVO 🥇🔴 (todo en Vercel, sin Firebase)
 
-Una app aparte de tu catálogo de Shopify, hecha para tus **lives de oro**: subes
-fotos y videos de cada pieza al momento, aparecen al instante para quienes miran,
-y ellos tocan **Comprar** y pagan por tu Shopify (tu Mercado Pago). Se despliega
-en Vercel junto a este proyecto.
+App aparte de tu catálogo de Shopify, para tus **lives de oro**: subes fotos y
+videos de cada pieza al momento, aparecen al instante para quienes miran, y ellos
+tocan **Comprar** y pagan por tu Shopify (Mercado Pago). Todo el almacenamiento
+vive en **Vercel** (Vercel Blob) — no usa Firebase.
 
-- **`public/index.html`** — el live (link para tu bio/stories de Instagram).
-  Muestra en tiempo real las piezas que subes, con foto o video, y botón Comprar.
-- **`public/admin.html`** — tu panel (`/admin.html`): subes **foto o video** +
-  precio + nombre; marcas **Vendida**; borras. Solo entras tú.
-- **`api/checkout.js`** — genera el link de pago de cada pieza con un *draft order*
-  de Shopify (así cobras por tu tienda aunque la pieza no esté en el catálogo).
-- **`public/firebase-config.js`** — el único archivo que editas.
+- **`public/index.html`** — el live (link para Instagram). Se refresca solo cada
+  4 s; muestra foto/video de cada pieza y botón Comprar.
+- **`public/admin.html`** — tu panel (`/admin.html`): entras con **contraseña**,
+  subes **foto o video** + precio + nombre, marcas **Vendida**, borras.
+- **`api/upload.js`** — sube el archivo directo a Vercel Blob (soporta videos).
+- **`api/items.js` / `api/admin.js`** — catálogo del live (guardado en Blob).
+- **`api/checkout.js`** — genera el link de pago con un *draft order* de Shopify.
+- **`lib/store.js`** — guarda las piezas en Vercel Blob.
 
-### Cómo se usa en el live
-1. Abres `/admin.html` desde el celular, subes la pieza (foto/video) y su precio.
-2. Aparece al instante en el link del live.
-3. El cliente toca **Comprar** → va al checkout de tu Shopify y paga (Mercado Pago).
-   Tú ves el pedido en Shopify. Marca la pieza **Vendida** para que no la compren dos veces.
-
-### Puesta en marcha (una sola vez)
-1. **Firebase** (usa el MISMO proyecto de tu autopost):
-   - Activa **Authentication → Correo/contraseña**, **Firestore** y **Storage**.
-   - Pega tu `firebaseConfig` (⚙️ → Tus apps → Web) y tu correo admin en
-     `public/firebase-config.js`.
-   - Pega `firestore.rules` y `storage.rules` (reemplaza el correo admin).
-   - Crea tu cuenta admin en Authentication (o reutiliza la que ya tengas).
-2. **Shopify** (para cobrar): en Vercel agrega
+### Puesta en marcha (una sola vez, todo en Vercel)
+1. **Publica el repo en Vercel** (vercel.com/new → importa `ambar-autopost`).
+2. **Crea un Blob store:** en tu proyecto → pestaña **Storage** → **Create Database**
+   → **Blob** → conéctalo al proyecto. Vercel agrega solo `BLOB_READ_WRITE_TOKEN`.
+3. **Variables de entorno** (Settings → Environment Variables):
+   - `ADMIN_PASSWORD` = la contraseña con la que entrarás al panel.
    - `SHOPIFY_ADMIN_TOKEN` = token de Admin API con `write_draft_orders`
      (Shopify → Configuración → Apps y canales → Desarrollar apps → crear app).
    - `SHOPIFY_STORE_DOMAIN` = `ambar-8632.myshopify.com`.
-3. Desplegar.
+4. Redeploy. Listo: tienda en `/`, panel en `/admin.html`.
+
+### Cómo se usa en el live
+1. Abres `/admin.html` en el celular, entras con tu contraseña.
+2. Subes la pieza (foto/video) + precio → aparece al instante en el live.
+3. El cliente toca **Comprar** → paga en el checkout de tu Shopify (Mercado Pago).
+   Marca la pieza **Vendida** para que no la compren dos veces.
 
 ### Notas
-- El precio se valida en el servidor leyendo la pieza desde Firestore; nadie puede
-  cambiar el monto desde el navegador.
-- Videos: clips cortos (20–30 s) cargan más rápido durante el live.
-- Esta app NO usa tu catálogo de Shopify; solo lo usa para **cobrar**.
+- El precio se valida en el servidor (desde Vercel Blob); nadie lo cambia desde el navegador.
+- No usa tu catálogo de Shopify; a Shopify solo lo usa para **cobrar**.

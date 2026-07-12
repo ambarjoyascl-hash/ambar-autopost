@@ -9,11 +9,10 @@
   :root{
     --bg:#0e0b06;--bg-soft:#171106;--card:#1c1508;--card-2:#241a09;--line:#3a2c11;
     --gold:#e7bd63;--gold-2:#f6dfa0;--gold-deep:#b8862f;--text:#f3ead6;--muted:#b9ab8c;
-    --ok:#37c26b;--err:#d5674f;--radius:16px;--maxw:820px;
+    --ok:#37c26b;--err:#d5674f;--live:#e5484d;--radius:16px;--maxw:820px;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  body{margin:0;background:radial-gradient(1000px 600px at 50% -10%,#2a1e08,transparent 60%),var(--bg);
-    color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;line-height:1.5;padding-bottom:60px}
+  body{margin:0;background:radial-gradient(1000px 600px at 50% -10%,#2a1e08,transparent 60%),var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;line-height:1.5;padding-bottom:60px}
   a{color:var(--gold)}button{font-family:inherit}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 16px}
   img,video{max-width:100%;display:block}
@@ -21,10 +20,8 @@
   .bar{display:flex;align-items:center;justify-content:space-between;height:56px;max-width:var(--maxw);margin:0 auto;padding:0 16px}
   .brand{display:flex;align-items:center;gap:9px;font-weight:700}.brand b{color:var(--gold)}
   .logo{width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 30% 30%,var(--gold-2),var(--gold-deep))}
-  .who{font-size:12.5px;color:var(--muted)}
   .ghost{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:10px;padding:7px 11px;cursor:pointer;font-size:13px;font-weight:600;text-decoration:none}
-
-  .gate{max-width:370px;margin:56px auto;padding:0 16px}
+  .gate{max-width:360px;margin:56px auto;padding:0 16px}
   .gate .box{background:var(--bg-soft);border:1px solid var(--line);border-radius:20px;padding:24px}
   .gate h1{font-size:22px;margin:0 0 4px}.gate p{color:var(--muted);margin:0 0 16px;font-size:14px}
   label{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px}
@@ -32,14 +29,11 @@
   textarea{min-height:56px;resize:vertical}
   .primary{width:100%;border:none;border-radius:12px;padding:13px;font-size:16px;font-weight:800;cursor:pointer;background:linear-gradient(90deg,var(--gold),var(--gold-deep));color:#211806;margin-top:16px}
   .err{color:var(--err);font-size:13px;min-height:17px;margin-top:8px}
-
   .panel{background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-top:16px}
   .panel h2{margin:0 0 12px;font-size:18px}
   .drop{border:2px dashed var(--line);border-radius:14px;padding:18px;text-align:center;color:var(--muted);cursor:pointer;transition:.15s;background:var(--card)}
-  .drop.drag{border-color:var(--gold);color:var(--gold-2)}
-  .drop b{color:var(--gold)}
-  .prevwrap{margin-top:12px;display:none}
-  .prevwrap.show{display:block}
+  .drop.drag{border-color:var(--gold);color:var(--gold-2)}.drop b{color:var(--gold)}
+  .prevwrap{margin-top:12px;display:none}.prevwrap.show{display:block}
   .prev{width:100%;max-height:280px;object-fit:contain;border-radius:12px;border:1px solid var(--line);background:#000}
   .rowf{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
   @media(max-width:520px){.rowf{grid-template-columns:1fr}}
@@ -48,15 +42,13 @@
   .save:disabled{opacity:.6}
   .prog{height:8px;background:var(--card);border-radius:999px;overflow:hidden;margin-top:12px;display:none}
   .prog.show{display:block}.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-deep));transition:width .2s}
-
   .list{display:grid;gap:10px;margin-top:8px}
   .it{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px}
   .it .m{width:60px;height:60px;border-radius:10px;flex:none;object-fit:cover;border:1px solid var(--line);background:#140e05}
-  .it .d{flex:1;min-width:0}.it .d h4{margin:0;font-size:15px}.it .d small{color:var(--muted)}
+  .it .d{flex:1;min-width:0}.it .d h4{margin:0;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.it .d small{color:var(--muted)}
   .it .pr{color:var(--gold-2);font-weight:800;white-space:nowrap}
   .it .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
   .mini{border:1px solid var(--line);background:transparent;color:var(--text);border-radius:8px;padding:6px 9px;cursor:pointer;font-size:12px}
-  .mini.sold{color:var(--live,#e5484d);border-color:#7a3b34}
   .mini.on{background:var(--ok);color:#04220f;border-color:var(--ok)}
   .mini.del{color:var(--err)}
   .center{text-align:center;padding:26px 10px;color:var(--muted)}
@@ -69,13 +61,10 @@
 </head>
 <body>
 
-<div class="cfgwarn hidden" id="cfgwarn">⚙️ Conecta Firebase en <b>public/firebase-config.js</b> para usar el panel.</div>
-
 <header class="hidden" id="hdr">
   <div class="bar">
     <div class="brand"><span class="logo"></span>Panel <b>Live</b></div>
     <div style="display:flex;align-items:center;gap:8px">
-      <span class="who" id="who"></span>
       <a class="ghost" href="/" target="_blank">Ver live</a>
       <button class="ghost" id="logout">Salir</button>
     </div>
@@ -84,13 +73,12 @@
 
 <div class="gate" id="gate">
   <div class="box">
-    <h1>Panel del live</h1>
-    <p>Ingresa con tu correo de administradora.</p>
-    <label>Correo</label><input id="lEmail" type="email" placeholder="tucorreo@mail.com" autocomplete="email">
-    <label>Contraseña</label><input id="lPass" type="password" placeholder="Tu contraseña" autocomplete="current-password">
+    <h1>Panel del live 🔒</h1>
+    <p>Ingresa la contraseña de administradora.</p>
+    <label>Contraseña</label><input id="pw" type="password" placeholder="Tu contraseña" autocomplete="current-password">
     <div class="err" id="lErr"></div>
     <button class="primary" id="lBtn">Entrar</button>
-    <p class="tip">La cuenta se crea en Firebase → Authentication (o desde tu app anterior).</p>
+    <p class="tip">La defines tú en Vercel como variable <b>ADMIN_PASSWORD</b>.</p>
   </div>
 </div>
 
@@ -99,7 +87,7 @@
     <h2>➕ Subir pieza al live</h2>
     <div class="drop" id="drop">
       📸 Toca para elegir <b>foto o video</b><br><span style="font-size:12.5px">o arrástralo aquí</span>
-      <input id="file" type="file" accept="image/*,video/*" capture="environment" class="hidden">
+      <input id="file" type="file" accept="image/*,video/*" class="hidden">
     </div>
     <div class="prevwrap" id="prevwrap"></div>
     <div class="rowf">
@@ -109,60 +97,63 @@
     </div>
     <div class="prog" id="prog"><i id="progBar"></i></div>
     <button class="save" id="save" disabled>Publicar en el live</button>
-    <p class="tip">📹 Para videos, clips cortos (hasta ~20–30 s) cargan más rápido en el live.</p>
+    <p class="tip">📹 Videos cortos (20–30 s) cargan más rápido durante el live.</p>
     <div class="err" id="sErr"></div>
   </div>
 
   <div class="panel">
     <h2>🟢 Piezas en el live</h2>
-    <div class="list" id="list"></div>
+    <div class="list" id="list"><div class="center">Cargando…</div></div>
   </div>
 </main>
 
 <div class="toast" id="toast"></div>
 
 <script type="module">
-import { auth, db, storage, isConfigured, APP_CONFIG } from "./firebase-config.js";
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+import { upload } from "https://esm.sh/@vercel/blob@0.27.3/client";
 
+const CONFIG = { currencySymbol: "$" };
 const $ = s => document.querySelector(s);
-const money = n => APP_CONFIG.currencySymbol + Number(n||0).toLocaleString("es-CL");
+const money = n => CONFIG.currencySymbol + Number(n||0).toLocaleString("es-CL");
 const esc = s => String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-let items = [], unsub=null, picked=null, pickedType=null;
+const PW_KEY = "ambar_admin_pw";
 
-if(!isConfigured){ $("#cfgwarn").classList.remove("hidden"); $("#gate").classList.add("hidden"); }
+let pw = localStorage.getItem(PW_KEY) || "";
+let items = [];
+let picked=null, pickedType=null;
 
-/* Login */
+/* ── Login (valida llamando a la API) ── */
 $("#lBtn").onclick = login;
-$("#lPass").addEventListener("keydown",e=>{ if(e.key==="Enter") login(); });
+$("#pw").addEventListener("keydown",e=>{ if(e.key==="Enter") login(); });
 async function login(){
   const err=$("#lErr"); err.textContent="";
-  const email=$("#lEmail").value.trim(), pass=$("#lPass").value;
-  if(!email||!pass){ err.textContent="Completa correo y contraseña."; return; }
+  const val=$("#pw").value; if(!val){ err.textContent="Escribe la contraseña."; return; }
   $("#lBtn").disabled=true;
-  try{ await signInWithEmailAndPassword(auth,email,pass); }
-  catch(e){ err.textContent = e.code==="auth/invalid-credential" ? "Correo o contraseña incorrectos." : "No se pudo entrar."; }
-  finally{ $("#lBtn").disabled=false; }
+  const ok = await api("list", { password: val });
+  $("#lBtn").disabled=false;
+  if(ok && ok.ok){ pw=val; localStorage.setItem(PW_KEY,pw); enter(ok.items); }
+  else err.textContent = "Contraseña incorrecta.";
 }
-$("#logout").onclick = ()=> signOut(auth);
+$("#logout").onclick = ()=>{ localStorage.removeItem(PW_KEY); location.reload(); };
 
-if(isConfigured){
-  onAuthStateChanged(auth, u=>{
-    const admin = u && u.email && u.email.toLowerCase()===APP_CONFIG.adminEmail.toLowerCase();
-    if(admin){
-      $("#gate").classList.add("hidden"); $("#app").classList.remove("hidden"); $("#hdr").classList.remove("hidden");
-      $("#who").textContent=u.email; if(!unsub) subscribe();
-    }else{
-      $("#app").classList.add("hidden"); $("#hdr").classList.add("hidden"); $("#gate").classList.remove("hidden");
-      if(u){ $("#lErr").textContent="Esa cuenta no es la administradora."; signOut(auth); }
-      if(unsub){ unsub(); unsub=null; }
-    }
-  });
+async function api(action, extra){
+  try{
+    const r = await fetch("/api/admin",{ method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ password: extra?.password ?? pw, action, ...extra })});
+    if(r.status===401) return { error:"unauthorized" };
+    return await r.json();
+  }catch(e){ return { error:"network" }; }
 }
 
-/* Selección de archivo */
+function enter(list){
+  $("#gate").classList.add("hidden"); $("#app").classList.remove("hidden"); $("#hdr").classList.remove("hidden");
+  renderList(list||[]);
+}
+
+/* Autologin si ya hay contraseña guardada */
+if(pw){ api("list",{}).then(d=>{ if(d&&d.ok) enter(d.items); }); }
+
+/* ── Selección de archivo ── */
 const drop=$("#drop"), fileInput=$("#file");
 drop.onclick=()=>fileInput.click();
 drop.ondragover=e=>{e.preventDefault();drop.classList.add("drag");};
@@ -170,45 +161,41 @@ drop.ondragleave=()=>drop.classList.remove("drag");
 drop.ondrop=e=>{e.preventDefault();drop.classList.remove("drag"); if(e.dataTransfer.files[0]) setFile(e.dataTransfer.files[0]);};
 fileInput.onchange=()=>{ if(fileInput.files[0]) setFile(fileInput.files[0]); };
 function setFile(f){
-  picked=f; pickedType = f.type.startsWith("video") ? "video" : "image";
+  picked=f; pickedType = f.type.startsWith("video") ? "video":"image";
   const url=URL.createObjectURL(f);
   $("#prevwrap").innerHTML = pickedType==="video"
     ? `<video class="prev" src="${url}" muted loop autoplay playsinline></video>`
     : `<img class="prev" src="${url}" alt="">`;
   $("#prevwrap").classList.add("show");
-  drop.innerHTML = `✅ ${esc(f.name)} <br><span style="font-size:12.5px">Toca para cambiar</span>`;
+  drop.innerHTML = `✅ ${esc(f.name)}<br><span style="font-size:12.5px">Toca para cambiar</span>`;
   validate();
 }
 $("#price").oninput=validate; $("#title").oninput=validate;
-function validate(){ $("#save").disabled = !(picked && (parseInt($("#price").value,10)>0)); }
+function validate(){ $("#save").disabled = !(picked && parseInt($("#price").value,10)>0); }
 
-/* Publicar */
+/* ── Publicar: sube a Vercel Blob y guarda el ítem ── */
 $("#save").onclick = publish;
 async function publish(){
   const err=$("#sErr"); err.textContent="";
   const price=Math.max(0,parseInt($("#price").value,10)||0);
   if(!picked || price<=0){ err.textContent="Falta la foto/video o el precio."; return; }
-  const title=$("#title").value.trim() || (pickedType==="video"?"Pieza de oro (video)":"Pieza de oro");
+  const title=$("#title").value.trim() || "Pieza de oro";
   const save=$("#save"); save.disabled=true; save.textContent="Subiendo…";
-  $("#prog").classList.add("show");
+  $("#prog").classList.add("show"); $("#progBar").style.width="8%";
   try{
     const clean = picked.name.replace(/[^\w.\-]/g,"_");
-    const path = `live/${Date.now()}_${clean}`;
-    const task = uploadBytesResumable(ref(storage,path), picked, { contentType: picked.type });
-    await new Promise((res,rej)=>{
-      task.on("state_changed",
-        s=>{ $("#progBar").style.width = Math.round((s.bytesTransferred/s.totalBytes)*100)+"%"; },
-        rej, res);
+    const blob = await upload(`media/${Date.now()}_${clean}`, picked, {
+      access:"public",
+      handleUploadUrl:"/api/upload",
+      clientPayload: JSON.stringify({ password: pw }),
+      contentType: picked.type,
+      onUploadProgress: p => { $("#progBar").style.width = Math.max(8,Math.round(p.percentage))+"%"; },
     });
-    const mediaUrl = await getDownloadURL(task.snapshot.ref);
-    await addDoc(collection(db,"liveItems"),{
-      title, price, desc:$("#desc").value.trim(),
-      mediaUrl, mediaType:pickedType, mediaPath:path,
-      sold:false, visible:true, createdAt:serverTimestamp(),
-    });
+    const res = await api("save", { item:{ title, price, desc:$("#desc").value.trim(), mediaUrl:blob.url, mediaType:pickedType } });
+    if(!res || !res.ok) throw new Error(res?.error==="unauthorized" ? "Sesión expirada, vuelve a entrar." : "No se pudo guardar.");
     toast("¡Publicada en el live! ✨");
-    resetForm();
-  }catch(e){ console.error(e); err.textContent = e.message || "No se pudo subir. Revisa las reglas de Storage."; }
+    renderList(res.items); resetForm();
+  }catch(e){ console.error(e); err.textContent = e.message || "No se pudo subir. Revisa la config de Vercel Blob."; }
   finally{ save.disabled=false; save.textContent="Publicar en el live"; $("#prog").classList.remove("show"); $("#progBar").style.width="0"; }
 }
 function resetForm(){
@@ -219,42 +206,30 @@ function resetForm(){
   validate();
 }
 
-/* Lista en vivo */
-function subscribe(){
-  unsub = onSnapshot(query(collection(db,"liveItems"), orderBy("createdAt","desc")), snap=>{
-    items = snap.docs.map(d=>({id:d.id,...d.data()}));
-    if(!items.length){ $("#list").innerHTML=`<div class="center">Aún no has subido piezas. ¡Sube la primera arriba! ☝️</div>`; return; }
-    $("#list").innerHTML = items.map(it=>{
-      const m = it.mediaType==="video"
-        ? `<video class="m" src="${esc(it.mediaUrl)}" muted></video>`
-        : `<img class="m" src="${esc(it.mediaUrl)}" alt="">`;
-      return `<div class="it">
-        ${m}
-        <div class="d"><h4>${esc(it.title)}</h4><small>${it.mediaType==="video"?"🎬 video":"🖼️ foto"}${it.sold?" · <b style='color:#e5684f'>VENDIDA</b>":""}</small></div>
-        <div class="pr">${money(it.price)}</div>
-        <div class="acts">
-          <button class="mini sold ${it.sold?'on':''}" data-sold="${it.id}">${it.sold?'↩ Reactivar':'✔ Vendida'}</button>
-          <button class="mini del" data-del="${it.id}">Borrar</button>
-        </div>
-      </div>`;
-    }).join("");
-    $("#list").querySelectorAll("[data-sold]").forEach(b=> b.onclick=()=>toggleSold(b.dataset.sold));
-    $("#list").querySelectorAll("[data-del]").forEach(b=> b.onclick=()=>remove(b.dataset.del));
-  }, err=>{ console.error(err); $("#list").innerHTML=`<div class="center">No se pudo cargar. Revisa las reglas de Firestore.</div>`; });
-}
-async function toggleSold(id){
-  const it=items.find(x=>x.id===id); if(!it) return;
-  try{ await updateDoc(doc(db,"liveItems",id),{ sold: !it.sold }); }
-  catch(e){ toast("No se pudo actualizar"); }
-}
-async function remove(id){
-  const it=items.find(x=>x.id===id); if(!it) return;
-  if(!confirm(`¿Borrar "${it.title}" del live?`)) return;
-  try{
-    await deleteDoc(doc(db,"liveItems",id));
-    if(it.mediaPath){ try{ await deleteObject(ref(storage,it.mediaPath)); }catch(_){} }
-    toast("Pieza borrada");
-  }catch(e){ toast("No se pudo borrar"); }
+/* ── Lista ── */
+function renderList(list){
+  items = Array.isArray(list)?list:[];
+  if(!items.length){ $("#list").innerHTML=`<div class="center">Aún no has subido piezas. ¡Sube la primera arriba! ☝️</div>`; return; }
+  $("#list").innerHTML = items.map(it=>{
+    const m = it.mediaType==="video" ? `<video class="m" src="${esc(it.mediaUrl)}" muted></video>` : `<img class="m" src="${esc(it.mediaUrl)}" alt="">`;
+    return `<div class="it">${m}
+      <div class="d"><h4>${esc(it.title)}</h4><small>${it.mediaType==="video"?"🎬 video":"🖼️ foto"}${it.sold?" · <b style='color:#e5684f'>VENDIDA</b>":""}</small></div>
+      <div class="pr">${money(it.price)}</div>
+      <div class="acts">
+        <button class="mini ${it.sold?'on':''}" data-sold="${esc(it.id)}">${it.sold?'↩ Reactivar':'✔ Vendida'}</button>
+        <button class="mini del" data-del="${esc(it.id)}">Borrar</button>
+      </div></div>`;
+  }).join("");
+  $("#list").querySelectorAll("[data-sold]").forEach(b=> b.onclick=async()=>{
+    const it=items.find(x=>x.id===b.dataset.sold); const res=await api("sold",{ id:b.dataset.sold, sold:!it.sold });
+    if(res&&res.ok) renderList(res.items); else toast("No se pudo actualizar");
+  });
+  $("#list").querySelectorAll("[data-del]").forEach(b=> b.onclick=async()=>{
+    const it=items.find(x=>x.id===b.dataset.del);
+    if(!confirm(`¿Borrar "${it?.title}" del live?`)) return;
+    const res=await api("delete",{ id:b.dataset.del });
+    if(res&&res.ok){ renderList(res.items); toast("Pieza borrada"); } else toast("No se pudo borrar");
+  });
 }
 
 let toastT;
