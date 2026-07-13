@@ -89,6 +89,14 @@
   .media{position:relative;background:#f2f2f2;max-height:74vh;overflow:hidden}
   .media img,.media video{width:100%;max-height:74vh;object-fit:cover;display:block}
   .media .emoji{height:300px;display:flex;align-items:center;justify-content:center;font-size:84px}
+  .carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;width:100%;aspect-ratio:1/1;scrollbar-width:none}
+  .carousel::-webkit-scrollbar{display:none}
+  .carousel .slide{flex:0 0 100%;height:100%;scroll-snap-align:center}
+  .carousel .slide img,.carousel .slide video{width:100%;height:100%;object-fit:cover;display:block}
+  .cnt{position:absolute;top:12px;right:12px;background:rgba(18,18,18,.7);color:#fff;font-size:11px;font-weight:700;padding:3px 8px;z-index:2}
+  .cdots{position:absolute;bottom:10px;left:0;right:0;display:flex;gap:6px;justify-content:center;z-index:2}
+  .cdots .cdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55);box-shadow:0 0 2px rgba(0,0,0,.45)}
+  .cdots .cdot.on{background:#fff}
   .vtag{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.92);border:1px solid var(--line-2);color:var(--accent);font-size:10.5px;font-weight:800;padding:4px 10px;letter-spacing:.5px}
   .sold{position:absolute;inset:0;background:rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center}
   .sold span{color:#fff;background:var(--accent);font-weight:800;padding:8px 22px;transform:rotate(-6deg);font-size:18px;letter-spacing:2px;text-transform:uppercase}
@@ -288,6 +296,7 @@ const LS_CART = "ambar_cart_live_v1";
 
 let ITEMS = [];
 let firstLoad = true;
+let lastSig = "";
 let seen = new Set();
 let cart = [];
 try{ cart = JSON.parse(localStorage.getItem(LS_CART))||[]; }catch(e){ cart=[]; }
@@ -344,7 +353,8 @@ async function load(){
     const d = await r.json();
     ITEMS = Array.isArray(d.items)?d.items:[];
     ITEMS.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
-    render();
+    const s = ITEMS.map(i=>i.id+":"+(i.sold?1:0)+":"+(i.visible!==false?1:0)+":"+((i.media&&i.media.length)||1)).join("|");
+    if(s!==lastSig){ lastSig=s; render(); }
     $("#liveBadge").classList.toggle("on", ITEMS.some(i=>!i.sold));
     firstLoad=false;
   }catch(e){ if(firstLoad) showState("😕","No se pudo cargar. Recarga en un momento."); }
@@ -355,14 +365,42 @@ function reactCount(it, type){
   return base + ((localReacts[it.id] && localReacts[it.id][type]) || 0);
 }
 
+function mediaSlides(it){
+  const arr = (Array.isArray(it.media) && it.media.length) ? it.media
+            : (it.mediaUrl ? [{ url:it.mediaUrl, type:it.mediaType }] : []);
+  if(!arr.length) return `<div class="emoji">🥇</div>`;
+  if(arr.length===1){
+    const m=arr[0];
+    return m.type==="video"
+      ? `<video src="${esc(m.url)}" muted loop autoplay playsinline preload="metadata"></video><div class="vtag">▶ VIDEO</div>`
+      : `<img src="${esc(m.url)}" alt="${esc(it.title)}" loading="lazy">`;
+  }
+  const slides = arr.map(m => `<div class="slide">${
+    m.type==="video"
+      ? `<video src="${esc(m.url)}" muted loop playsinline preload="metadata"></video>`
+      : `<img src="${esc(m.url)}" alt="${esc(it.title)}" loading="lazy">`
+  }</div>`).join("");
+  const dots = arr.map((_,i)=>`<span class="cdot${i===0?' on':''}"></span>`).join("");
+  return `<div class="carousel" data-car>${slides}</div><div class="cnt" data-cnt>1/${arr.length}</div><div class="cdots">${dots}</div>`;
+}
+function bindCarousels(){
+  $("#feed").querySelectorAll("[data-car]").forEach(car=>{
+    const wrap=car.parentElement;
+    const dots=wrap.querySelector(".cdots"), cnt=wrap.querySelector("[data-cnt]");
+    car.addEventListener("scroll",()=>{
+      const idx=Math.round(car.scrollLeft/Math.max(1,car.clientWidth));
+      if(dots) [...dots.children].forEach((d,i)=>d.classList.toggle("on",i===idx));
+      if(cnt) cnt.textContent=(idx+1)+"/"+car.children.length;
+    },{passive:true});
+  });
+}
+
 function render(){
   if(!ITEMS.length){ showState("⏳","Aún no hay piezas. ¡Empiezan a aparecer cuando arranque el live!"); return; }
   $("#state").style.display="none";
   $("#feed").innerHTML = ITEMS.map(it=>{
     const isNew = !firstLoad && !seen.has(it.id);
-    const media = it.mediaType==="video"
-      ? `<video src="${esc(it.mediaUrl)}" muted loop autoplay playsinline preload="metadata"></video><div class="vtag">▶ VIDEO</div>`
-      : (it.mediaUrl ? `<img src="${esc(it.mediaUrl)}" alt="${esc(it.title)}" loading="lazy">` : `<div class="emoji">🥇</div>`);
+    const media = mediaSlides(it);
     const inCart = cart.some(c=>c.id===it.id);
     const soldOut = it.unique && it.sold;
     const addBtn = soldOut
@@ -393,6 +431,7 @@ function render(){
   ITEMS.forEach(i=>seen.add(i.id));
   $("#feed").querySelectorAll("[data-add]").forEach(b=> b.onclick=()=>addToCart(b.dataset.add));
   $("#feed").querySelectorAll("[data-react]").forEach(b=> b.onclick=(e)=>react(b.dataset.id, b.dataset.react, b, e));
+  bindCarousels();
 }
 
 function react(id, type, btn, ev){
