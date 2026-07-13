@@ -37,6 +37,7 @@ export default async function handler(req, res) {
         desc: (it.desc || "").slice(0, 300),
         mediaUrl: it.mediaUrl,
         mediaType: it.mediaType === "video" ? "video" : "image",
+        unique: it.unique === true, // "solo hay 1"; si false, hay varios
         sold: !!it.sold,
         visible: it.visible !== false,
         createdAt: it.createdAt || Date.now(),

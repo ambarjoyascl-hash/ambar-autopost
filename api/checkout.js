@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     for (const r of reqItems) {
       const it = all.find((x) => x.id === r.id);
       if (!it) continue;
-      if (it.sold) return res.status(409).json({ error: "sold", message: `"${it.title}" ya fue vendida.` });
+      if (it.unique && it.sold) return res.status(409).json({ error: "sold", message: `"${it.title}" ya fue vendida.` });
       if (Number(it.price) <= 0) continue;
       lineItems.push({
         title: it.title,

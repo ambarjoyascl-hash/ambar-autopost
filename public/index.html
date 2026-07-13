@@ -362,12 +362,13 @@ function render(){
       ? `<video src="${esc(it.mediaUrl)}" muted loop autoplay playsinline preload="metadata"></video><div class="vtag">▶ VIDEO</div>`
       : (it.mediaUrl ? `<img src="${esc(it.mediaUrl)}" alt="${esc(it.title)}" loading="lazy">` : `<div class="emoji">🥇</div>`);
     const inCart = cart.some(c=>c.id===it.id);
-    const addBtn = it.sold
+    const soldOut = it.unique && it.sold;
+    const addBtn = soldOut
       ? `<button class="addcart" disabled>Vendida</button>`
       : `<button class="addcart ${inCart?'in':''}" data-add="${esc(it.id)}">${inCart?'✓ En carrito':'Agregar'}</button>`;
     return `<article class="post ${isNew?'new':''}" data-id="${esc(it.id)}">
       <div class="phead"><span class="av"></span><span class="n">Ámbar Joyas</span><span class="t">en el live</span></div>
-      <div class="media">${media}${it.sold?`<div class="sold"><span>VENDIDA</span></div>`:""}</div>
+      <div class="media">${media}${soldOut?`<div class="sold"><span>VENDIDA</span></div>`:""}</div>
       <div class="pbody">
         <div class="prow">
           <div class="pinfo">
