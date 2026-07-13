@@ -44,6 +44,11 @@
   .full{grid-column:1/-1}
   .save{width:100%;border:none;border-radius:12px;padding:14px;font-size:16px;font-weight:800;cursor:pointer;background:linear-gradient(90deg,var(--gold),var(--gold-deep));color:#211806;margin-top:14px}
   .save:disabled{opacity:.6}
+  .totalbox{margin-top:14px;background:linear-gradient(135deg,#241a0a,#171006);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:2px;text-align:center}
+  .totalbox.ready{border-color:var(--gold-deep);box-shadow:0 0 0 1px rgba(231,189,99,.25) inset}
+  .totalbox span{font-size:12.5px;color:var(--muted);letter-spacing:.3px}
+  .totalbox b{font-family:'Playfair Display',Georgia,serif;font-size:30px;color:var(--gold-2);font-weight:700;line-height:1.1}
+  .totalbox small{font-size:12px;color:var(--muted)}
   .prog{height:8px;background:var(--card);border-radius:999px;overflow:hidden;margin-top:12px;display:none}
   .prog.show{display:block}.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-deep));transition:width .2s}
   .list{display:grid;gap:10px;margin-top:8px}
@@ -89,16 +94,22 @@
 <main class="wrap hidden" id="app">
   <div class="panel">
     <h2>➕ Subir pieza al live</h2>
-    <p style="margin:-6px 0 14px;color:var(--muted);font-size:13.5px">Elige foto o video, pon el precio y publica. Aparece al instante en el live. ✨</p>
+    <p style="margin:-6px 0 14px;color:var(--muted);font-size:13.5px">Elige foto o video, pon los <b>gramos</b> y el <b>precio por gramo</b>. Yo calculo el total y lo publico. ✨</p>
     <div class="drop" id="drop">
       📸 Toca para elegir <b>foto o video</b><br><span style="font-size:12.5px">o arrástralo aquí</span>
       <input id="file" type="file" accept="image/*,video/*" class="hidden">
     </div>
     <div class="prevwrap" id="prevwrap"></div>
     <div class="rowf">
-      <div><label>Precio (CLP) *</label><input id="price" type="number" inputmode="numeric" min="0" placeholder="250000"></div>
-      <div><label>Nombre</label><input id="title" placeholder="Ej: Cadena oro 18k 10g"></div>
-      <div class="full"><label>Detalle (opcional)</label><textarea id="desc" placeholder="Ej: 18k · 10.2 g · 50 cm"></textarea></div>
+      <div><label>Gramos *</label><input id="grams" type="number" inputmode="decimal" min="0" step="0.01" placeholder="10.2"></div>
+      <div><label>Precio por gramo (CLP) *</label><input id="ppg" type="number" inputmode="numeric" min="0" placeholder="95000"></div>
+      <div class="full"><label>Nombre (opcional)</label><input id="title" placeholder="Ej: Cadena cubana 18k"></div>
+      <div class="full"><label>Detalle (opcional)</label><textarea id="desc" placeholder="Ej: 18k · 50 cm"></textarea></div>
+    </div>
+    <div class="totalbox" id="totalbox">
+      <span>Precio total de la joya</span>
+      <b id="totalVal">$0</b>
+      <small id="totalCalc"></small>
     </div>
     <div class="prog" id="prog"><i id="progBar"></i></div>
     <button class="save" id="save" disabled>Publicar en el live</button>
@@ -175,15 +186,26 @@ function setFile(f){
   drop.innerHTML = `✅ ${esc(f.name)}<br><span style="font-size:12.5px">Toca para cambiar</span>`;
   validate();
 }
-$("#price").oninput=validate; $("#title").oninput=validate;
-function validate(){ $("#save").disabled = !(picked && parseInt($("#price").value,10)>0); }
+$("#grams").oninput=recompute; $("#ppg").oninput=recompute; $("#title").oninput=validate;
+function getGrams(){ return Math.max(0, parseFloat($("#grams").value)||0); }
+function getPpg(){ return Math.max(0, parseInt($("#ppg").value,10)||0); }
+function calcTotal(){ return Math.round(getGrams()*getPpg()); }
+function recompute(){
+  const g=getGrams(), p=getPpg(), t=calcTotal();
+  $("#totalVal").textContent = money(t);
+  $("#totalCalc").textContent = (g>0 && p>0) ? `${g} g × ${money(p)}/g` : "Ingresa gramos y precio por gramo";
+  $("#totalbox").classList.toggle("ready", t>0);
+  validate();
+}
+function validate(){ $("#save").disabled = !(picked && getGrams()>0 && getPpg()>0); }
 
 /* ── Publicar: sube a Vercel Blob y guarda el ítem ── */
 $("#save").onclick = publish;
 async function publish(){
   const err=$("#sErr"); err.textContent="";
-  const price=Math.max(0,parseInt($("#price").value,10)||0);
-  if(!picked || price<=0){ err.textContent="Falta la foto/video o el precio."; return; }
+  const grams=getGrams(), ppg=getPpg(), price=calcTotal();
+  if(!picked){ err.textContent="Falta la foto o el video."; return; }
+  if(grams<=0 || ppg<=0){ err.textContent="Ingresa los gramos y el precio por gramo."; return; }
   const title=$("#title").value.trim() || "Pieza de oro";
   const save=$("#save"); save.disabled=true; save.textContent="Subiendo…";
   $("#prog").classList.add("show"); $("#progBar").style.width="8%";
@@ -196,7 +218,7 @@ async function publish(){
       contentType: picked.type,
       onUploadProgress: p => { $("#progBar").style.width = Math.max(8,Math.round(p.percentage))+"%"; },
     });
-    const res = await api("save", { item:{ title, price, desc:$("#desc").value.trim(), mediaUrl:blob.url, mediaType:pickedType } });
+    const res = await api("save", { item:{ title, grams, pricePerGram:ppg, desc:$("#desc").value.trim(), mediaUrl:blob.url, mediaType:pickedType } });
     if(!res || !res.ok) throw new Error(res?.error==="unauthorized" ? "Sesión expirada, vuelve a entrar." : "No se pudo guardar.");
     toast("¡Publicada en el live! ✨");
     renderList(res.items); resetForm();
@@ -205,7 +227,8 @@ async function publish(){
 }
 function resetForm(){
   picked=null; pickedType=null; fileInput.value="";
-  $("#price").value=""; $("#title").value=""; $("#desc").value="";
+  $("#grams").value=""; $("#ppg").value=""; $("#title").value=""; $("#desc").value="";
+  recompute();
   $("#prevwrap").classList.remove("show"); $("#prevwrap").innerHTML="";
   drop.innerHTML=`📸 Toca para elegir <b>foto o video</b><br><span style="font-size:12.5px">o arrástralo aquí</span>`;
   validate();
@@ -218,7 +241,7 @@ function renderList(list){
   $("#list").innerHTML = items.map(it=>{
     const m = it.mediaType==="video" ? `<video class="m" src="${esc(it.mediaUrl)}" muted></video>` : `<img class="m" src="${esc(it.mediaUrl)}" alt="">`;
     return `<div class="it">${m}
-      <div class="d"><h4>${esc(it.title)}</h4><small>${it.mediaType==="video"?"🎬 video":"🖼️ foto"}${it.sold?" · <b style='color:#e5684f'>VENDIDA</b>":""}</small></div>
+      <div class="d"><h4>${esc(it.title)}</h4><small>${it.grams?`⚖️ ${it.grams} g · ${money(it.pricePerGram)}/g`:(it.mediaType==="video"?"🎬 video":"🖼️ foto")}${it.sold?" · <b style='color:#e5684f'>VENDIDA</b>":""}</small></div>
       <div class="pr">${money(it.price)}</div>
       <div class="acts">
         <button class="mini ${it.sold?'on':''}" data-sold="${esc(it.id)}">${it.sold?'↩ Reactivar':'✔ Vendida'}</button>
