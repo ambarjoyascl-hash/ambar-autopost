@@ -28,6 +28,16 @@ export default async function handler(req, res) {
           ? Math.round(grams * pricePerGram)
           : Math.max(0, parseInt(it.price, 10) || 0);
       if (!it.mediaUrl || price <= 0) return res.status(400).json({ error: "invalid_item" });
+      // Galería de fotos/videos (carrusel). Compat con media única antigua.
+      let media = Array.isArray(it.media)
+        ? it.media
+            .filter((m) => m && m.url)
+            .slice(0, 12)
+            .map((m) => ({ url: m.url, type: m.type === "video" ? "video" : "image" }))
+        : [];
+      if (!media.length && it.mediaUrl) {
+        media = [{ url: it.mediaUrl, type: it.mediaType === "video" ? "video" : "image" }];
+      }
       const item = {
         id: it.id || newId(),
         title: (it.title || "Pieza de oro").slice(0, 120),
@@ -35,8 +45,9 @@ export default async function handler(req, res) {
         pricePerGram,
         price,
         desc: (it.desc || "").slice(0, 300),
-        mediaUrl: it.mediaUrl,
-        mediaType: it.mediaType === "video" ? "video" : "image",
+        media,
+        mediaUrl: media[0]?.url || it.mediaUrl,
+        mediaType: media[0]?.type || (it.mediaType === "video" ? "video" : "image"),
         unique: it.unique === true, // "solo hay 1"; si false, hay varios
         sold: !!it.sold,
         visible: it.visible !== false,
