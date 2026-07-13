@@ -70,6 +70,10 @@
   .center{text-align:center;padding:26px 10px;color:var(--muted)}
   .cfgwarn{background:#f7ecec;color:var(--gold-deep);text-align:center;padding:12px;font-size:13px;border-bottom:1px solid var(--line)}
   .hidden{display:none!important}
+  .filein{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+  .or-cam{margin-top:10px}
+  .cambtn{display:block;text-align:center;border:1px solid var(--gold);color:var(--gold);background:#fff;border-radius:6px;padding:12px;font-weight:700;cursor:pointer;font-size:14px;text-transform:uppercase;letter-spacing:.4px}
+  .cambtn:active{transform:scale(.98)}
   .toast{position:fixed;left:50%;bottom:22px;translate:-50% 20px;background:var(--gold);border:none;color:#f7efef;padding:11px 18px;border-radius:999px;font-size:14px;font-weight:600;z-index:80;opacity:0;pointer-events:none;transition:.25s;max-width:90%}
   .toast.show{opacity:1;translate:-50% 0}
   .tip{font-size:12px;color:var(--muted);margin-top:6px}
@@ -107,9 +111,13 @@
       <input id="goldPrice" type="number" inputmode="numeric" min="0" value="125000">
       <small>Viene en <b>$125.000</b> por defecto y se aplica a cada pieza nueva. Cámbialo solo si el precio del oro cambió.</small>
     </div>
-    <div class="drop" id="drop">
-      📸 Toca para elegir <b>foto o video</b><br><span style="font-size:12.5px">o arrástralo aquí</span>
-      <input id="file" type="file" accept="image/*,video/*" class="hidden">
+    <label class="drop" id="drop" for="file">
+      📸 Toca para <b>tomar foto</b> o elegir <b>foto/video</b>
+    </label>
+    <input id="file" type="file" accept="image/*,video/*" class="filein">
+    <div class="or-cam">
+      <label class="cambtn" for="fileCam">📷 Tomar foto con la cámara</label>
+      <input id="fileCam" type="file" accept="image/*" capture="environment" class="filein">
     </div>
     <div class="prevwrap" id="prevwrap"></div>
     <div class="rowf">
@@ -185,12 +193,12 @@ function enter(list){
 if(pw){ api("list",{}).then(d=>{ if(d&&d.ok) enter(d.items); }); }
 
 /* ── Selección de archivo ── */
-const drop=$("#drop"), fileInput=$("#file");
-drop.onclick=()=>fileInput.click();
+const drop=$("#drop"), fileInput=$("#file"), fileCam=$("#fileCam");
 drop.ondragover=e=>{e.preventDefault();drop.classList.add("drag");};
 drop.ondragleave=()=>drop.classList.remove("drag");
 drop.ondrop=e=>{e.preventDefault();drop.classList.remove("drag"); if(e.dataTransfer.files[0]) setFile(e.dataTransfer.files[0]);};
 fileInput.onchange=()=>{ if(fileInput.files[0]) setFile(fileInput.files[0]); };
+fileCam.onchange=()=>{ if(fileCam.files[0]) setFile(fileCam.files[0]); };
 function setFile(f){
   picked=f; pickedType = f.type.startsWith("video") ? "video":"image";
   const url=URL.createObjectURL(f);
@@ -279,11 +287,11 @@ async function publish(){
   finally{ save.disabled=false; save.textContent="Publicar en el live"; $("#prog").classList.remove("show"); $("#progBar").style.width="0"; }
 }
 function resetForm(){
-  picked=null; pickedType=null; fileInput.value="";
+  picked=null; pickedType=null; fileInput.value=""; fileCam.value="";
   $("#grams").value=""; $("#ppg").value=goldPPG; $("#title").value=""; $("#desc").value=""; $("#unique").checked=false;
   recompute();
   $("#prevwrap").classList.remove("show"); $("#prevwrap").innerHTML="";
-  drop.innerHTML=`📸 Toca para elegir <b>foto o video</b><br><span style="font-size:12.5px">o arrástralo aquí</span>`;
+  drop.innerHTML=`📸 Toca para <b>tomar foto</b> o elegir <b>foto/video</b>`;
   validate();
 }
 
