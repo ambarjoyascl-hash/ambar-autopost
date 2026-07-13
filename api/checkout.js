@@ -39,12 +39,22 @@ export default async function handler(req, res) {
     }
     if (!lineItems.length) return res.status(400).json({ error: "no_valid_items" });
 
+    // Datos del cliente registrado (para vincular el pedido y que sepas quién compró).
+    const cust = body.customer || {};
+    const custEmail = String(cust.email || "").trim().toLowerCase();
+    const custName = String(cust.name || "").trim();
+    const custPhone = String(cust.phone || "").trim();
+    const draft = { line_items: lineItems, tags: "live-oro" };
+    let note = "Compra desde el live de oro";
+    if (custName) note += `\nCliente: ${custName}`;
+    if (custPhone) note += `\nWhatsApp: ${custPhone}`;
+    draft.note = note;
+    if (/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(custEmail)) draft.email = custEmail;
+
     const r = await fetch(`https://${domain}/admin/api/${API_VERSION}/draft_orders.json`, {
       method: "POST",
       headers: { "X-Shopify-Access-Token": token, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        draft_order: { line_items: lineItems, tags: "live-oro", note: "Compra desde el live de oro" },
-      }),
+      body: JSON.stringify({ draft_order: draft }),
     });
     const data = await r.json();
     if (!r.ok || !data.draft_order?.invoice_url) {
