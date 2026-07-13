@@ -90,8 +90,11 @@
   .pbody{padding:13px 15px 15px}
   .prow{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
   .pinfo h3{font-family:var(--serif);margin:0 0 3px;font-size:19px;font-weight:600}
+  .pinfo .spec{font-size:12.5px;color:var(--gold-soft);font-weight:600;margin:1px 0 4px}
   .pinfo .desc{margin:0;color:var(--muted);font-size:13.5px}
-  .price{font-family:var(--serif);font-size:24px;font-weight:700;color:var(--gold-2);white-space:nowrap}
+  .priceblock{text-align:right;flex:none}
+  .price{font-family:var(--serif);font-size:24px;font-weight:700;color:var(--gold-2);white-space:nowrap;line-height:1.1}
+  .ptag{font-size:10px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-top:1px}
   .actions{display:flex;align-items:center;gap:8px;margin-top:14px}
   .react{border:1px solid var(--line-2);background:linear-gradient(180deg,var(--card),var(--card-2));color:var(--text);
     border-radius:999px;padding:9px 14px;cursor:pointer;font-size:15px;font-weight:700;display:flex;align-items:center;gap:6px;position:relative;overflow:visible}
@@ -292,8 +295,15 @@ function render(){
       <div class="media">${media}${it.sold?`<div class="sold"><span>VENDIDA</span></div>`:""}</div>
       <div class="pbody">
         <div class="prow">
-          <div class="pinfo"><h3>${esc(it.title||"Pieza de oro")}</h3>${it.desc?`<p class="desc">${esc(it.desc)}</p>`:""}</div>
-          <div class="price">${money(it.price)}</div>
+          <div class="pinfo">
+            <h3>${esc(it.title||"Pieza de oro")}</h3>
+            ${it.grams?`<div class="spec">⚖️ ${esc(it.grams)} g &nbsp;·&nbsp; ${money(it.pricePerGram)}/gramo</div>`:""}
+            ${it.desc?`<p class="desc">${esc(it.desc)}</p>`:""}
+          </div>
+          <div class="priceblock">
+            <div class="price">${money(it.price)}</div>
+            ${it.grams?`<div class="ptag">precio total</div>`:""}
+          </div>
         </div>
         <div class="actions">
           <button class="react" data-react="heart" data-id="${esc(it.id)}">❤️ <span class="c">${reactCount(it,'heart')||''}</span></button>
@@ -337,7 +347,7 @@ function saveCart(){ localStorage.setItem(LS_CART, JSON.stringify(cart)); }
 function addToCart(id){
   const it = ITEMS.find(x=>x.id===id); if(!it || it.sold) return;
   if(cart.some(c=>c.id===id)){ openDrawer(); return; }
-  cart.push({ id:it.id, title:it.title, price:it.price, mediaUrl:it.mediaUrl, mediaType:it.mediaType, qty:1 });
+  cart.push({ id:it.id, title:it.title, price:it.price, grams:it.grams, pricePerGram:it.pricePerGram, mediaUrl:it.mediaUrl, mediaType:it.mediaType, qty:1 });
   saveCart(); renderCart(); renderFloat(); render(); toast("Agregado al carrito ✓");
 }
 function removeItem(idx){ cart.splice(idx,1); saveCart(); renderCart(); renderFloat(); render(); }
@@ -352,7 +362,7 @@ function renderCart(){
   }
   $("#ditems").innerHTML = cart.map((i,idx)=>{
     const ic = i.mediaUrl ? (i.mediaType==="video"?`<video src="${esc(i.mediaUrl)}" muted></video>`:`<img src="${esc(i.mediaUrl)}" alt="">`) : "🥇";
-    return `<div class="li"><div class="ic">${ic}</div><div class="info"><h4>${esc(i.title)}</h4><div class="p">${money(i.price)}</div>
+    return `<div class="li"><div class="ic">${ic}</div><div class="info"><h4>${esc(i.title)}</h4>${i.grams?`<div style="font-size:12px;color:var(--gold-soft)">⚖️ ${esc(i.grams)} g · ${money(i.pricePerGram)}/g</div>`:""}<div class="p">${money(i.price)}</div>
       <button class="rm" data-rm="${idx}">Quitar</button></div></div>`;
   }).join("");
   $("#dfoot").innerHTML = `

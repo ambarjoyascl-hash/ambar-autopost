@@ -20,11 +20,19 @@ export default async function handler(req, res) {
 
     if (action === "save") {
       const it = body.item || {};
-      const price = Math.max(0, parseInt(it.price, 10) || 0);
+      const grams = Math.max(0, parseFloat(it.grams) || 0);
+      const pricePerGram = Math.max(0, parseInt(it.pricePerGram, 10) || 0);
+      // El total se calcula en el servidor (gramos × precio por gramo).
+      const price =
+        grams > 0 && pricePerGram > 0
+          ? Math.round(grams * pricePerGram)
+          : Math.max(0, parseInt(it.price, 10) || 0);
       if (!it.mediaUrl || price <= 0) return res.status(400).json({ error: "invalid_item" });
       const item = {
         id: it.id || newId(),
         title: (it.title || "Pieza de oro").slice(0, 120),
+        grams,
+        pricePerGram,
         price,
         desc: (it.desc || "").slice(0, 300),
         mediaUrl: it.mediaUrl,
