@@ -53,6 +53,9 @@
   .totalbox span{font-size:12.5px;color:var(--muted);letter-spacing:.3px}
   .totalbox b{font-family:'Montserrat',sans-serif;font-size:30px;color:var(--gold-2);font-weight:700;line-height:1.1}
   .totalbox small{font-size:12px;color:var(--muted)}
+  .uniqrow{display:flex;gap:9px;align-items:flex-start;margin-top:14px;font-size:13px;color:var(--text);cursor:pointer;line-height:1.4}
+  .uniqrow input{width:auto;margin-top:2px;flex:none}
+  .uniqrow b{color:var(--gold)}
   .prog{height:8px;background:var(--card);border-radius:999px;overflow:hidden;margin-top:12px;display:none}
   .prog.show{display:block}.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-deep));transition:width .2s}
   .list{display:grid;gap:10px;margin-top:8px}
@@ -115,6 +118,7 @@
       <div class="full"><label>Nombre (opcional)</label><input id="title" placeholder="Ej: Cadena cubana 18k"></div>
       <div class="full"><label>Detalle (opcional)</label><textarea id="desc" placeholder="Ej: 18k · 50 cm"></textarea></div>
     </div>
+    <label class="uniqrow"><input type="checkbox" id="unique"> <span>☝️ <b>Solo hay 1</b> (pieza única) — se marca "Vendida" al venderse. Si lo dejas sin marcar, <b>hay varios</b> y todos pueden comprar.</span></label>
     <div class="totalbox" id="totalbox">
       <span>Precio total de la joya</span>
       <b id="totalVal">$0</b>
@@ -196,7 +200,36 @@ function setFile(f){
   $("#prevwrap").classList.add("show");
   drop.innerHTML = `✅ ${esc(f.name)}<br><span style="font-size:12.5px">Toca para cambiar</span>`;
   validate();
+  if(pickedType==="image") tryReadWeight(f);
 }
+
+/* Lee el peso que muestra la pesa/balanza en la foto (si hay). */
+function downscale(file){
+  return new Promise((res,rej)=>{
+    const img=new Image(); const url=URL.createObjectURL(file);
+    img.onload=()=>{
+      const max=1280; let w=img.width, h=img.height; const s=Math.min(1,max/Math.max(w,h));
+      const cw=Math.max(1,Math.round(w*s)), ch=Math.max(1,Math.round(h*s));
+      const c=document.createElement("canvas"); c.width=cw; c.height=ch;
+      c.getContext("2d").drawImage(img,0,0,cw,ch);
+      const durl=c.toDataURL("image/jpeg",0.85); URL.revokeObjectURL(url);
+      res(durl.split(",")[1]);
+    };
+    img.onerror=rej; img.src=url;
+  });
+}
+async function tryReadWeight(file){
+  const g=$("#grams"); const ph=g.placeholder;
+  try{
+    g.placeholder="🔍 leyendo el peso…";
+    const b64=await downscale(file);
+    const r=await fetch("/api/read-weight",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({imageBase64:b64,mediaType:"image/jpeg"})});
+    const d=await r.json();
+    g.placeholder=ph;
+    if(d && d.grams){ g.value=d.grams; recompute(); toast("Peso leído: "+d.grams+" g ✓ (revísalo)"); }
+  }catch(e){ g.placeholder=ph; }
+}
+
 $("#grams").oninput=recompute; $("#ppg").oninput=recompute; $("#title").oninput=validate;
 // Precio del oro del día → pre-llena el precio por gramo de cada pieza.
 $("#goldPrice").value = goldPPG;
@@ -238,7 +271,7 @@ async function publish(){
       contentType: picked.type,
       onUploadProgress: p => { $("#progBar").style.width = Math.max(8,Math.round(p.percentage))+"%"; },
     });
-    const res = await api("save", { item:{ title, grams, pricePerGram:ppg, desc:$("#desc").value.trim(), mediaUrl:blob.url, mediaType:pickedType } });
+    const res = await api("save", { item:{ title, grams, pricePerGram:ppg, desc:$("#desc").value.trim(), mediaUrl:blob.url, mediaType:pickedType, unique:$("#unique").checked } });
     if(!res || !res.ok) throw new Error(res?.error==="unauthorized" ? "Sesión expirada, vuelve a entrar." : "No se pudo guardar.");
     toast("¡Publicada en el live! ✨");
     renderList(res.items); resetForm();
@@ -247,7 +280,7 @@ async function publish(){
 }
 function resetForm(){
   picked=null; pickedType=null; fileInput.value="";
-  $("#grams").value=""; $("#ppg").value=goldPPG; $("#title").value=""; $("#desc").value="";
+  $("#grams").value=""; $("#ppg").value=goldPPG; $("#title").value=""; $("#desc").value=""; $("#unique").checked=false;
   recompute();
   $("#prevwrap").classList.remove("show"); $("#prevwrap").innerHTML="";
   drop.innerHTML=`📸 Toca para elegir <b>foto o video</b><br><span style="font-size:12.5px">o arrástralo aquí</span>`;
@@ -261,10 +294,10 @@ function renderList(list){
   $("#list").innerHTML = items.map(it=>{
     const m = it.mediaType==="video" ? `<video class="m" src="${esc(it.mediaUrl)}" muted></video>` : `<img class="m" src="${esc(it.mediaUrl)}" alt="">`;
     return `<div class="it">${m}
-      <div class="d"><h4>${esc(it.title)}</h4><small>${it.grams?`⚖️ ${it.grams} g · ${money(it.pricePerGram)}/g`:(it.mediaType==="video"?"🎬 video":"🖼️ foto")}${it.sold?" · <b style='color:#e5684f'>VENDIDA</b>":""}</small></div>
+      <div class="d"><h4>${esc(it.title)}</h4><small>${it.grams?`⚖️ ${it.grams} g · ${money(it.pricePerGram)}/g`:(it.mediaType==="video"?"🎬 video":"🖼️ foto")} · ${it.unique?"☝️ único":"∞ varios"}${(it.unique&&it.sold)?" · <b style='color:#e5684f'>VENDIDA</b>":""}</small></div>
       <div class="pr">${money(it.price)}</div>
       <div class="acts">
-        <button class="mini ${it.sold?'on':''}" data-sold="${esc(it.id)}">${it.sold?'↩ Reactivar':'✔ Vendida'}</button>
+        ${it.unique?`<button class="mini ${it.sold?'on':''}" data-sold="${esc(it.id)}">${it.sold?'↩ Reactivar':'✔ Vendida'}</button>`:""}
         <button class="mini del" data-del="${esc(it.id)}">Borrar</button>
       </div></div>`;
   }).join("");
