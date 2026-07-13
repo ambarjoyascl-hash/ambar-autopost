@@ -44,6 +44,10 @@
   .full{grid-column:1/-1}
   .save{width:100%;border:none;border-radius:12px;padding:14px;font-size:16px;font-weight:800;cursor:pointer;background:linear-gradient(90deg,var(--gold),var(--gold-deep));color:#211806;margin-top:14px}
   .save:disabled{opacity:.6}
+  .goldprice{background:linear-gradient(135deg,#28200c,#191108);border:1px solid var(--gold-deep);border-radius:14px;padding:13px 15px;margin-bottom:14px}
+  .goldprice label{color:var(--gold-2);font-weight:700;font-size:14px;margin:0 0 6px}
+  .goldprice input{font-size:18px;font-weight:700}
+  .goldprice small{display:block;color:var(--muted);font-size:11.5px;margin-top:6px}
   .totalbox{margin-top:14px;background:linear-gradient(135deg,#241a0a,#171006);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:2px;text-align:center}
   .totalbox.ready{border-color:var(--gold-deep);box-shadow:0 0 0 1px rgba(231,189,99,.25) inset}
   .totalbox span{font-size:12.5px;color:var(--muted);letter-spacing:.3px}
@@ -94,7 +98,12 @@
 <main class="wrap hidden" id="app">
   <div class="panel">
     <h2>➕ Subir pieza al live</h2>
-    <p style="margin:-6px 0 14px;color:var(--muted);font-size:13.5px">Elige foto o video, pon los <b>gramos</b> y el <b>precio por gramo</b>. Yo calculo el total y lo publico. ✨</p>
+    <p style="margin:-6px 0 14px;color:var(--muted);font-size:13.5px">Elige foto o video, pon los <b>gramos</b> y publico calculando el total. ✨</p>
+    <div class="goldprice">
+      <label for="goldPrice">💰 Precio del oro hoy (CLP por gramo)</label>
+      <input id="goldPrice" type="number" inputmode="numeric" min="0" value="125000">
+      <small>Se aplica a cada pieza nueva. Cámbialo cuando cambie el precio del oro.</small>
+    </div>
     <div class="drop" id="drop">
       📸 Toca para elegir <b>foto o video</b><br><span style="font-size:12.5px">o arrástralo aquí</span>
       <input id="file" type="file" accept="image/*,video/*" class="hidden">
@@ -137,6 +146,8 @@ const PW_KEY = "ambar_admin_pw";
 let pw = localStorage.getItem(PW_KEY) || "";
 let items = [];
 let picked=null, pickedType=null;
+let goldPPG = 125000;
+try{ const s=parseInt(localStorage.getItem("ambar_gold_ppg"),10); if(s>0) goldPPG=s; }catch(e){}
 
 /* ── Login (valida llamando a la API) ── */
 $("#lBtn").onclick = login;
@@ -187,6 +198,15 @@ function setFile(f){
   validate();
 }
 $("#grams").oninput=recompute; $("#ppg").oninput=recompute; $("#title").oninput=validate;
+// Precio del oro del día → pre-llena el precio por gramo de cada pieza.
+$("#goldPrice").value = goldPPG;
+$("#goldPrice").oninput = ()=>{
+  goldPPG = Math.max(0, parseInt($("#goldPrice").value,10)||0);
+  localStorage.setItem("ambar_gold_ppg", goldPPG);
+  $("#ppg").value = goldPPG || "";
+  recompute();
+};
+$("#ppg").value = goldPPG;
 function getGrams(){ return Math.max(0, parseFloat($("#grams").value)||0); }
 function getPpg(){ return Math.max(0, parseInt($("#ppg").value,10)||0); }
 function calcTotal(){ return Math.round(getGrams()*getPpg()); }
@@ -227,7 +247,7 @@ async function publish(){
 }
 function resetForm(){
   picked=null; pickedType=null; fileInput.value="";
-  $("#grams").value=""; $("#ppg").value=""; $("#title").value=""; $("#desc").value="";
+  $("#grams").value=""; $("#ppg").value=goldPPG; $("#title").value=""; $("#desc").value="";
   recompute();
   $("#prevwrap").classList.remove("show"); $("#prevwrap").innerHTML="";
   drop.innerHTML=`📸 Toca para elegir <b>foto o video</b><br><span style="font-size:12.5px">o arrástralo aquí</span>`;
