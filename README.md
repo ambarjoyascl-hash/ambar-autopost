@@ -1,160 +1,131 @@
-# Ámbar Autopost — Publicación automática a Instagram + Facebook (Meta Graph API)
+# Autopost — Instagram + Shopify Email, coordinados y multi-marca
 
-Sistema serverless que publica posts automáticamente en el Instagram y la Página de
-Facebook de Ámbar Joyas, tomando contenido desde una cola en Firebase (que puedes
-llenar a mano, con captions generados por IA, o automáticamente desde tu catálogo
-de Shopify).
+App para planificar y publicar contenido de varias marcas desde un solo panel:
 
-Stack: **Vercel** (serverless functions + Cron) + **Firebase Firestore** (cola y
-tokens) + **Meta Graph API**.
+1. **Creas una marca** (le pones nombre) y la conectas a su **Instagram**, su
+   **Shopify** y su **página web**.
+2. Pides **el plan de la semana**: la IA (Claude) saca las fotos y productos de tu
+   web/Shopify y arma **7 días de posts de Instagram + emails coordinados**.
+3. **Revisas** el plan y, con un botón, lo **agendas**: los posts se publican solos
+   en Instagram a la hora indicada, y los emails quedan **listos para enviar desde
+   Shopify Email**.
+4. Repites para **cada una de tus marcas**, cada una con sus propias cuentas.
 
----
+Stack: **Vercel** (panel web + funciones serverless + Cron) · **Firebase
+Firestore** (marcas, cola y emails) · **Meta Graph API** (Instagram/Facebook) ·
+**Claude** (contenido) · **Shopify Admin API** (productos).
 
-## 0. Por qué esto te conviene (la letra chica buena)
-
-Las cuentas de Instagram y Facebook de Ámbar son **tuyas**. Eso significa que NO
-necesitas pasar por el App Review de Meta (esas 2–4 semanas de revisión con
-screencast). El App Review con *Advanced Access* solo se exige cuando publicas en
-nombre de cuentas de terceros.
-
-Para tu caso:
-- Creas una app en modo **Desarrollo**.
-- Te agregas a ti misma como **admin/tester** de la app.
-- Usas el permiso `instagram_business_content_publish` directamente.
-
-Listo. Sin revisión.
+> **Sobre los emails:** Shopify **no permite enviar** campañas de Shopify Email
+> por API (es una limitación real de Shopify). Por eso la app **genera** el email
+> (asunto + diseño HTML) y lo deja **listo**: lo abres, copias el HTML/texto y lo
+> pegas en *Shopify → Marketing → Shopify Email* para enviarlo con un clic.
 
 ---
 
-## 1. Requisitos previos (una sola vez)
+## Cómo se usa (una vez desplegado)
 
-1. **Cuenta de Instagram Profesional** (Business o Creator) — la de Ámbar.
-2. Esa cuenta de IG **conectada a una Página de Facebook**.
-3. Una **app de Meta** en https://developers.facebook.com/apps (tipo "Business").
-4. Productos agregados a la app: **Instagram** y **Facebook Login for Business**.
-5. Tu usuario de Facebook con rol **Admin** sobre la app, la Página y la cuenta IG
-   (en Meta Business Suite / Business Settings).
+Entras al panel con tu contraseña (`APP_PASSWORD`) y:
 
-### Permisos (scopes) que pedirás en el login
-- `instagram_business_basic`
-- `instagram_business_content_publish`  ← el que publica
-- `pages_show_list`
-- `pages_read_engagement`
-- `pages_manage_posts`  ← solo si también vas a postear en la Página de FB
-- `business_management`
+| Pestaña | Qué haces |
+|---|---|
+| **Conexiones** | Nombre de la marca, URL de la web, tokens de Instagram, Shopify y la "voz" de marca para la IA. Botón **Probar conexión**. |
+| **Plan semanal** | Eliges cuántos posts/emails y el día de inicio → **Generar plan**. Revisas el borrador (posts con foto + captions, y los emails) → **Aprobar y agendar**. |
+| **Cola de Instagram** | Ves los posts agendados, su estado, y puedes **Publicar ahora** o eliminar. |
+| **Emails** | Ves los emails generados, los abres, **copias el HTML/asunto** para pegar en Shopify Email, y los marcas como enviados. |
 
-> Nota: `instagram_content_publish` (sin "business") quedó deprecado el 27-ene-2025.
-> Usa el nombre nuevo `instagram_business_content_publish`.
+Cada marca es independiente: sus propias credenciales, su web, su cola.
 
 ---
 
-## 2. Obtener credenciales (una sola vez)
+## Arquitectura
 
-Necesitas 3 cosas que guardarás en Firestore: `ig_user_id`, `page_id` y un
-**token de larga duración**. Pasos en `scripts/GET_CREDENTIALS.md`.
-
-Resumen:
-1. En el **Graph API Explorer**, genera un *User Access Token* con los scopes de arriba.
-2. Intercámbialo por un **long-lived user token** (60 días):
-   ```
-   GET https://graph.facebook.com/v21.0/oauth/access_token
-       ?grant_type=fb_exchange_token
-       &client_id={APP_ID}
-       &client_secret={APP_SECRET}
-       &fb_exchange_token={SHORT_TOKEN}
-   ```
-3. Obtén tu Página y su **Page Access Token** (este, derivado de un long-lived user
-   token, NO expira):
-   ```
-   GET https://graph.facebook.com/v21.0/me/accounts?access_token={LONG_LIVED_USER_TOKEN}
-   ```
-4. Obtén el **IG User ID** ligado a esa página:
-   ```
-   GET https://graph.facebook.com/v21.0/{PAGE_ID}?fields=instagram_business_account&access_token={PAGE_TOKEN}
-   ```
-5. Guarda en Firestore el doc `meta/credentials` con:
-   `igUserId`, `pageId`, `pageAccessToken`, `longLivedUserToken`, `tokenUpdatedAt`.
-
----
-
-## 3. Modelo de datos (Firestore)
-
-Colección **`scheduledPosts`** — cada documento es un post:
-
-```jsonc
-{
-  "platform": "instagram",        // "instagram" | "facebook" | "both"
-  "type": "image",                // "image" | "carousel"
-  "imageUrl": "https://.../foto-1080x1350.jpg",  // JPEG público, ver §5
-  "imageUrls": ["...", "..."],    // solo si type === "carousel" (2–10)
-  "caption": "Anillo Luna en plata 925 ✨ ...\n\n#joyas #plata925 #ambarjoyas",
-  "altText": "Anillo de plata con piedra luna",  // opcional, accesibilidad
-  "scheduledFor": 1718900000000,  // epoch ms; se publica cuando now >= esto
-  "status": "pending",            // pending | publishing | published | error
-  "igMediaId": null,              // se llena al publicar
-  "fbPostId": null,
-  "error": null,
-  "createdAt": 1718800000000
-}
+```
+public/            Panel web (SPA sin dependencias)
+  index.html
+  app.js
+  styles.css
+api/
+  brands/          CRUD de marcas + prueba de conexión
+  plans/           generar / listar / aprobar / descartar el plan semanal
+  posts/           cola de Instagram (listar, editar, publicar ahora, borrar)
+  emails/          emails generados (listar, ver HTML, marcar enviado, borrar)
+  scrape.js        vista previa de productos detectados
+  status.js        qué está configurado en el entorno
+  cron/
+    publish.js         (cada 5 min) publica los posts que tocan, de todas las marcas
+    refresh-token.js   (semanal) refresca los tokens de Meta de todas las marcas
+lib/
+  brands.js        modelo de marcas
+  meta.js          credenciales/tokens de Meta por marca
+  instagram.js     publicación en Instagram (imagen y carrusel)
+  facebook.js      publicación en la Página de Facebook (opcional)
+  shopify.js       productos desde Shopify Admin API
+  scrape.js        extractor de productos desde la web (Shopify JSON / JSON-LD / HTML)
+  ai.js            generación del plan con Claude
+  email-template.js  HTML del email a partir de las secciones + productos
+  plan.js          orquesta: productos → IA → borrador → agendar
+  publish.js       publica un post con las credenciales de su marca
+  api-helpers.js   auth del panel, parseo de body, manejo de errores
 ```
 
-Doc **`meta/credentials`** — credenciales (ver §2).
+### Datos en Firestore
+
+- **`brands/{id}`** — cada marca: `name`, `websiteUrl`, `instagram{…}`,
+  `shopify{…}`, `voice{…}`.
+- **`plans/{id}`** — borradores y planes agendados (posts + emails resueltos).
+- **`scheduledPosts/{id}`** — cola de publicación (con `brandId`).
+- **`emails/{id}`** — emails generados (`status: ready | sent`).
 
 ---
 
-## 4. Despliegue en Vercel
+## Requisitos por marca
 
-> Guía detallada paso a paso con checklist de variables: **`DEPLOY.md`**.
+Para **Instagram** (son cuentas **tuyas**, así que NO necesitas el App Review de
+Meta; basta la app en modo Desarrollo con tu usuario como admin/tester):
 
-1. `npm install firebase-admin`
-2. Variables de entorno (ver `.env.example`):
-   - `META_APP_ID`, `META_APP_SECRET`
-   - `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`
-   - `CRON_SECRET` (string aleatorio para proteger los endpoints de cron)
-   - `GRAPH_VERSION` (ej. `v21.0`)
-3. `vercel.json` ya define dos crons:
-   - `/api/cron/publish` cada 5 min → publica los posts que tocan.
-   - `/api/cron/refresh-token` semanal → refresca el token de larga duración.
-4. `vercel deploy --prod`
+- Cuenta de Instagram **Profesional** conectada a una **Página de Facebook**.
+- `igUserId`, `pageId` y un **Page Access Token** (derivado de un user token de
+  larga duración). Guía paso a paso: **`scripts/GET_CREDENTIALS.md`**.
+- Scopes: `instagram_business_basic`, `instagram_business_content_publish`,
+  `pages_show_list`, `pages_read_engagement`, `business_management`
+  (y `pages_manage_posts` si además publicas en la Página de FB).
 
-> Firestore te pedirá crear un **índice compuesto** la primera vez
-> (`status` ==, `scheduledFor` <=, orderBy `scheduledFor`). La consola te da el link
-> con un clic.
+Para **Shopify** (opcional pero recomendado — los productos llegan más limpios):
 
----
+- En Shopify → *Ajustes → Apps → Desarrollar apps* crea una app, dale permiso
+  `read_products` y copia el **Admin API access token** (`shpat_…`).
+- En el panel pones el **dominio** (`tu-tienda.myshopify.com`) y ese token.
 
-## 5. Reglas de formato de Instagram (importantes)
-
-La API rechaza el contenedor si no cumples esto:
-- **Imágenes: solo JPEG.** Nada de PNG/WebP/GIF.
-- **Aspect ratio** entre 4:5 (vertical) y 1.91:1 (horizontal). 1:1 sirve.
-- Tamaño máx **8 MB**, ancho máx **1440 px** (recomendado 1080×1350 para feed vertical).
-- La imagen debe estar en una **URL pública** (Meta la descarga con cURL).
-- Carrusel: 2–10 ítems; todas se recortan al aspect ratio de la primera.
-
-Para tus imágenes de Shopify: agrega `&width=1080` a la URL del CDN y asegúrate de
-que el asset sea JPEG. Lo más seguro es subir la pieza final (la de Canva) a
-**Firebase Storage** como `.jpg` y usar esa URL.
+Si no conectas Shopify, la app intenta sacar las fotos directamente de la **web**.
 
 ---
 
-## 6. Límites de publicación
+## Reglas de formato de Instagram (importantes)
 
-- **25 a 100 posts por 24 h** por cuenta (según el modo de API; carrusel cuenta como 1).
-- El sistema consulta `content_publishing_limit` antes de publicar para no chocar.
+La Graph API rechaza la imagen si no cumples:
+- **Solo JPEG** (nada de PNG/WebP/GIF).
+- **Aspect ratio** entre 4:5 y 1.91:1 (1:1 sirve).
+- Máx **8 MB**, ancho máx **1440 px** (recomendado 1080×1350).
+- La imagen debe estar en una **URL pública**.
 
----
-
-## 7. Cómo llenar la cola
-
-Tres formas, no excluyentes:
-- **A mano / desde un panel**: escribes el doc en `scheduledPosts`.
-- **Con IA**: generas el caption (Claude API) y lo guardas en la cola.
-- **Desde Shopify**: `lib/shopify-to-queue.js` toma productos y arma posts
-  automáticamente (imagen del producto + caption con título, precio y link).
+Las imágenes de Shopify se normalizan a `?width=1080`. Si tu web sirve WebP,
+lo más seguro es subir la pieza final como `.jpg`.
 
 ---
 
-## 8. Costo
+## Despliegue
 
-$0 de Meta (la API es gratis). Solo pagas tu hosting (Vercel + Firebase, que ya usas).
+Guía detallada con checklist: **`DEPLOY.md`**. Resumen:
+
+1. Proyecto de **Firebase** con Firestore activado + service account.
+2. App de **Meta** (para refrescar tokens).
+3. API key de **Anthropic**.
+4. Importa el repo en **Vercel** y define las variables de entorno (ver
+   `.env.example`): `APP_PASSWORD`, `ANTHROPIC_API_KEY`, `META_APP_ID`,
+   `META_APP_SECRET`, `FIREBASE_*`, `CRON_SECRET`, `DEFAULT_TIMEZONE`.
+5. Deploy. Los crons se registran solos desde `vercel.json`.
+6. La primera consulta a Firestore pedirá crear 1–2 **índices compuestos**
+   (te da el link con un clic).
+
+Costo: la API de Meta es gratis; pagas solo el uso de Claude y tu hosting
+(Vercel + Firebase).

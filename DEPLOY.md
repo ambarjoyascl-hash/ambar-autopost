@@ -3,8 +3,9 @@
 Guía para poner Ámbar Autopost en producción. Sigue los pasos en orden. La parte
 de Meta/Firebase (credenciales) se hace **una sola vez**.
 
-> Resumen del flujo una vez desplegado: tú dejas posts en la colección
-> `scheduledPosts` de Firestore → el cron de Vercel publica solo cada 5 minutos.
+> Resumen del flujo una vez desplegado: entras al panel → creas tus marcas →
+> generas el plan de la semana con IA → lo apruebas → el cron de Vercel publica
+> solo en Instagram cada 5 minutos y los emails quedan listos para Shopify Email.
 
 ---
 
@@ -12,9 +13,11 @@ de Meta/Firebase (credenciales) se hace **una sola vez**.
 
 - [ ] Cuenta de **Vercel** (gratis) conectada a tu GitHub.
 - [ ] Proyecto de **Firebase** con **Firestore** activado.
-- [ ] App de **Meta** creada y credenciales obtenidas → `scripts/GET_CREDENTIALS.md`.
-- [ ] El doc `meta/credentials` ya guardado en Firestore (con `igUserId`, `pageId`,
-      `pageAccessToken`, `longLivedUserToken`, `tokenUpdatedAt`).
+- [ ] App de **Meta** creada (para refrescar tokens). Las credenciales de IG de
+      cada marca se obtienen con `scripts/GET_CREDENTIALS.md` y se pegan **en el
+      panel**, no en variables de entorno.
+- [ ] API key de **Anthropic** (Claude) para generar el contenido.
+- [ ] Una **contraseña** para el panel (`APP_PASSWORD`).
 
 ---
 
@@ -71,6 +74,10 @@ En *Project → Settings → Environment Variables*, agrega estas (entorno
 
 | Variable | De dónde sale |
 |---|---|
+| `APP_PASSWORD` | La contraseña del panel (invéntala; `openssl rand -hex 16`). **Obligatoria.** |
+| `ANTHROPIC_API_KEY` | console.anthropic.com → API Keys. **Obligatoria** para generar planes. |
+| `CONTENT_MODEL` | `claude-sonnet-5` (opcional) |
+| `DEFAULT_TIMEZONE` | `America/Santiago` (para agendar a la hora local) |
 | `META_APP_ID` | App de Meta → Settings → Basic |
 | `META_APP_SECRET` | App de Meta → Settings → Basic |
 | `GRAPH_VERSION` | `v21.0` (o la versión que uses) |
@@ -78,14 +85,15 @@ En *Project → Settings → Environment Variables*, agrega estas (entorno
 | `FIREBASE_CLIENT_EMAIL` | JSON del service account |
 | `FIREBASE_PRIVATE_KEY` | JSON del service account (ver nota abajo) |
 | `CRON_SECRET` | El que generaste en el Paso 2 |
+| `SHOPIFY_API_VERSION` | `2024-04` (opcional; las credenciales de Shopify se guardan por marca desde el panel) |
 
 > **Nota sobre `FIREBASE_PRIVATE_KEY`:** pega la clave completa, incluyendo
 > `-----BEGIN PRIVATE KEY-----` y `-----END PRIVATE KEY-----`. Si el campo de
 > Vercel convierte los saltos de línea en `\n` literales, no hay problema: el
 > código (`lib/firebase-admin.js`) ya los normaliza.
 
-Si vas a usar la sincronización con Shopify, agrega también:
-`SHOPIFY_STORE_DOMAIN`, `SHOPIFY_ADMIN_TOKEN`, `SHOPIFY_API_VERSION`.
+> Las credenciales de **Instagram** y **Shopify** de cada marca NO son variables
+> de entorno: se ingresan y guardan desde el panel (pestaña **Conexiones**).
 
 ---
 
@@ -118,38 +126,31 @@ para crear el índice con un clic. Hazlo una vez y listo.
 
 ---
 
-## Paso 7 — Prueba de humo
+## Paso 7 — Prueba de humo (desde el panel)
 
-1. Crea un doc en `scheduledPosts` con:
-   ```jsonc
-   {
-     "platform": "instagram",
-     "type": "image",
-     "imageUrl": "https://.../foto-1080x1350.jpg",  // JPEG público, 4:5 o 1:1
-     "caption": "Prueba de publicación automática ✨",
-     "scheduledFor": 0,            // 0 = ya; se publica en el próximo cron
-     "status": "pending",
-     "createdAt": 1718800000000
-   }
-   ```
-2. Espera al próximo ciclo del cron (≤5 min) **o** dispáralo a mano:
-   ```bash
-   curl -H "Authorization: Bearer TU_CRON_SECRET" \
-     https://TU-APP.vercel.app/api/cron/publish
-   ```
-3. Debería responder con `igMediaId` y el doc pasar a `status: "published"`.
-   Si algo falla, el doc tendrá `status: "error"` y el campo `error` con el motivo.
+1. Abre `https://TU-APP.vercel.app` y entra con tu `APP_PASSWORD`.
+2. **Nueva marca** → ponle nombre, pega la URL de tu web y los tokens de
+   Instagram (y Shopify si tienes). Pulsa **Probar conexión** para verificar.
+3. Pestaña **Plan semanal** → **Ver productos detectados** (confirma que salen
+   fotos) → **Generar plan** (tarda ~30s).
+4. Revisa el borrador y pulsa **Aprobar y agendar**.
+5. En **Cola de Instagram**, usa **Publicar ahora** en un post para probar la
+   publicación real (o espera al cron). En **Emails**, ábrelos y copia el HTML
+   para pegarlo en Shopify Email.
+
+Si un post queda en `error`, el detalle aparece en la tarjeta (y en los logs de
+Vercel).
 
 ---
 
 ## Checklist final
 
-- [ ] `meta/credentials` en Firestore con los 5 campos.
 - [ ] Service account de Firebase generado.
-- [ ] `CRON_SECRET` generado y guardado.
-- [ ] 7 variables de entorno en Vercel (Production).
+- [ ] `APP_PASSWORD`, `ANTHROPIC_API_KEY` y `CRON_SECRET` definidos.
+- [ ] Variables de entorno en Vercel (Production) — ver tabla del Paso 4.
 - [ ] Deploy hecho.
-- [ ] Índice de Firestore creado.
-- [ ] Prueba de humo publicó correctamente.
+- [ ] Índice(s) de Firestore creados (aparecen con link al usar el panel).
+- [ ] Primera marca creada y conexión probada.
+- [ ] Plan generado, aprobado y un post publicado de prueba.
 
 Cuando todos estén ✅, la app publica sola. 🎉

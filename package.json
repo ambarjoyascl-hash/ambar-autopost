@@ -1,7 +1,7 @@
 {
   "name": "ambar-autopost",
   "version": "1.0.0",
-  "description": "Publicación automática a Instagram + Facebook desde una cola en Firebase (Meta Graph API).",
+  "description": "Panel multi-marca para planificar y publicar contenido en Instagram y generar emails coordinados para Shopify (Vercel + Firebase + Meta Graph API + Claude).",
   "type": "module",
   "private": true,
   "engines": {
