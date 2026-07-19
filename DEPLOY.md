@@ -103,14 +103,25 @@ En *Project → Settings → Environment Variables*, agrega estas (entorno
 - CLI: `vercel deploy --prod`.
 
 Los crons de `vercel.json` se registran automáticamente al desplegar:
-- `/api/cron/publish` → cada 5 minutos.
+- `/api/cron/publish` → **1 vez al día** (13:00 UTC ≈ 09:00 Chile).
 - `/api/cron/refresh-token` → lunes 06:00 UTC.
 
 Puedes verlos en *Project → Settings → Cron Jobs*.
 
-> Los **Cron Jobs** requieren un plan que los soporte (el plan Hobby permite
-> crons con una frecuencia limitada). Si tu cron de 5 min no se activa, revisa el
-> plan o súbelo a cada 15 min en `vercel.json`.
+### Publicar a la hora exacta (durante el día)
+
+El plan **Hobby (gratis)** de Vercel solo permite crons **1 vez al día**. Por eso
+el cron de publicación viene configurado a diario: agenda posts pero se publican
+en esa pasada diaria (no exactamente a la hora que pusiste). Tienes 3 opciones:
+
+1. **Gratis, con hora exacta (recomendado):** usa la GitHub Action incluida
+   (`.github/workflows/publish.yml`), que llama al endpoint cada 5 minutos. En
+   GitHub → *Settings → Secrets and variables → Actions* añade el secret
+   `CRON_SECRET` (igual que en Vercel) y la variable `CRON_URL`
+   (`https://TU-APP.vercel.app`). No toca tu factura.
+2. **Dejarlo diario:** si te sirve publicar todo en una pasada al día, no hagas
+   nada más.
+3. **Vercel Pro:** sube el cron de `vercel.json` a `*/5 * * * *` y despliega.
 
 ---
 
