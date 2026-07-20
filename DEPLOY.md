@@ -102,26 +102,26 @@ En *Project → Settings → Environment Variables*, agrega estas (entorno
 - Dashboard: pulsa **Deploy**.
 - CLI: `vercel deploy --prod`.
 
-Los crons de `vercel.json` se registran automáticamente al desplegar:
-- `/api/cron/publish` → **1 vez al día** (13:00 UTC ≈ 09:00 Chile).
-- `/api/cron/refresh-token` → lunes 06:00 UTC.
+### Tareas automáticas (crons) → van por GitHub Actions, no por Vercel
 
-Puedes verlos en *Project → Settings → Cron Jobs*.
+Para evitar los límites de crons del plan **Hobby** de Vercel (que impedían el
+deploy), las dos tareas automáticas corren **gratis en GitHub Actions**, ya
+incluidas en el repo:
 
-### Publicar a la hora exacta (durante el día)
+- `.github/workflows/publish.yml` → publica los posts que tocan, **cada 5 min**
+  (hora exacta).
+- `.github/workflows/refresh-token.yml` → refresca los tokens de Meta, **semanal**.
 
-El plan **Hobby (gratis)** de Vercel solo permite crons **1 vez al día**. Por eso
-el cron de publicación viene configurado a diario: agenda posts pero se publican
-en esa pasada diaria (no exactamente a la hora que pusiste). Tienes 3 opciones:
+Para activarlas, en **GitHub → Settings → Secrets and variables → Actions** añade:
+- Secret **`CRON_SECRET`** → el mismo valor que pusiste en Vercel.
+- Variable **`CRON_URL`** → `https://TU-APP.vercel.app` (sin barra final).
 
-1. **Gratis, con hora exacta (recomendado):** usa la GitHub Action incluida
-   (`.github/workflows/publish.yml`), que llama al endpoint cada 5 minutos. En
-   GitHub → *Settings → Secrets and variables → Actions* añade el secret
-   `CRON_SECRET` (igual que en Vercel) y la variable `CRON_URL`
-   (`https://TU-APP.vercel.app`). No toca tu factura.
-2. **Dejarlo diario:** si te sirve publicar todo en una pasada al día, no hagas
-   nada más.
-3. **Vercel Pro:** sube el cron de `vercel.json` a `*/5 * * * *` y despliega.
+Mientras no las configures, las Actions corren pero no hacen nada (no fallan).
+`vercel.json` ya **no** define crons, por lo que el deploy no choca con los
+límites de Hobby.
+
+> ¿Prefieres que Vercel maneje los crons? Solo con **Vercel Pro** puedes usar
+> `"crons"` cada 5 min en `vercel.json`. Con Hobby, deja las GitHub Actions.
 
 ---
 

@@ -1,8 +1,8 @@
-# Publicación cada 5 minutos SIN pagar Vercel Pro.
+# Publicación de posts programados, gratis vía GitHub (cada 5 minutos).
 #
-# El plan Hobby (gratis) de Vercel solo permite crons 1 vez al día. Si quieres
-# que los posts se publiquen a su hora exacta durante el día, usa esta GitHub
-# Action gratuita: cada 5 min llama al endpoint /api/cron/publish de tu app.
+# La app NO usa crons de Vercel (el plan Hobby los limita y complicaba el
+# deploy). En su lugar, esta GitHub Action gratuita llama cada 5 min al endpoint
+# /api/cron/publish para publicar los posts cuya hora ya llegó.
 #
 # Para activarla, en GitHub → Settings → Secrets and variables → Actions añade:
 #   - Secret  CRON_SECRET  → el mismo valor que pusiste en Vercel.

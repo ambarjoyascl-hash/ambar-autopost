@@ -1,0 +1,35 @@
+# Refresco semanal de los tokens de Meta (Instagram/Facebook), gratis vía GitHub.
+#
+# Vercel (plan Hobby) limita las tareas automáticas, así que movemos también el
+# refresco de tokens a una GitHub Action gratuita. Corre una vez por semana y
+# llama al endpoint /api/cron/refresh-token de tu app.
+#
+# Usa los mismos secretos que la Action de publicación:
+#   - Secret  CRON_SECRET  → el mismo valor que pusiste en Vercel.
+#   - Variable CRON_URL    → https://TU-APP.vercel.app  (sin barra final)
+name: refresh-meta-token
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch: {}
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Refrescar tokens de Meta
+        env:
+          CRON_URL: ${{ vars.CRON_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$CRON_URL" ] || [ -z "$CRON_SECRET" ]; then
+            echo "CRON_URL o CRON_SECRET no configurados; nada que hacer."
+            exit 0
+          fi
+          echo "POST $CRON_URL/api/cron/refresh-token"
+          code=$(curl -s -o /tmp/out.json -w "%{http_code}" \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "$CRON_URL/api/cron/refresh-token")
+          echo "HTTP $code"; cat /tmp/out.json || true
+          exit 0
