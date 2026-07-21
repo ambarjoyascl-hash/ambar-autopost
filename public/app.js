@@ -106,7 +106,27 @@ const statusBadge = (s) => {
   return `<span class="badge ${cls}">${esc(label)}</span>`;
 };
 
-// ── Login ───────────────────────────────────────────────────────────────
+// ── Login / Crear cuenta ─────────────────────────────────────────────────
+const GOOGLE_BTN = `
+  <button class="btn ghost" style="width:100%" type="button" id="googleBtn">
+    <svg width="16" height="16" viewBox="0 0 48 48" style="vertical-align:-3px;margin-right:8px"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continuar con Google
+  </button>`;
+
+const OR_DIVIDER = `
+  <div style="display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--muted,#888);font-size:12px">
+    <span style="flex:1;height:1px;background:var(--line,#ddd)"></span>o<span style="flex:1;height:1px;background:var(--line,#ddd)"></span>
+  </div>`;
+
+function bindGoogleBtn() {
+  $("#googleBtn")?.addEventListener("click", async () => {
+    try {
+      await signInWithPopup(auth, new GoogleAuthProvider());
+    } catch (err) {
+      toast(authErrorMsg(err), true);
+    }
+  });
+}
+
 function renderLogin() {
   root.innerHTML = `
     <div class="login-wrap">
@@ -117,48 +137,28 @@ function renderLogin() {
           <div class="field"><input type="email" id="emailInput" placeholder="Email" autocomplete="email" autofocus /></div>
           <div class="field"><input type="password" id="pwInput" placeholder="Contraseña" autocomplete="current-password" /></div>
           <button class="btn primary" style="width:100%" type="submit">Entrar</button>
-          <button class="btn ghost" style="width:100%;margin-top:8px" type="button" id="registerBtn">Crear cuenta</button>
         </form>
-        <div style="display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--muted,#888);font-size:12px">
-          <span style="flex:1;height:1px;background:var(--line,#ddd)"></span>o<span style="flex:1;height:1px;background:var(--line,#ddd)"></span>
-        </div>
-        <button class="btn ghost" style="width:100%" type="button" id="googleBtn">
-          <svg width="16" height="16" viewBox="0 0 48 48" style="vertical-align:-3px;margin-right:8px"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continuar con Google
-        </button>
-        <p style="margin-top:16px;font-size:12px"><a href="#" id="forgotLink" style="color:inherit">¿Olvidaste tu contraseña?</a></p>
+        ${OR_DIVIDER}
+        ${GOOGLE_BTN}
+        <p style="margin-top:18px;font-size:13px">¿Primera vez aquí? <a href="#" id="goRegister"><b>Crear cuenta</b></a></p>
+        <p style="margin-top:8px;font-size:12px"><a href="#" id="forgotLink" style="color:inherit">¿Olvidaste tu contraseña?</a></p>
       </div>
     </div>`;
 
   const emailVal = () => $("#emailInput").value.trim();
-  const pwVal = () => $("#pwInput").value;
 
   $("#loginForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    if (!emailVal() || !pwVal()) return toast("Ingresa tu email y contraseña.", true);
+    if (!emailVal() || !$("#pwInput").value) return toast("Ingresa tu email y contraseña.", true);
     try {
-      await signInWithEmailAndPassword(auth, emailVal(), pwVal());
+      await signInWithEmailAndPassword(auth, emailVal(), $("#pwInput").value);
     } catch (err) {
       toast(authErrorMsg(err), true);
     }
   });
 
-  $("#registerBtn").addEventListener("click", async () => {
-    if (!emailVal() || !pwVal()) return toast("Escribe el email y la contraseña que quieres usar y pulsa «Crear cuenta».", true);
-    try {
-      await createUserWithEmailAndPassword(auth, emailVal(), pwVal());
-      toast("Cuenta creada ✓");
-    } catch (err) {
-      toast(authErrorMsg(err), true);
-    }
-  });
-
-  $("#googleBtn").addEventListener("click", async () => {
-    try {
-      await signInWithPopup(auth, new GoogleAuthProvider());
-    } catch (err) {
-      toast(authErrorMsg(err), true);
-    }
-  });
+  $("#goRegister").addEventListener("click", (e) => { e.preventDefault(); renderRegister(); });
+  bindGoogleBtn();
 
   $("#forgotLink").addEventListener("click", async (e) => {
     e.preventDefault();
@@ -170,6 +170,43 @@ function renderLogin() {
       toast(authErrorMsg(err), true);
     }
   });
+}
+
+function renderRegister() {
+  root.innerHTML = `
+    <div class="login-wrap">
+      <div class="login-card">
+        <h1>💎 Autopost</h1>
+        <p>Crear cuenta</p>
+        <form id="registerForm">
+          <div class="field"><input type="email" id="regEmail" placeholder="Email" autocomplete="email" autofocus /></div>
+          <div class="field"><input type="password" id="regPw" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="new-password" /></div>
+          <div class="field"><input type="password" id="regPw2" placeholder="Repite la contraseña" autocomplete="new-password" /></div>
+          <button class="btn primary" style="width:100%" type="submit">Crear cuenta</button>
+        </form>
+        ${OR_DIVIDER}
+        ${GOOGLE_BTN}
+        <p style="margin-top:18px;font-size:13px">¿Ya tienes cuenta? <a href="#" id="goLogin"><b>Entrar</b></a></p>
+      </div>
+    </div>`;
+
+  $("#registerForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = $("#regEmail").value.trim();
+    const pw = $("#regPw").value;
+    if (!email || !pw) return toast("Completa el email y la contraseña.", true);
+    if (pw.length < 6) return toast("La contraseña debe tener al menos 6 caracteres.", true);
+    if (pw !== $("#regPw2").value) return toast("Las contraseñas no coinciden.", true);
+    try {
+      await createUserWithEmailAndPassword(auth, email, pw);
+      toast("Cuenta creada ✓ ¡Bienvenida!");
+    } catch (err) {
+      toast(authErrorMsg(err), true);
+    }
+  });
+
+  $("#goLogin").addEventListener("click", (e) => { e.preventDefault(); renderLogin(); });
+  bindGoogleBtn();
 }
 
 // ── App principal ─────────────────────────────────────────────────────────
