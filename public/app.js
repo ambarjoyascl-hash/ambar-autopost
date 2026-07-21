@@ -205,6 +205,7 @@ async function loadBrands() {
   state.brands = brands;
   if (!brands.find((b) => b.id === state.brandId)) state.brandId = brands[0]?.id || null;
   if (state.brandId) localStorage.setItem("brandId", state.brandId);
+  api("/api/status").then((s) => { state.sub = s.subscription || null; }).catch(() => {});
 }
 async function loadBrandData(force = false) {
   const id = state.brandId;
@@ -409,7 +410,8 @@ function renderShell(contentHtml, afterMount) {
         <div style="display:flex;align-items:center;gap:10px;padding:4px 6px">
           <span class="avatar">${esc((email[0] || "S").toUpperCase())}</span>
           <span style="flex:1;min-width:0"><span style="display:block;font-weight:700;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(email)}</span>
-          <a href="#" data-logout style="font-size:11.5px">${T.logout}</a></span>
+          <span style="display:flex;gap:8px;align-items:center"><span style="font-size:11px;color:var(--muted)">${state.sub ? esc(state.sub.planName) : ""}</span>
+          <a href="#" data-logout style="font-size:11.5px">${T.logout}</a></span></span>
         </div>
       </div>
     </aside>
@@ -554,6 +556,11 @@ function renderCreate() {
             <select id="toneInput">${C.tones.map((tn) => `<option ${o.tone === tn ? "selected" : ""}>${tn}</option>`).join("")}</select>
           </div>
         </div>
+        <div class="field"><label>${state.lang === "en" ? "Emails per week" : "Emails por semana"}</label>
+          <div style="display:flex;gap:6px;background:var(--bg);border:1px solid #e2dcd2;border-radius:11px;padding:4px;max-width:280px">
+            ${[2, 3, 7].map((n) => `<button class="btn sm ${(o.emailsPerWeek || 2) === n ? "primary" : "ghost"}" data-epw="${n}" style="flex:1">${n === 7 ? (state.lang === "en" ? "Daily" : "Diario") : n}</button>`).join("")}
+          </div>
+        </div>
 
         <div class="field"><label>${C.channels}</label>
           <div class="btn-row">
@@ -596,6 +603,10 @@ function renderCreate() {
           </div>` : ""}
         </div>
 
+        ${state.sub ? `<p class="hint" style="margin:14px 0 0;text-align:center">
+          ${state.sub.planName} · ${state.lang === "en" ? "generations this month" : "generaciones este mes"}: <b>${state.sub.gensUsed}/${state.sub.gensMax}</b>
+          ${state.sub.trialEndsAt ? ` · ${state.lang === "en" ? "trial ends" : "prueba termina"} ${new Date(state.sub.trialEndsAt).toLocaleDateString(state.lang === "en" ? "en-US" : "es-CL")}` : ""}
+        </p>` : ""}
         <button class="btn primary lg block" id="genBtn" style="margin-top:14px">✦ ${C.generate}</button>
       </div>
 
@@ -655,6 +666,7 @@ function renderCreate() {
       await loadBrands(); render();
     }));
     $$("[data-imgmode]").forEach((b) => b.addEventListener("click", () => { o.imageMode = b.dataset.imgmode; render(); }));
+    $$("[data-epw]").forEach((b) => b.addEventListener("click", () => { o.emailsPerWeek = Number(b.dataset.epw); render(); }));
     $$("[data-open-plan]").forEach((b) => b.addEventListener("click", async () => {
       const { plan } = await api(`/api/plans/${b.dataset.openPlan}`);
       state.draft = plan; go("draft");
@@ -667,7 +679,7 @@ function renderCreate() {
       try {
         const { plan } = await api("/api/plans", { method: "POST", body: {
           brandId: brand.id, goal: o.goal, tone: o.tone, imageMode: o.imageMode || "web",
-          postsPerWeek: 7, includeEmails: o.emailOn, emailsPerWeek: o.emailOn ? 2 : 0,
+          postsPerWeek: 7, includeEmails: o.emailOn, emailsPerWeek: o.emailOn ? (o.emailsPerWeek || 2) : 0,
         } });
         if (o.fbOn !== !!brand.instagram?.postToFacebook) {
           api(`/api/brands/${brand.id}`, { method: "PUT", body: { instagram: { postToFacebook: o.fbOn } } }).catch(() => {});
@@ -914,11 +926,12 @@ function renderAnalytics() {
 function renderPricing() {
   const P = t().pricing;
   const tiers = [
-    { name: "Básico", price: "$14.990", brands: P.brands1 },
-    { name: "Pro", price: "$24.990", brands: P.brandsN.replace("{n}", "2") },
-    { name: "Studio", price: "$34.990", brands: P.brandsN.replace("{n}", "3"), popular: true },
-    { name: "Agencia", price: "$54.990", brands: P.brandsN.replace("{n}", "5") },
+    { key: "basico", name: "Básico", price: "$14.990", brands: P.brands1, gens: 8 },
+    { key: "pro", name: "Pro", price: "$24.990", brands: P.brandsN.replace("{n}", "2"), gens: 20 },
+    { key: "studio", name: "Studio", price: "$34.990", brands: P.brandsN.replace("{n}", "3"), gens: 40, popular: true },
+    { key: "agencia", name: "Agencia", price: "$54.990", brands: P.brandsN.replace("{n}", "5"), gens: 100 },
   ];
+  const current = state.sub?.plan;
   const html = `
     <div style="text-align:center;max-width:560px;margin:0 auto 30px">
       <h2 style="margin:0 0 8px;font-size:24px;font-weight:800;letter-spacing:-.02em">${P.title}</h2>
@@ -933,11 +946,13 @@ function renderPricing() {
             <span style="font-size:38px;font-weight:800;letter-spacing:-.03em">${p.price}</span>
             <span style="font-size:14px;color:var(--muted);font-weight:600">${P.perMonth}</span>
           </div>
-          <div class="badge accent" style="margin-bottom:18px">${p.brands}</div>
+          <div class="badge accent" style="margin-bottom:18px">${p.brands} · ${p.gens} ${state.lang === "en" ? "plans/mo" : "generaciones/mes"}</div>
           <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px">
             ${P.features.map((f) => `<div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--ink-soft)"><span class="chip" style="width:18px;height:18px;border-radius:50%;background:var(--ok-bg);color:var(--ok-ink);font-size:11px">✓</span>${f}</div>`).join("")}
           </div>
-          <button class="btn ${p.popular ? "primary" : "soft"} block" data-choose>${P.choose}</button>
+          ${current === p.key
+            ? `<button class="btn ghost block" disabled>✓ ${state.lang === "en" ? "Current plan" : "Plan actual"}</button>`
+            : `<button class="btn ${p.popular ? "primary" : "soft"} block" data-choose>${P.choose}</button>`}
         </div>`).join("")}
     </div>`;
   renderShell(html, () => {

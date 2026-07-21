@@ -5,6 +5,7 @@
 //                                        includeEmails?, emailsPerWeek? }
 import { checkAuth, readJson, requireBrand, withErrors } from "../../lib/api-helpers.js";
 import { generatePlan, listPlans } from "../../lib/plan.js";
+import { consumeGeneration } from "../../lib/limits.js";
 
 export default withErrors(async function handler(req, res) {
   const user = await checkAuth(req, res);
@@ -19,6 +20,7 @@ export default withErrors(async function handler(req, res) {
   if (req.method === "POST") {
     const body = await readJson(req);
     if (!(await requireBrand(req, res, user, body.brandId))) return;
+    if (!user.admin) await consumeGeneration(user.uid, user.email);
     const plan = await generatePlan(body.brandId, body);
     return res.status(201).json({ plan });
   }
