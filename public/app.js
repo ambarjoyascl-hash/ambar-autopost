@@ -609,7 +609,7 @@ function brandFormHtml(brand) {
         <div class="field"><label>Moneda</label><input id="f_currency" value="${esc(v.currency || "CLP")}" placeholder="CLP" /></div>
         <div class="field"><label>Idioma</label><input id="f_language" value="${esc(v.language || "es")}" placeholder="es" /></div>
       </div>
-      <div class="field"><label>Hashtags base <span class="sub">(separados por espacio)</span></label><input id="f_hashtags" value="${esc((v.hashtags || []).join(" "))}" /></div>
+      <div class="field"><label>Hashtags fijos <span class="sub">(opcional — la IA genera los hashtags de cada post; escribe aquí solo los que quieras incluir siempre, ej. el de tu marca)</span></label><input id="f_hashtags" value="${esc((v.hashtags || []).join(" "))}" /></div>
     </div>
 
     <div class="btn-row">
