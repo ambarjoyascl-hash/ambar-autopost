@@ -52,8 +52,9 @@ api/
   scrape.js        vista previa de productos detectados
   status.js        qué está configurado en el entorno
   cron/
-    publish.js         (cada 5 min) publica los posts que tocan, de todas las marcas
-    refresh-token.js   (semanal) refresca los tokens de Meta de todas las marcas
+    [task].js        una función para ambas tareas: /publish (cada 5 min,
+                     publica los posts que tocan) y /refresh-token (semanal,
+                     refresca los tokens de Meta de todas las marcas)
 lib/
   brands.js        modelo de marcas
   meta.js          credenciales/tokens de Meta por marca

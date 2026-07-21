@@ -2,12 +2,29 @@
 // GET    /api/brands/:id   → una marca (sin secretos)
 // PUT    /api/brands/:id   → actualiza (los tokens vacíos no se sobreescriben)
 // DELETE /api/brands/:id   → elimina la marca
+// POST   /api/brands/test  → prueba credenciales SIN guardarlas (id reservado
+//        "test"; vive aquí para no gastar otra función del plan Hobby).
 import { checkAuth, readJson, withErrors } from "../../lib/api-helpers.js";
 import { getBrand, updateBrand, deleteBrand, redactBrand } from "../../lib/brands.js";
+import { testInstagramCredentials } from "../../lib/meta.js";
+import { testShopify } from "../../lib/shopify.js";
 
 export default withErrors(async function handler(req, res) {
   if (!checkAuth(req, res)) return;
   const { id } = req.query;
+
+  if (id === "test") {
+    if (req.method !== "POST") return res.status(405).json({ error: "Método no permitido." });
+    const body = await readJson(req);
+    const out = {};
+    if (body.instagram) {
+      out.instagram = await testInstagramCredentials(body.instagram);
+    }
+    if (body.shopify) {
+      out.shopify = await testShopify({ name: "test", shopify: body.shopify });
+    }
+    return res.status(200).json(out);
+  }
 
   if (req.method === "GET") {
     const brand = await getBrand(id, { redacted: true });

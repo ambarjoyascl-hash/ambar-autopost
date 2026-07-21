@@ -1,14 +1,23 @@
-// api/cron/publish.js
-// Cron (cada 5 min): publica los posts "pending" cuya hora ya llegó, de TODAS
-// las marcas. Cada post se publica con las credenciales de su propia marca.
+// api/cron/[task].js
+// Una sola función para ambas tareas programadas (límite de funciones del plan Hobby):
+//   POST /api/cron/publish        (cada 5 min) publica los posts "pending" cuya hora llegó
+//   POST /api/cron/refresh-token  (semanal)    refresca los tokens de Meta de todas las marcas
 import { db } from "../../lib/firebase-admin.js";
 import { publishPost } from "../../lib/publish.js";
-import { getBrandCredentials, getPublishingLimit } from "../../lib/meta.js";
+import { getBrandCredentials, getPublishingLimit, refreshBrandToken } from "../../lib/meta.js";
+import { listBrands } from "../../lib/brands.js";
 import { checkCron } from "../../lib/api-helpers.js";
 
 export default async function handler(req, res) {
   if (!checkCron(req, res)) return;
 
+  const { task } = req.query;
+  if (task === "publish") return publishDue(res);
+  if (task === "refresh-token") return refreshTokens(res);
+  return res.status(404).json({ error: "Tarea desconocida." });
+}
+
+async function publishDue(res) {
   const now = Date.now();
   const snap = await db
     .collection("scheduledPosts")
@@ -65,4 +74,19 @@ export default async function handler(req, res) {
   }
 
   return res.status(200).json({ processed: results.length, results });
+}
+
+async function refreshTokens(res) {
+  const brands = await listBrands({ redacted: false });
+  const results = [];
+  for (const brand of brands) {
+    if (!brand.instagram?.longLivedUserToken) continue;
+    try {
+      await refreshBrandToken(brand.id);
+      results.push({ brand: brand.name, ok: true });
+    } catch (err) {
+      results.push({ brand: brand.name, ok: false, error: String(err.message || err) });
+    }
+  }
+  return res.status(200).json({ ok: true, refreshedAt: Date.now(), results });
 }
