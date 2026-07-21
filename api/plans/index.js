@@ -7,7 +7,7 @@ import { checkAuth, readJson, withErrors } from "../../lib/api-helpers.js";
 import { generatePlan, listPlans } from "../../lib/plan.js";
 
 export default withErrors(async function handler(req, res) {
-  if (!checkAuth(req, res)) return;
+  if (!(await checkAuth(req, res))) return;
 
   if (req.method === "GET") {
     const plans = await listPlans(req.query.brandId);

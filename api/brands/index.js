@@ -5,7 +5,7 @@ import { checkAuth, readJson, withErrors } from "../../lib/api-helpers.js";
 import { listBrands, createBrand, redactBrand } from "../../lib/brands.js";
 
 export default withErrors(async function handler(req, res) {
-  if (!checkAuth(req, res)) return;
+  if (!(await checkAuth(req, res))) return;
 
   if (req.method === "GET") {
     const brands = await listBrands();

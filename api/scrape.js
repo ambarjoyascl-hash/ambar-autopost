@@ -7,7 +7,7 @@ import { sourceProducts } from "../lib/plan.js";
 import { scrapeProducts } from "../lib/scrape.js";
 
 export default withErrors(async function handler(req, res) {
-  if (!checkAuth(req, res)) return;
+  if (!(await checkAuth(req, res))) return;
   if (req.method !== "POST") return res.status(405).json({ error: "Método no permitido." });
 
   const body = await readJson(req);

@@ -5,7 +5,7 @@ import { checkAuth, withErrors } from "../../lib/api-helpers.js";
 import { db } from "../../lib/firebase-admin.js";
 
 export default withErrors(async function handler(req, res) {
-  if (!checkAuth(req, res)) return;
+  if (!(await checkAuth(req, res))) return;
   if (req.method !== "GET") return res.status(405).json({ error: "Método no permitido." });
 
   const { brandId, status } = req.query;

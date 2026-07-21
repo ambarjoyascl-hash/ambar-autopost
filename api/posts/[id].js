@@ -9,7 +9,7 @@ import { publishPost } from "../../lib/publish.js";
 const EDITABLE = ["caption", "altText", "imageUrl", "scheduledFor", "platform", "status"];
 
 export default withErrors(async function handler(req, res) {
-  if (!checkAuth(req, res)) return;
+  if (!(await checkAuth(req, res))) return;
   const { id } = req.query;
   const ref = db.collection("scheduledPosts").doc(id);
 

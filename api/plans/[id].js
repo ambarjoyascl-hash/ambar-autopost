@@ -7,7 +7,7 @@ import { db } from "../../lib/firebase-admin.js";
 import { approvePlan, discardPlan } from "../../lib/plan.js";
 
 export default withErrors(async function handler(req, res) {
-  if (!checkAuth(req, res)) return;
+  if (!(await checkAuth(req, res))) return;
   const { id } = req.query;
 
   if (req.method === "GET") {

@@ -8,7 +8,7 @@ import { db } from "../../lib/firebase-admin.js";
 const EDITABLE = ["subject", "previewText", "status"];
 
 export default withErrors(async function handler(req, res) {
-  if (!checkAuth(req, res)) return;
+  if (!(await checkAuth(req, res))) return;
   const { id } = req.query;
   const ref = db.collection("emails").doc(id);
 

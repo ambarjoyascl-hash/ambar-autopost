@@ -4,7 +4,7 @@
 import { checkAuth, withErrors } from "../lib/api-helpers.js";
 
 export default withErrors(async function handler(req, res) {
-  if (!checkAuth(req, res)) return;
+  if (!(await checkAuth(req, res))) return;
   return res.status(200).json({
     anthropic: !!process.env.ANTHROPIC_API_KEY,
     meta: !!(process.env.META_APP_ID && process.env.META_APP_SECRET),

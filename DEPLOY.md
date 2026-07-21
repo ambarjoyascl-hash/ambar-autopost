@@ -74,7 +74,8 @@ En *Project → Settings → Environment Variables*, agrega estas (entorno
 
 | Variable | De dónde sale |
 |---|---|
-| `APP_PASSWORD` | La contraseña del panel (invéntala; `openssl rand -hex 16`). **Obligatoria.** |
+| `APP_PASSWORD` | Contraseña compartida de respaldo (para scripts/curl). El panel usa login con email o Google (Firebase Auth). |
+| `ALLOWED_EMAILS` | Emails (separados por coma) con acceso al panel. Si no se define, entra cualquier cuenta que inicie sesión. |
 | `ANTHROPIC_API_KEY` | console.anthropic.com → API Keys. **Obligatoria** para generar planes. |
 | `CONTENT_MODEL` | `claude-sonnet-5` (opcional) |
 | `DEFAULT_TIMEZONE` | `America/Santiago` (para agendar a la hora local) |
@@ -139,7 +140,10 @@ para crear el índice con un clic. Hazlo una vez y listo.
 
 ## Paso 7 — Prueba de humo (desde el panel)
 
-1. Abre `https://TU-APP.vercel.app` y entra con tu `APP_PASSWORD`.
+1. Abre `https://TU-APP.vercel.app` y entra con tu cuenta (email/contraseña o
+   Google). Requiere haber habilitado en Firebase → Authentication los
+   proveedores **Email/Password** y **Google**, y que tu email esté en
+   `ALLOWED_EMAILS`.
 2. **Nueva marca** → ponle nombre, pega la URL de tu web y los tokens de
    Instagram (y Shopify si tienes). Pulsa **Probar conexión** para verificar.
 3. Pestaña **Plan semanal** → **Ver productos detectados** (confirma que salen

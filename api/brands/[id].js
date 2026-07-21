@@ -10,7 +10,7 @@ import { testInstagramCredentials } from "../../lib/meta.js";
 import { testShopify } from "../../lib/shopify.js";
 
 export default withErrors(async function handler(req, res) {
-  if (!checkAuth(req, res)) return;
+  if (!(await checkAuth(req, res))) return;
   const { id } = req.query;
 
   if (id === "test") {

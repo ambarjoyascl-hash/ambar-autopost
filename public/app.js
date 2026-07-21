@@ -3,8 +3,28 @@
 // generar el plan semanal con IA, revisar/aprobar posts de Instagram y emails
 // coordinados para Shopify Email.
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  sendPasswordResetEmail,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDWOTFFnh9kyiPbgr9PssYNakdBUA-f0O4",
+  authDomain: "ambar-autopost.firebaseapp.com",
+  projectId: "ambar-autopost",
+  appId: "1:3976211763:web:b60cd8e2fbfadffa786246",
+};
+const fbApp = initializeApp(firebaseConfig);
+const auth = getAuth(fbApp);
+
 const state = {
-  pw: localStorage.getItem("pw") || "",
   brands: [],
   brandId: null,
   tab: "plan",
@@ -17,17 +37,17 @@ const $ = (sel, el = document) => el.querySelector(sel);
 
 // ── API ─────────────────────────────────────────────────────────────────
 async function api(path, { method = "GET", body } = {}) {
+  const headers = { "Content-Type": "application/json" };
+  if (auth.currentUser) {
+    headers.Authorization = `Bearer ${await auth.currentUser.getIdToken()}`;
+  }
   const res = await fetch(path, {
     method,
-    headers: {
-      "Content-Type": "application/json",
-      "x-app-password": state.pw,
-    },
+    headers,
     body: body ? JSON.stringify(body) : undefined,
   });
   const data = await res.json().catch(() => ({}));
   if (res.status === 401) {
-    logout();
     throw new Error(data.error || "No autorizado.");
   }
   if (!res.ok) throw new Error(data.error || `Error ${res.status}`);
@@ -42,9 +62,24 @@ function toast(msg, isErr = false) {
 }
 
 function logout() {
-  state.pw = "";
-  localStorage.removeItem("pw");
-  renderLogin();
+  signOut(auth).catch(() => {});
+}
+
+// Mensajes en español para los errores comunes de Firebase Auth.
+function authErrorMsg(err) {
+  const map = {
+    "auth/invalid-credential": "Email o contraseña incorrectos.",
+    "auth/wrong-password": "Email o contraseña incorrectos.",
+    "auth/user-not-found": "No existe una cuenta con ese email. Usa «Crear cuenta».",
+    "auth/email-already-in-use": "Ya existe una cuenta con ese email. Usa «Entrar».",
+    "auth/weak-password": "La contraseña debe tener al menos 6 caracteres.",
+    "auth/invalid-email": "Ese email no es válido.",
+    "auth/too-many-requests": "Demasiados intentos. Espera un momento y prueba de nuevo.",
+    "auth/popup-closed-by-user": "Cerraste la ventana de Google antes de terminar.",
+    "auth/operation-not-allowed": "Este método de acceso no está habilitado en Firebase.",
+    "auth/unauthorized-domain": "Este dominio no está autorizado en Firebase Authentication.",
+  };
+  return map[err?.code] || err?.message || "No se pudo iniciar sesión.";
 }
 
 // ── Helpers de render ──────────────────────────────────────────────────
@@ -79,35 +114,76 @@ function renderLogin() {
         <h1>💎 Autopost</h1>
         <p>Instagram + Shopify Email, coordinados</p>
         <form id="loginForm">
-          <div class="field"><input type="password" id="pwInput" placeholder="Contraseña del panel" autofocus /></div>
+          <div class="field"><input type="email" id="emailInput" placeholder="Email" autocomplete="email" autofocus /></div>
+          <div class="field"><input type="password" id="pwInput" placeholder="Contraseña" autocomplete="current-password" /></div>
           <button class="btn primary" style="width:100%" type="submit">Entrar</button>
+          <button class="btn ghost" style="width:100%;margin-top:8px" type="button" id="registerBtn">Crear cuenta</button>
         </form>
-        <p style="margin-top:16px;font-size:12px">Es la variable <code>APP_PASSWORD</code> que definiste en Vercel.</p>
+        <div style="display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--muted,#888);font-size:12px">
+          <span style="flex:1;height:1px;background:var(--line,#ddd)"></span>o<span style="flex:1;height:1px;background:var(--line,#ddd)"></span>
+        </div>
+        <button class="btn ghost" style="width:100%" type="button" id="googleBtn">
+          <svg width="16" height="16" viewBox="0 0 48 48" style="vertical-align:-3px;margin-right:8px"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Continuar con Google
+        </button>
+        <p style="margin-top:16px;font-size:12px"><a href="#" id="forgotLink" style="color:inherit">¿Olvidaste tu contraseña?</a></p>
       </div>
     </div>`;
+
+  const emailVal = () => $("#emailInput").value.trim();
+  const pwVal = () => $("#pwInput").value;
+
   $("#loginForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    state.pw = $("#pwInput").value.trim();
+    if (!emailVal() || !pwVal()) return toast("Ingresa tu email y contraseña.", true);
     try {
-      await api("/api/status");
-      localStorage.setItem("pw", state.pw);
-      boot();
+      await signInWithEmailAndPassword(auth, emailVal(), pwVal());
     } catch (err) {
-      toast(err.message, true);
+      toast(authErrorMsg(err), true);
+    }
+  });
+
+  $("#registerBtn").addEventListener("click", async () => {
+    if (!emailVal() || !pwVal()) return toast("Escribe el email y la contraseña que quieres usar y pulsa «Crear cuenta».", true);
+    try {
+      await createUserWithEmailAndPassword(auth, emailVal(), pwVal());
+      toast("Cuenta creada ✓");
+    } catch (err) {
+      toast(authErrorMsg(err), true);
+    }
+  });
+
+  $("#googleBtn").addEventListener("click", async () => {
+    try {
+      await signInWithPopup(auth, new GoogleAuthProvider());
+    } catch (err) {
+      toast(authErrorMsg(err), true);
+    }
+  });
+
+  $("#forgotLink").addEventListener("click", async (e) => {
+    e.preventDefault();
+    if (!emailVal()) return toast("Escribe tu email arriba y vuelve a pulsar el enlace.", true);
+    try {
+      await sendPasswordResetEmail(auth, emailVal());
+      toast("Te enviamos un email para restablecer la contraseña.");
+    } catch (err) {
+      toast(authErrorMsg(err), true);
     }
   });
 }
 
 // ── App principal ─────────────────────────────────────────────────────────
 async function boot() {
-  if (!state.pw) return renderLogin();
+  if (!auth.currentUser) return renderLogin();
   try {
     const { brands } = await api("/api/brands");
     state.brands = brands;
     if (!state.brandId && brands.length) state.brandId = brands[0].id;
     renderApp();
   } catch (err) {
-    if (state.pw) toast(err.message, true);
+    // Cuenta sin acceso (ALLOWED_EMAILS) u otro error → de vuelta al login.
+    toast(err.message, true);
+    logout();
   }
 }
 
@@ -424,13 +500,17 @@ function brandFormHtml(brand) {
   return `
     <div class="card">
       <h3>Datos de la marca</h3>
-      <div class="field"><label>Nombre de la marca</label><input id="f_name" value="${esc(b.name || "")}" placeholder="Ej: Ámbar Joyas" /></div>
-      <div class="field"><label>Página web <span class="sub">de donde se sacan fotos y productos</span></label><input id="f_web" value="${esc(b.websiteUrl || "")}" placeholder="https://www.ambarjoyas.cl" /></div>
+      <div class="field"><label>Nombre de la marca</label><input id="f_name" value="${esc(b.name || "")}" /></div>
+      <div class="field"><label>Página web <span class="sub">de donde se sacan fotos y productos</span></label><input id="f_web" value="${esc(b.websiteUrl || "")}" /></div>
     </div>
 
     <div class="card">
       <h3>Instagram <span class="sub">(Meta Graph API)</span></h3>
-      <p class="hint">¿No tienes estos datos? Sigue la guía <code>scripts/GET_CREDENTIALS.md</code> para obtenerlos con el Graph API Explorer. Son de tu propia cuenta, no requieren revisión de Meta.</p>
+      <p class="hint">¿No tienes estos datos? Son de tu propia cuenta y no requieren revisión de Meta.</p>
+      <div class="btn-row" style="margin-bottom:10px">
+        <a class="btn ghost sm" href="/guia-credenciales.html" target="_blank">📖 Ver guía paso a paso</a>
+        <a class="btn ghost sm" href="/GET_CREDENTIALS.md" download="GET_CREDENTIALS.md">⬇ Descargar guía (.md)</a>
+      </div>
       <div class="row">
         <div class="field"><label>IG User ID</label><input id="f_igUserId" value="${esc(ig.igUserId || "")}" placeholder="17841400000000000" /></div>
         <div class="field"><label>Page ID</label><input id="f_pageId" value="${esc(ig.pageId || "")}" placeholder="10000000000000" /></div>
@@ -454,13 +534,13 @@ function brandFormHtml(brand) {
       <h3>Voz de la marca <span class="sub">(guía para la IA)</span></h3>
       <div class="row">
         <div class="field"><label>Tono</label><input id="f_tone" value="${esc(v.tone || "")}" placeholder="cálido, cercano, aspiracional" /></div>
-        <div class="field"><label>Público</label><input id="f_audience" value="${esc(v.audience || "")}" placeholder="mujeres 25-45 que aman la plata" /></div>
+        <div class="field"><label>Público</label><input id="f_audience" value="${esc(v.audience || "")}" placeholder="ej: mujeres 25-45" /></div>
       </div>
       <div class="row">
         <div class="field"><label>Moneda</label><input id="f_currency" value="${esc(v.currency || "CLP")}" placeholder="CLP" /></div>
         <div class="field"><label>Idioma</label><input id="f_language" value="${esc(v.language || "es")}" placeholder="es" /></div>
       </div>
-      <div class="field"><label>Hashtags base <span class="sub">(separados por espacio)</span></label><input id="f_hashtags" value="${esc((v.hashtags || []).join(" "))}" placeholder="#ambarjoyas #plata925 #joyaschile" /></div>
+      <div class="field"><label>Hashtags base <span class="sub">(separados por espacio)</span></label><input id="f_hashtags" value="${esc((v.hashtags || []).join(" "))}" /></div>
     </div>
 
     <div class="btn-row">
@@ -558,4 +638,4 @@ async function refreshBrands() {
 }
 
 // ── Arranque ──────────────────────────────────────────────────────────────
-boot();
+onAuthStateChanged(auth, () => boot());
