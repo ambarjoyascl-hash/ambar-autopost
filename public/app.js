@@ -552,8 +552,8 @@ function brandFormHtml(brand) {
         <a class="btn ghost sm" href="/GET_CREDENTIALS.md" download="GET_CREDENTIALS.md">⬇ Descargar guía (.md)</a>
       </div>
       <div class="row">
-        <div class="field"><label>IG User ID</label><input id="f_igUserId" value="${esc(ig.igUserId || "")}" placeholder="17841400000000000" /></div>
-        <div class="field"><label>Page ID</label><input id="f_pageId" value="${esc(ig.pageId || "")}" placeholder="10000000000000" /></div>
+        <div class="field"><label>IG User ID</label><input id="f_igUserId" value="${esc(ig.igUserId || "")}" placeholder="se llena solo al conectar con Facebook" /></div>
+        <div class="field"><label>Page ID</label><input id="f_pageId" value="${esc(ig.pageId || "")}" placeholder="se llena solo al conectar con Facebook" /></div>
       </div>
       <div class="field"><label>Page Access Token</label><input id="f_pageToken" placeholder="${tokenPh(ig.connected)}" /></div>
       <div class="field"><label>Long-lived User Token <span class="sub">(para refrescar solo)</span></label><input id="f_userToken" placeholder="${tokenPh(!!ig.tokenUpdatedAt)}" /></div>
