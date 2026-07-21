@@ -543,8 +543,11 @@ function brandFormHtml(brand) {
 
     <div class="card">
       <h3>Instagram <span class="sub">(Meta Graph API)</span></h3>
-      <p class="hint">¿No tienes estos datos? Son de tu propia cuenta y no requieren revisión de Meta.</p>
+      ${b.id
+        ? `<p class="hint">Lo más fácil: conecta con Facebook y la app extrae sola los datos de tu Instagram (IDs y tokens). También puedes pegarlos a mano con la guía.</p>`
+        : `<p class="hint">Crea la marca primero (basta el nombre) y después podrás conectar con Facebook para extraer los datos automáticamente.</p>`}
       <div class="btn-row" style="margin-bottom:10px">
+        ${b.id ? `<button class="btn primary sm" id="fbConnect" type="button">🔗 Conectar con Facebook</button>` : ""}
         <a class="btn ghost sm" href="/guia-credenciales.html" target="_blank">📖 Ver guía paso a paso</a>
         <a class="btn ghost sm" href="/GET_CREDENTIALS.md" download="GET_CREDENTIALS.md">⬇ Descargar guía (.md)</a>
       </div>
@@ -623,6 +626,20 @@ function renderBrandForm(brand, targetArea) {
     area = $("#formArea");
   }
   area.innerHTML = brandFormHtml(brand);
+
+  const fbBtn = $("#fbConnect");
+  if (fbBtn) fbBtn.addEventListener("click", async (e) => {
+    const btn = e.currentTarget;
+    btn.disabled = true; btn.innerHTML = `<span class="spinner"></span> Abriendo Facebook…`;
+    try {
+      const { url } = await api("/api/brands/facebook-oauth", { method: "POST", body: { brandId: brand.id } });
+      window.open(url, "_blank");
+      toast("Completa la conexión en la pestaña de Facebook y luego recarga el panel.");
+    } catch (err) {
+      toast(err.message, true);
+    }
+    btn.disabled = false; btn.textContent = "🔗 Conectar con Facebook";
+  });
 
   $("#testConn").addEventListener("click", async (e) => {
     const btn = e.currentTarget; btn.disabled = true; btn.innerHTML = `<span class="spinner"></span> Probando…`;

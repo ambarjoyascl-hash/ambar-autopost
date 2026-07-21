@@ -4,14 +4,20 @@
 // DELETE /api/brands/:id   → elimina la marca
 // POST   /api/brands/test  → prueba credenciales SIN guardarlas (id reservado
 //        "test"; vive aquí para no gastar otra función del plan Hobby).
+// GET/POST /api/brands/facebook-oauth → flujo "Conectar con Facebook" (id
+//        reservado; el GET es el callback de Facebook y NO lleva sesión —
+//        se protege con un state firmado, ver lib/meta-oauth.js).
 import { checkAuth, readJson, withErrors } from "../../lib/api-helpers.js";
 import { getBrand, updateBrand, deleteBrand, redactBrand } from "../../lib/brands.js";
 import { testInstagramCredentials } from "../../lib/meta.js";
 import { testShopify } from "../../lib/shopify.js";
+import { handleFacebookOauth } from "../../lib/meta-oauth.js";
 
 export default withErrors(async function handler(req, res) {
-  if (!(await checkAuth(req, res))) return;
   const { id } = req.query;
+  if (id === "facebook-oauth") return handleFacebookOauth(req, res);
+
+  if (!(await checkAuth(req, res))) return;
 
   if (id === "test") {
     if (req.method !== "POST") return res.status(405).json({ error: "Método no permitido." });
