@@ -2,20 +2,23 @@
 // GET    /api/emails/:id  → email completo (incluye html y plainText)
 // PUT    /api/emails/:id  → cambia estado (ej. {status:"sent"}) o edita campos
 // DELETE /api/emails/:id  → elimina el email
-import { checkAuth, readJson, withErrors } from "../../lib/api-helpers.js";
+import { checkAuth, readJson, requireBrand, withErrors } from "../../lib/api-helpers.js";
 import { db } from "../../lib/firebase-admin.js";
 
 const EDITABLE = ["subject", "previewText", "status"];
 
 export default withErrors(async function handler(req, res) {
-  if (!(await checkAuth(req, res))) return;
+  const user = await checkAuth(req, res);
+  if (!user) return;
   const { id } = req.query;
   const ref = db.collection("emails").doc(id);
 
+  const existing = await ref.get();
+  if (!existing.exists) return res.status(404).json({ error: "Email no encontrado." });
+  if (!(await requireBrand(req, res, user, existing.data().brandId))) return;
+
   if (req.method === "GET") {
-    const snap = await ref.get();
-    if (!snap.exists) return res.status(404).json({ error: "Email no encontrado." });
-    return res.status(200).json({ email: { id: snap.id, ...snap.data() } });
+    return res.status(200).json({ email: { id: existing.id, ...existing.data() } });
   }
 
   if (req.method === "PUT") {

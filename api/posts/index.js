@@ -1,16 +1,17 @@
 // api/posts/index.js
 // GET  /api/posts?brandId=...&status=...  → cola de posts de una marca
 // POST /api/posts                          → crea un post manual en la cola
-import { checkAuth, readJson, withErrors } from "../../lib/api-helpers.js";
+import { checkAuth, readJson, requireBrand, withErrors } from "../../lib/api-helpers.js";
 import { db } from "../../lib/firebase-admin.js";
 
 export default withErrors(async function handler(req, res) {
-  if (!(await checkAuth(req, res))) return;
+  const user = await checkAuth(req, res);
+  if (!user) return;
 
   if (req.method === "GET") {
     const { brandId, status } = req.query;
-    let q = db.collection("scheduledPosts");
-    if (brandId) q = q.where("brandId", "==", brandId);
+    if (!(await requireBrand(req, res, user, brandId))) return;
+    const q = db.collection("scheduledPosts").where("brandId", "==", brandId);
     const snap = await q.get();
     let posts = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
     if (status) posts = posts.filter((p) => p.status === status);
@@ -20,7 +21,7 @@ export default withErrors(async function handler(req, res) {
 
   if (req.method === "POST") {
     const body = await readJson(req);
-    if (!body.brandId) return res.status(400).json({ error: "Falta brandId." });
+    if (!(await requireBrand(req, res, user, body.brandId))) return;
     if (!body.imageUrl) return res.status(400).json({ error: "Falta imageUrl." });
     const now = Date.now();
     const doc = {

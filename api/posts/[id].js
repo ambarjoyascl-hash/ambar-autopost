@@ -2,16 +2,21 @@
 // PUT    /api/posts/:id  → edita un post (caption, scheduledFor, status, ...)
 // POST   /api/posts/:id  → {action:"publish"} publica ahora
 // DELETE /api/posts/:id  → elimina el post de la cola
-import { checkAuth, readJson, withErrors } from "../../lib/api-helpers.js";
+import { checkAuth, readJson, requireBrand, withErrors } from "../../lib/api-helpers.js";
 import { db } from "../../lib/firebase-admin.js";
 import { publishPost } from "../../lib/publish.js";
 
 const EDITABLE = ["caption", "altText", "imageUrl", "scheduledFor", "platform", "status"];
 
 export default withErrors(async function handler(req, res) {
-  if (!(await checkAuth(req, res))) return;
+  const user = await checkAuth(req, res);
+  if (!user) return;
   const { id } = req.query;
   const ref = db.collection("scheduledPosts").doc(id);
+
+  const existing = await ref.get();
+  if (!existing.exists) return res.status(404).json({ error: "Post no encontrado." });
+  if (!(await requireBrand(req, res, user, existing.data().brandId))) return;
 
   if (req.method === "PUT") {
     const body = await readJson(req);

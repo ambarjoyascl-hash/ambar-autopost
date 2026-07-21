@@ -1,16 +1,17 @@
 // api/emails/index.js
 // GET /api/emails?brandId=...&status=...  → emails generados de una marca
 // (el HTML completo se pide en /api/emails/:id para no inflar la lista)
-import { checkAuth, withErrors } from "../../lib/api-helpers.js";
+import { checkAuth, requireBrand, withErrors } from "../../lib/api-helpers.js";
 import { db } from "../../lib/firebase-admin.js";
 
 export default withErrors(async function handler(req, res) {
-  if (!(await checkAuth(req, res))) return;
+  const user = await checkAuth(req, res);
+  if (!user) return;
   if (req.method !== "GET") return res.status(405).json({ error: "Método no permitido." });
 
   const { brandId, status } = req.query;
-  let q = db.collection("emails");
-  if (brandId) q = q.where("brandId", "==", brandId);
+  if (!(await requireBrand(req, res, user, brandId))) return;
+  const q = db.collection("emails").where("brandId", "==", brandId);
   const snap = await q.get();
   let emails = snap.docs.map((d) => {
     const { html, plainText, ...rest } = d.data();

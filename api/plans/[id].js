@@ -2,18 +2,22 @@
 // GET    /api/plans/:id   → el plan (borrador o agendado), con posts y emails
 // POST   /api/plans/:id   → aprueba el borrador (Body: {action:"approve"})
 // DELETE /api/plans/:id   → descarta el borrador
-import { checkAuth, readJson, withErrors } from "../../lib/api-helpers.js";
+import { checkAuth, readJson, requireBrand, withErrors } from "../../lib/api-helpers.js";
 import { db } from "../../lib/firebase-admin.js";
 import { approvePlan, discardPlan } from "../../lib/plan.js";
 
 export default withErrors(async function handler(req, res) {
-  if (!(await checkAuth(req, res))) return;
+  const user = await checkAuth(req, res);
+  if (!user) return;
   const { id } = req.query;
 
+  const snap = await db.collection("plans").doc(id).get();
+  if (!snap.exists) return res.status(404).json({ error: "Plan no encontrado." });
+  const plan = { id: snap.id, ...snap.data() };
+  if (!(await requireBrand(req, res, user, plan.brandId))) return;
+
   if (req.method === "GET") {
-    const snap = await db.collection("plans").doc(id).get();
-    if (!snap.exists) return res.status(404).json({ error: "Plan no encontrado." });
-    return res.status(200).json({ plan: { id: snap.id, ...snap.data() } });
+    return res.status(200).json({ plan });
   }
 
   if (req.method === "POST") {
