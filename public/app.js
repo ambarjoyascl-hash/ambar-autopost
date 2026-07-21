@@ -131,7 +131,7 @@ function renderLogin() {
   root.innerHTML = `
     <div class="login-wrap">
       <div class="login-card">
-        <h1>💎 Autopost</h1>
+        <h1>💎 Sincro</h1>
         <p>Instagram + Shopify Email, coordinados</p>
         <form id="loginForm">
           <div class="field"><input type="email" id="emailInput" placeholder="Email" autocomplete="email" autofocus /></div>
@@ -176,7 +176,7 @@ function renderRegister() {
   root.innerHTML = `
     <div class="login-wrap">
       <div class="login-card">
-        <h1>💎 Autopost</h1>
+        <h1>💎 Sincro</h1>
         <p>Crear cuenta</p>
         <form id="registerForm">
           <div class="field"><input type="email" id="regEmail" placeholder="Email" autocomplete="email" autofocus /></div>
@@ -238,7 +238,7 @@ function renderApp() {
   root.innerHTML = `
     <div class="app">
       <aside class="sidebar">
-        <div class="brand-logo">💎 Autopost<small>tus marcas</small></div>
+        <div class="brand-logo">💎 Sincro<small>tus marcas</small></div>
         ${nav || '<p class="hint" style="padding:0 8px">Aún no tienes marcas.</p>'}
         <button class="nav-item" data-action="new-brand" style="color:var(--accent-dark);font-weight:600">+ Nueva marca</button>
         <div class="sidebar-foot">
