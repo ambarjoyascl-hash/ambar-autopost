@@ -926,10 +926,10 @@ function renderAnalytics() {
 function renderPricing() {
   const P = t().pricing;
   const tiers = [
-    { key: "basico", name: "Básico", price: "$14.990", brands: P.brands1, gens: 8 },
-    { key: "pro", name: "Pro", price: "$24.990", brands: P.brandsN.replace("{n}", "2"), gens: 20 },
-    { key: "studio", name: "Studio", price: "$34.990", brands: P.brandsN.replace("{n}", "3"), gens: 40, popular: true },
-    { key: "agencia", name: "Agencia", price: "$54.990", brands: P.brandsN.replace("{n}", "5"), gens: 100 },
+    { key: "basico", name: "Básico", price: "$9.900", brands: P.brands1, gens: 8 },
+    { key: "pro", name: "Pro", price: "$16.900", brands: P.brandsN.replace("{n}", "2"), gens: 20 },
+    { key: "studio", name: "Studio", price: "$19.900", brands: P.brandsN.replace("{n}", "3"), gens: 40, popular: true },
+    { key: "agencia", name: "Agencia", price: "$24.900", brands: P.brandsN.replace("{n}", "4"), gens: 100 },
   ];
   const current = state.sub?.plan;
   const html = `
