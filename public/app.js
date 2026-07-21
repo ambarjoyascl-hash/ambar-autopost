@@ -14,20 +14,29 @@ import {
   sendPasswordResetEmail,
   signOut,
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {
+  getStorage,
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDWOTFFnh9kyiPbgr9PssYNakdBUA-f0O4",
   authDomain: "ambar-autopost.firebaseapp.com",
   projectId: "ambar-autopost",
+  storageBucket: "ambar-autopost.firebasestorage.app",
   appId: "1:3976211763:web:b60cd8e2fbfadffa786246",
 };
-const auth = getAuth(initializeApp(firebaseConfig));
+const fbApp = initializeApp(firebaseConfig);
+const auth = getAuth(fbApp);
+const storage = getStorage(fbApp);
 
 /* ── i18n ─────────────────────────────────────────────────────────────── */
 const I18N = {
   es: {
     tagline: "Un mensaje, todas tus redes", brand: "Marca activa", addBrand: "Añadir marca",
-    newPlan: "Nuevo plan", add: "Añadir", moreLabel: "Más", logout: "Salir",
+    newPlan: "Crear nuevo calendario de publicaciones", add: "Añadir", moreLabel: "Más", logout: "Salir",
     nav: { dashboard: "Panel", create: "Crear plan", calendar: "Calendario", queue: "Cola", analytics: "Analíticas", pricing: "Planes", connections: "Conexiones", settings: "Ajustes" },
     subs: { dashboard: "Contenido coordinado de", create: "Genera la semana con IA", calendar: "Instagram + email de esta semana", queue: "Todas las piezas de contenido", analytics: "Actividad de tu contenido", pricing: "Planes de Sincro", connections: "Cuentas conectadas de", settings: "Marcas y preferencias" },
     land: {
@@ -59,7 +68,7 @@ const I18N = {
   },
   en: {
     tagline: "One message, every channel", brand: "Active brand", addBrand: "Add brand",
-    newPlan: "New plan", add: "Add", moreLabel: "More", logout: "Log out",
+    newPlan: "Create new posting calendar", add: "Add", moreLabel: "More", logout: "Log out",
     nav: { dashboard: "Dashboard", create: "Create plan", calendar: "Calendar", queue: "Queue", analytics: "Analytics", pricing: "Plans", connections: "Connections", settings: "Settings" },
     subs: { dashboard: "Coordinated content for", create: "Generate the week with AI", calendar: "Instagram + email this week", queue: "All content pieces", analytics: "Your content activity", pricing: "Sincro plans", connections: "Connected accounts for", settings: "Brands and preferences" },
     land: {
@@ -556,12 +565,35 @@ function renderCreate() {
         </div>
 
         <div class="field"><label>${C.imageSource}</label>
-          <div style="display:flex;align-items:center;gap:12px;padding:14px;border:1px solid #e2dcd2;border-radius:13px;background:var(--bg)">
+          <div style="display:flex;align-items:center;gap:12px;padding:14px;border:1px solid #e2dcd2;border-radius:13px;background:var(--bg);margin-bottom:10px">
             <span class="chip" style="width:34px;height:34px;background:var(--ok-bg);color:var(--ok-ink)">◉</span>
             <div style="flex:1"><div style="font-weight:700;font-size:13px">${C.pullWeb}</div>
               <div style="font-size:12px;color:var(--muted)">${esc(shop.connected ? shop.storeDomain : brand.websiteUrl || "—")}</div></div>
             <span class="badge ${hasSource ? "ok" : "warn"}">${hasSource ? C.connected : C.notConnected}</span>
           </div>
+
+          <div id="dropzone" style="border:2px dashed #cdd6ea;border-radius:13px;padding:22px;text-align:center;cursor:pointer;background:var(--bg);transition:border-color .15s">
+            <div style="font-size:22px">📷🎬</div>
+            <div style="font-weight:700;font-size:13.5px;margin:6px 0 2px">${state.lang === "en" ? "Drag photos or videos here, or click to upload" : "Arrastra fotos o videos aquí, o haz clic para subir"}</div>
+            <div class="hint">${state.lang === "en" ? "Your own photos, not on your website" : "Fotos tuyas que no están en la página web"}</div>
+            <input type="file" id="fileInput" accept="image/*,video/*" multiple style="display:none" />
+          </div>
+          <div id="uploadProgress" class="hint" style="margin:8px 0 0"></div>
+
+          ${(brand.media || []).length ? `
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px">
+            ${(brand.media || []).map((m, i) => `
+              <div style="position:relative;width:74px;height:74px">
+                ${m.type === "video"
+                  ? `<div class="thumb-img" style="width:74px;height:74px;display:flex;align-items:center;justify-content:center;font-size:22px">🎬</div>`
+                  : `<div class="thumb-img" style="width:74px;height:74px;background-image:url('${esc(m.url)}')"></div>`}
+                <button data-rm-media="${i}" style="position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;border:none;background:var(--ink);color:#fff;cursor:pointer;font-size:11px;line-height:1">×</button>
+              </div>`).join("")}
+          </div>
+          <div style="display:flex;gap:6px;background:var(--bg);border:1px solid #e2dcd2;border-radius:11px;padding:4px;margin-top:12px">
+            ${[["web", state.lang === "en" ? "Website only" : "Solo web"], ["mix", state.lang === "en" ? "Mix both" : "Mezclar ambas"], ["uploads", state.lang === "en" ? "Uploads only" : "Solo subidas"]]
+              .map(([id, l]) => `<button class="btn sm ${o.imageMode === id ? "primary" : "ghost"}" data-imgmode="${id}" style="flex:1">${l}</button>`).join("")}
+          </div>` : ""}
         </div>
 
         <button class="btn primary lg block" id="genBtn" style="margin-top:14px">✦ ${C.generate}</button>
@@ -582,6 +614,47 @@ function renderCreate() {
       if (id === "email") { o.emailOn = !o.emailOn; render(); }
       if (id === "fb") { o.fbOn = !o.fbOn; render(); }
     }));
+
+    // ── Subida de fotos/videos propios ──
+    const dz = $("#dropzone"), fi = $("#fileInput"), prog = $("#uploadProgress");
+    const uploadFiles = async (files) => {
+      const list = [...files].filter((f) => /^(image|video)\//.test(f.type));
+      if (!list.length) return;
+      const added = [];
+      for (let i = 0; i < list.length; i++) {
+        const f = list[i];
+        if (f.size > 100 * 1024 * 1024) { toast(`${f.name}: máx 100 MB`, true); continue; }
+        prog.textContent = `Subiendo ${i + 1}/${list.length}: ${f.name}…`;
+        try {
+          const path = `uploads/${auth.currentUser.uid}/${brand.id}/${Date.now()}-${f.name.replace(/[^\w.\-]+/g, "_")}`;
+          const snap = await uploadBytes(storageRef(storage, path), f);
+          const url = await getDownloadURL(snap.ref);
+          added.push({ url, type: f.type.startsWith("video") ? "video" : "image", name: f.name, createdAt: Date.now() });
+        } catch (err) {
+          toast(`${f.name}: ${err.message || "error al subir"}`, true);
+        }
+      }
+      prog.textContent = "";
+      if (added.length) {
+        await api(`/api/brands/${brand.id}`, { method: "PUT", body: { media: [...(brand.media || []), ...added] } });
+        if (!o.imageMode || o.imageMode === "web") o.imageMode = "mix";
+        toast(`${added.length} archivo(s) subido(s) ✓`);
+        await loadBrands(); render();
+      }
+    };
+    if (dz) {
+      dz.addEventListener("click", () => fi.click());
+      fi.addEventListener("change", () => uploadFiles(fi.files));
+      dz.addEventListener("dragover", (e) => { e.preventDefault(); dz.style.borderColor = "var(--accent)"; });
+      dz.addEventListener("dragleave", () => { dz.style.borderColor = "#cdd6ea"; });
+      dz.addEventListener("drop", (e) => { e.preventDefault(); dz.style.borderColor = "#cdd6ea"; uploadFiles(e.dataTransfer.files); });
+    }
+    $$("[data-rm-media]").forEach((b) => b.addEventListener("click", async () => {
+      const next = (brand.media || []).filter((_, i) => i !== Number(b.dataset.rmMedia));
+      await api(`/api/brands/${brand.id}`, { method: "PUT", body: { media: next } });
+      await loadBrands(); render();
+    }));
+    $$("[data-imgmode]").forEach((b) => b.addEventListener("click", () => { o.imageMode = b.dataset.imgmode; render(); }));
     $$("[data-open-plan]").forEach((b) => b.addEventListener("click", async () => {
       const { plan } = await api(`/api/plans/${b.dataset.openPlan}`);
       state.draft = plan; go("draft");
@@ -593,7 +666,7 @@ function renderCreate() {
       btn.disabled = true; btn.innerHTML = `<span class="spinner"></span> ${C.generating}`;
       try {
         const { plan } = await api("/api/plans", { method: "POST", body: {
-          brandId: brand.id, goal: o.goal, tone: o.tone,
+          brandId: brand.id, goal: o.goal, tone: o.tone, imageMode: o.imageMode || "web",
           postsPerWeek: 7, includeEmails: o.emailOn, emailsPerWeek: o.emailOn ? 2 : 0,
         } });
         if (o.fbOn !== !!brand.instagram?.postToFacebook) {
