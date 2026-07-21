@@ -542,32 +542,61 @@ function brandFormHtml(brand) {
     </div>
 
     <div class="card">
-      <h3>Instagram <span class="sub">(Meta Graph API)</span></h3>
-      ${b.id
-        ? `<p class="hint">Lo más fácil: conecta con Facebook y la app extrae sola los datos de tu Instagram (IDs y tokens). También puedes pegarlos a mano con la guía.</p>`
-        : `<p class="hint">Crea la marca primero (basta el nombre) y después podrás conectar con Facebook para extraer los datos automáticamente.</p>`}
-      <div class="btn-row" style="margin-bottom:10px">
-        ${b.id ? `<button class="btn primary sm" id="fbConnect" type="button">🔗 Conectar con Facebook</button>` : ""}
-        <a class="btn ghost sm" href="/guia-credenciales.html" target="_blank">📖 Ver guía paso a paso</a>
-        <a class="btn ghost sm" href="/GET_CREDENTIALS.md" download="GET_CREDENTIALS.md">⬇ Descargar guía (.md)</a>
-      </div>
-      <div class="row">
-        <div class="field"><label>IG User ID</label><input id="f_igUserId" value="${esc(ig.igUserId || "")}" placeholder="se llena solo al conectar con Facebook" /></div>
-        <div class="field"><label>Page ID</label><input id="f_pageId" value="${esc(ig.pageId || "")}" placeholder="se llena solo al conectar con Facebook" /></div>
-      </div>
-      <div class="field"><label>Page Access Token</label><input id="f_pageToken" placeholder="${tokenPh(ig.connected)}" /></div>
-      <div class="field"><label>Long-lived User Token <span class="sub">(para refrescar solo)</span></label><input id="f_userToken" placeholder="${tokenPh(!!ig.tokenUpdatedAt)}" /></div>
-      <div class="field"><label><input type="checkbox" id="f_fb" ${ig.postToFacebook ? "checked" : ""} style="width:auto;margin-right:6px" />Publicar también en la Página de Facebook</label></div>
-    </div>
+      <h3>Conexiones</h3>
+      ${b.id ? `
+      <p class="hint">Conecta las cuentas de la marca con un clic — todo el proceso es automático.</p>
 
-    <div class="card">
-      <h3>Shopify <span class="sub">(opcional pero recomendado)</span></h3>
-      <p class="hint">Con Shopify conectado, los productos y precios llegan limpios. Crea un token en Shopify → Ajustes → Apps → Desarrollar apps.</p>
-      <div class="row">
-        <div class="field"><label>Dominio de la tienda</label><input id="f_shopDomain" value="${esc(shop.storeDomain || "")}" placeholder="tu-tienda.myshopify.com" /></div>
-        <div class="field"><label>API version</label><input id="f_shopVer" value="${esc(shop.apiVersion || "2024-04")}" placeholder="2024-04" /></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line,#e5e0d8)">
+        <div><b>📸 Instagram</b><div class="hint" style="margin:0">publica tus posts automáticamente</div></div>
+        <div class="btn-row" style="margin:0">
+          <span class="badge ${ig.connected ? "ok" : "muted"}">${ig.connected ? "Conectado" : "Sin conectar"}</span>
+          <button class="btn ${ig.connected ? "ghost" : "primary"} sm" id="fbConnect" type="button">${ig.connected ? "Reconectar" : "Conectar Instagram"}</button>
+        </div>
       </div>
-      <div class="field"><label>Admin API token</label><input id="f_shopToken" placeholder="${tokenPh(shop.connected)}" /></div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line,#e5e0d8)">
+        <div><b>📘 Facebook</b><div class="hint" style="margin:0">publica también en tu Página (usa la conexión de Instagram)</div></div>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px">
+          <input type="checkbox" id="f_fb" ${ig.postToFacebook ? "checked" : ""} style="width:auto" />Activar
+        </label>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line,#e5e0d8)">
+        <div><b>🛍️ Shopify</b><div class="hint" style="margin:0">productos y precios exactos para tus planes</div></div>
+        <div class="btn-row" style="margin:0">
+          <span class="badge ${shop.connected ? "ok" : "muted"}">${shop.connected ? "Conectado" : "Sin conectar"}</span>
+          <button class="btn ${shop.connected ? "ghost" : "primary"} sm" id="shopifyToggle" type="button">${shop.connected ? "Reconfigurar" : "Conectar Shopify"}</button>
+        </div>
+      </div>
+      <div id="shopifyFields" style="display:none;padding:12px 0;border-bottom:1px solid var(--line,#e5e0d8)">
+        <p class="hint">Shopify pide crear un acceso una sola vez: en tu Shopify ve a <b>Ajustes → Apps y canales de venta → Desarrollar apps → Crear app</b> (nómbrala "Sincro") → pestaña <b>API de Admin</b> → marca los permisos de lectura de productos → <b>Instalar app</b> → copia el <b>token de acceso</b> y pégalo aquí.</p>
+        <div class="row">
+          <div class="field"><label>Dominio de la tienda</label><input id="f_shopDomain" value="${esc(shop.storeDomain || "")}" placeholder="tu-tienda.myshopify.com" /></div>
+          <div class="field"><label>API version</label><input id="f_shopVer" value="${esc(shop.apiVersion || "2024-04")}" /></div>
+        </div>
+        <div class="field"><label>Token de acceso</label><input id="f_shopToken" placeholder="${tokenPh(shop.connected)}" /></div>
+        <div class="btn-row"><button class="btn ghost sm" id="testConn" type="button">Probar conexión</button></div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0">
+        <div><b>📌 Pinterest</b><div class="hint" style="margin:0">pines automáticos de tus productos</div></div>
+        <span class="badge muted">Próximamente</span>
+      </div>
+
+      <details style="margin-top:14px">
+        <summary class="hint" style="cursor:pointer">Opciones avanzadas (credenciales manuales de Instagram)</summary>
+        <div class="btn-row" style="margin:10px 0">
+          <a class="btn ghost sm" href="/guia-credenciales.html" target="_blank">📖 Ver guía paso a paso</a>
+          <a class="btn ghost sm" href="/GET_CREDENTIALS.md" download="GET_CREDENTIALS.md">⬇ Descargar guía (.md)</a>
+        </div>
+        <div class="row">
+          <div class="field"><label>IG User ID</label><input id="f_igUserId" value="${esc(ig.igUserId || "")}" placeholder="se llena solo al conectar Instagram" /></div>
+          <div class="field"><label>Page ID</label><input id="f_pageId" value="${esc(ig.pageId || "")}" placeholder="se llena solo al conectar Instagram" /></div>
+        </div>
+        <div class="field"><label>Page Access Token</label><input id="f_pageToken" placeholder="${tokenPh(ig.connected)}" /></div>
+        <div class="field"><label>Long-lived User Token <span class="sub">(para refrescar solo)</span></label><input id="f_userToken" placeholder="${tokenPh(!!ig.tokenUpdatedAt)}" /></div>
+      </details>
+      ` : `<p class="hint">Crea la marca (con el nombre basta) y aquí aparecerán los botones para conectar Instagram, Facebook, Shopify y Pinterest con un clic.</p>`}
     </div>
 
     <div class="card">
@@ -584,7 +613,6 @@ function brandFormHtml(brand) {
     </div>
 
     <div class="btn-row">
-      <button class="btn ghost" id="testConn" type="button">Probar conexión</button>
       <button class="btn primary" id="saveBrand">${brand ? "Guardar cambios" : "Crear marca"}</button>
       ${brand ? `<button class="btn danger" id="deleteBrand" style="margin-left:auto">Eliminar marca</button>` : ""}
     </div>
@@ -630,6 +658,7 @@ function renderBrandForm(brand, targetArea) {
   const fbBtn = $("#fbConnect");
   if (fbBtn) fbBtn.addEventListener("click", async (e) => {
     const btn = e.currentTarget;
+    const label = btn.textContent;
     btn.disabled = true; btn.innerHTML = `<span class="spinner"></span> Abriendo Facebook…`;
     try {
       const { url } = await api("/api/brands/facebook-oauth", { method: "POST", body: { brandId: brand.id } });
@@ -638,10 +667,16 @@ function renderBrandForm(brand, targetArea) {
     } catch (err) {
       toast(err.message, true);
     }
-    btn.disabled = false; btn.textContent = "🔗 Conectar con Facebook";
+    btn.disabled = false; btn.textContent = label;
   });
 
-  $("#testConn").addEventListener("click", async (e) => {
+  const shopToggle = $("#shopifyToggle");
+  if (shopToggle) shopToggle.addEventListener("click", () => {
+    const el = $("#shopifyFields");
+    el.style.display = el.style.display === "none" ? "block" : "none";
+  });
+
+  $("#testConn")?.addEventListener("click", async (e) => {
     const btn = e.currentTarget; btn.disabled = true; btn.innerHTML = `<span class="spinner"></span> Probando…`;
     const data = readBrandForm();
     const body = {};
