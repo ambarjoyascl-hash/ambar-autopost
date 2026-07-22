@@ -302,7 +302,13 @@ function renderLanding() {
       </div>
     </section>
 
-    <section id="pricing" class="land-cta">
+    <section id="pricing" class="land-section alt">
+      <h2>${t().pricing.title}</h2>
+      <p class="lead">${t().pricing.subtitle}</p>
+      ${pricingCardsHtml(null, true)}
+    </section>
+
+    <section class="land-cta">
       <h2>${L.ctaTitle}</h2>
       <p style="font-size:16.5px;color:rgba(255,255,255,.85);margin:0 auto 30px;max-width:520px;line-height:1.6">${L.ctaSub}</p>
       <div class="btn-row" style="justify-content:center">
@@ -925,38 +931,49 @@ function renderAnalytics() {
 }
 
 /* ── PRICING ──────────────────────────────────────────────────────────── */
-function renderPricing() {
+function pricingTiers() {
   const P = t().pricing;
-  const tiers = [
+  return [
     { key: "basico", name: "Básico", price: "$9.900", brands: P.brands1, gens: 8 },
     { key: "pro", name: "Pro", price: "$16.900", brands: P.brandsN.replace("{n}", "2"), gens: 20 },
     { key: "studio", name: "Studio", price: "$19.900", brands: P.brandsN.replace("{n}", "3"), gens: 40, popular: true },
     { key: "agencia", name: "Agencia", price: "$24.900", brands: P.brandsN.replace("{n}", "4"), gens: 100 },
   ];
+}
+
+function pricingCardsHtml(current, publicMode = false) {
+  const P = t().pricing;
+  return `<div class="plans-grid">
+    ${pricingTiers().map((p) => `
+      <div class="plan-card ${p.popular ? "popular" : ""}">
+        ${p.popular ? `<span class="plan-badge">${P.popular}</span>` : ""}
+        <div style="font-size:16px;font-weight:800">${p.name}</div>
+        <div style="display:flex;align-items:baseline;gap:4px;margin:10px 0 4px">
+          <span style="font-size:38px;font-weight:800;letter-spacing:-.03em">${p.price}</span>
+          <span style="font-size:14px;color:var(--muted);font-weight:600">${P.perMonth}</span>
+        </div>
+        <div class="badge accent" style="margin-bottom:18px">${p.brands} · ${p.gens} ${state.lang === "en" ? "plans/mo" : "generaciones/mes"}</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px">
+          ${P.features.map((f) => `<div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--ink-soft)"><span class="chip" style="width:18px;height:18px;border-radius:50%;background:var(--ok-bg);color:var(--ok-ink);font-size:11px">✓</span>${f}</div>`).join("")}
+        </div>
+        ${current === p.key
+          ? `<button class="btn ghost block" disabled>✓ ${state.lang === "en" ? "Current plan" : "Plan actual"}</button>`
+          : publicMode
+            ? `<button class="btn ${p.popular ? "primary" : "soft"} block" data-go-app>${t().land.heroCta}</button>`
+            : `<button class="btn ${p.popular ? "primary" : "soft"} block" data-choose>${P.choose}</button>`}
+      </div>`).join("")}
+  </div>`;
+}
+
+function renderPricing() {
+  const P = t().pricing;
   const current = state.sub?.plan;
   const html = `
     <div style="text-align:center;max-width:560px;margin:0 auto 30px">
       <h2 style="margin:0 0 8px;font-size:24px;font-weight:800;letter-spacing:-.02em">${P.title}</h2>
       <p style="margin:0;font-size:14px;color:var(--muted);line-height:1.55">${P.subtitle}</p>
     </div>
-    <div class="plans-grid">
-      ${tiers.map((p) => `
-        <div class="plan-card ${p.popular ? "popular" : ""}">
-          ${p.popular ? `<span class="plan-badge">${P.popular}</span>` : ""}
-          <div style="font-size:16px;font-weight:800">${p.name}</div>
-          <div style="display:flex;align-items:baseline;gap:4px;margin:10px 0 4px">
-            <span style="font-size:38px;font-weight:800;letter-spacing:-.03em">${p.price}</span>
-            <span style="font-size:14px;color:var(--muted);font-weight:600">${P.perMonth}</span>
-          </div>
-          <div class="badge accent" style="margin-bottom:18px">${p.brands} · ${p.gens} ${state.lang === "en" ? "plans/mo" : "generaciones/mes"}</div>
-          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px">
-            ${P.features.map((f) => `<div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--ink-soft)"><span class="chip" style="width:18px;height:18px;border-radius:50%;background:var(--ok-bg);color:var(--ok-ink);font-size:11px">✓</span>${f}</div>`).join("")}
-          </div>
-          ${current === p.key
-            ? `<button class="btn ghost block" disabled>✓ ${state.lang === "en" ? "Current plan" : "Plan actual"}</button>`
-            : `<button class="btn ${p.popular ? "primary" : "soft"} block" data-choose>${P.choose}</button>`}
-        </div>`).join("")}
-    </div>`;
+    ${pricingCardsHtml(current, false)}`;
   renderShell(html, () => {
     $$("[data-choose]").forEach((b) => b.addEventListener("click", () => toast(P.soon)));
   });
