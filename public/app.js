@@ -1331,8 +1331,9 @@ onAuthStateChanged(auth, async (user) => {
     try {
       await loadBrands();
       await loadBrandData();
-      if (["landing", "auth"].includes(state.screen) && booted) state.screen = "dashboard";
-      else if (!booted) state.screen = "dashboard";
+      // Al entrar al sitio siempre se muestra la landing; solo se salta al
+      // panel cuando el usuario viene del login ("Entrar").
+      if (booted && state.screen === "auth") state.screen = "dashboard";
     } catch (err) {
       toast(err.message, true);
       signOut(auth).catch(() => {});
