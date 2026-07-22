@@ -62,7 +62,7 @@ const I18N = {
     queue: { all: "Todo", ig: "Instagram", email: "Email", published: "Publicados", publishNow: "Publicar ahora", view: "Ver / Copiar", del: "Eliminar", empty: "No hay contenido todavía. Genera un plan para llenar la cola." },
     ana: { published: "Publicados (total)", queue: "En cola", emailsReady: "Emails listos", errors: "Con error", activity: "Actividad de los últimos 7 días", top: "Últimas publicaciones", soon: "Las métricas de alcance e interacción de Instagram llegarán pronto.", none: "Aún no hay publicaciones." },
     pricing: { title: "Elige tu plan", subtitle: "Todos los planes incluyen Instagram, Facebook y email coordinados con IA. Solo cambia cuántas marcas puedes gestionar.", perMonth: "/mes", popular: "Más popular", choose: "Elegir plan", brands1: "1 marca", brandsN: "{n} marcas", soon: "Muy pronto podrás contratar tu plan desde aquí. Escríbenos para partir hoy.", features: ["Posts de Instagram con IA", "Emails coordinados", "Fotos desde tu web o Shopify", "Publicación automática", "Soporte por email"] },
-    conn: { social: "Redes sociales", socialHint: "Conecta las cuentas donde Sincro publicará el contenido de esta marca.", store: "Email y tienda", storeHint: "Desde dónde se toman los productos y se preparan los emails.", connect: "Conectar", reconnect: "Reconectar", connected: "Conectado", notConnected: "Sin conectar", soon: "Próximamente", igDetail: "publica tus posts automáticamente", fbDetail: "publica también en tu Página (usa la conexión de Instagram)", pinDetail: "pines automáticos de tus productos", shopifyDetail: "productos y precios exactos", webDetail: "fotos y productos de tu sitio", inspoLong: "Añade cuentas de Instagram de referencia. La IA analiza su estilo, tono y formatos para generar contenido alineado con esta marca.", inspoPh: "@usuario_de_instagram", activate: "Activar", advanced: "Opciones avanzadas (credenciales manuales de Instagram)", guide: "📖 Ver guía paso a paso", fbNote: "Completa la conexión en la pestaña de Facebook y luego recarga el panel." },
+    conn: { social: "Redes sociales", socialHint: "Conecta las cuentas donde Sincro publicará el contenido de esta marca.", store: "Email y tienda", storeHint: "Desde dónde se toman los productos y se preparan los emails.", connect: "Conectar", reconnect: "Reconectar", connected: "Conectado", notConnected: "Sin conectar", soon: "Próximamente", igDetail: "publica tus posts automáticamente", change: "Cambiar cuenta", fbDetail: "publica también en tu Página (usa la conexión de Instagram)", pinDetail: "pines automáticos de tus productos", shopifyDetail: "productos y precios exactos", webDetail: "fotos y productos de tu sitio", inspoLong: "Añade cuentas de Instagram de referencia. La IA analiza su estilo, tono y formatos para generar contenido alineado con esta marca.", inspoPh: "@usuario_de_instagram", activate: "Activar", advanced: "Opciones avanzadas (credenciales manuales de Instagram)", guide: "📖 Ver guía paso a paso", fbNote: "Completa la conexión en la pestaña de Facebook y luego recarga el panel." },
     settings: { brands: "Mis marcas", prefs: "Preferencias", lang: "Idioma", langHint: "Idioma de la interfaz", auto: "Aprobar automáticamente", autoHint: "Publica sin revisión manual", edit: "Editar", newBrand: "Nueva marca", name: "Nombre de la marca", web: "Página web", webSub: "de donde se sacan fotos y productos", voice: "Voz de la marca", tone: "Tono", audience: "Público", currency: "Moneda", language: "Idioma del contenido", hashtags: "Hashtags fijos", hashtagsSub: "opcional — la IA genera los de cada post", save: "Guardar cambios", createBrand: "Crear marca", delete: "Eliminar marca", saved: "Cambios guardados ✓", created: "Marca creada ✓" },
     common: { soon: "Próximamente", loading: "Cargando…", confirmDel: "¿Eliminar definitivamente?", today: "Hoy" },
   },
@@ -94,7 +94,7 @@ const I18N = {
     queue: { all: "All", ig: "Instagram", email: "Email", published: "Published", publishNow: "Publish now", view: "View / Copy", del: "Delete", empty: "No content yet. Generate a plan to fill the queue." },
     ana: { published: "Published (total)", queue: "Queued", emailsReady: "Emails ready", errors: "Errored", activity: "Last 7 days of activity", top: "Latest publications", soon: "Instagram reach and engagement metrics coming soon.", none: "No publications yet." },
     pricing: { title: "Choose your plan", subtitle: "Every plan includes AI-coordinated Instagram, Facebook and email. Only the number of brands changes.", perMonth: "/mo", popular: "Most popular", choose: "Choose plan", brands1: "1 brand", brandsN: "{n} brands", soon: "Soon you'll be able to subscribe right here. Contact us to start today.", features: ["AI Instagram posts", "Coordinated emails", "Photos from your site or Shopify", "Automatic publishing", "Email support"] },
-    conn: { social: "Social channels", socialHint: "Connect the accounts where Sincro will publish this brand's content.", store: "Email & store", storeHint: "Where products come from and emails are prepared.", connect: "Connect", reconnect: "Reconnect", connected: "Connected", notConnected: "Not connected", soon: "Coming soon", igDetail: "publishes your posts automatically", fbDetail: "also publish to your Page (uses the Instagram connection)", pinDetail: "automatic product pins", shopifyDetail: "exact products and prices", webDetail: "photos and products from your site", inspoLong: "Add reference Instagram accounts. AI analyzes their style, tone and formats to generate aligned content.", inspoPh: "@instagram_handle", activate: "Enable", advanced: "Advanced options (manual Instagram credentials)", guide: "📖 Step-by-step guide", fbNote: "Finish connecting in the Facebook tab, then reload the panel." },
+    conn: { social: "Social channels", socialHint: "Connect the accounts where Sincro will publish this brand's content.", store: "Email & store", storeHint: "Where products come from and emails are prepared.", connect: "Connect", reconnect: "Reconnect", connected: "Connected", notConnected: "Not connected", soon: "Coming soon", igDetail: "publishes your posts automatically", change: "Change account", fbDetail: "also publish to your Page (uses the Instagram connection)", pinDetail: "automatic product pins", shopifyDetail: "exact products and prices", webDetail: "photos and products from your site", inspoLong: "Add reference Instagram accounts. AI analyzes their style, tone and formats to generate aligned content.", inspoPh: "@instagram_handle", activate: "Enable", advanced: "Advanced options (manual Instagram credentials)", guide: "📖 Step-by-step guide", fbNote: "Finish connecting in the Facebook tab, then reload the panel." },
     settings: { brands: "My brands", prefs: "Preferences", lang: "Language", langHint: "Interface language", auto: "Auto-approve", autoHint: "Publish without manual review", edit: "Edit", newBrand: "New brand", name: "Brand name", web: "Website", webSub: "where photos and products come from", voice: "Brand voice", tone: "Tone", audience: "Audience", currency: "Currency", language: "Content language", hashtags: "Fixed hashtags", hashtagsSub: "optional — AI generates per-post hashtags", save: "Save changes", createBrand: "Create brand", delete: "Delete brand", saved: "Saved ✓", created: "Brand created ✓" },
     common: { soon: "Coming soon", loading: "Loading…", confirmDel: "Delete permanently?", today: "Today" },
   },
@@ -1007,11 +1007,11 @@ function renderConnections() {
       <p style="margin:0 0 18px" class="hint">${C.socialHint}</p>
       <div class="conn-grid" style="margin-bottom:32px">
         ${connCard("ig", "Instagram", C.igDetail, ig.connected,
-          `<button class="btn ${ig.connected ? "ghost" : "primary"} block" id="fbConnect">${ig.connected ? C.reconnect : C.connect}</button>`)}
+          `<button class="btn ${ig.connected ? "ghost" : "primary"} block" id="fbConnect">${ig.connected ? (C.change || C.reconnect) : C.connect}</button>`)}
         ${connCard("fb", "Facebook", C.fbDetail, ig.postToFacebook,
           `<button class="btn ${ig.postToFacebook ? "ghost" : "soft"} block" id="fbToggle" ${ig.connected ? "" : "disabled"}>${ig.postToFacebook ? C.connected + " ✓" : C.activate}</button>`)}
         ${connCard("pin", "Pinterest", (brand.pinterest?.connected ? `@${esc(brand.pinterest.username)} · ${esc(brand.pinterest.boardName)}` : C.pinDetail), brand.pinterest?.connected,
-          `<button class="btn ${brand.pinterest?.connected ? "ghost" : "primary"} block" id="pinConnect">${brand.pinterest?.connected ? C.reconnect : C.connect}</button>`)}
+          `<button class="btn ${brand.pinterest?.connected ? "ghost" : "primary"} block" id="pinConnect">${brand.pinterest?.connected ? (C.change || C.reconnect) : C.connect}</button>`)}
       </div>
 
       <h2 style="margin:0 0 4px;font-size:16px;font-weight:800">${C.store}</h2>
@@ -1344,6 +1344,20 @@ function render() {
 }
 
 /* ── Arranque ─────────────────────────────────────────────────────────── */
+// Al volver a la pestaña del panel (p. ej. tras conectar una red en otra
+// pestaña), refresca marcas y datos automáticamente.
+let lastFocusSync = 0;
+window.addEventListener("focus", async () => {
+  if (!auth.currentUser || ["landing", "auth"].includes(state.screen)) return;
+  if (Date.now() - lastFocusSync < 4000) return;
+  lastFocusSync = Date.now();
+  try {
+    await loadBrands();
+    await loadBrandData(true);
+    render();
+  } catch (_) {}
+});
+
 let booted = false;
 onAuthStateChanged(auth, async (user) => {
   if (user) {
