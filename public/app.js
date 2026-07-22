@@ -500,11 +500,13 @@ function renderDashboard() {
           <h2>${D.channels}</h2>
           <div style="display:flex;flex-direction:column;gap:12px">
             ${channels.map((c) => `
-              <div style="display:flex;align-items:center;gap:11px">
+              <button data-nav2="connections" style="display:flex;align-items:center;gap:11px;width:100%;background:transparent;border:none;border-radius:10px;padding:7px 8px;margin:-4px 0;cursor:pointer;text-align:left;font-family:inherit;transition:background .12s"
+                onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='transparent'">
                 ${chanChip(c.ch, 30)}
-                <div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px">${c.name}</div><div style="font-size:11px;color:var(--muted)">${c.detail}</div></div>
-                <span style="width:9px;height:9px;border-radius:50%;background:${c.on ? "var(--ok-ink)" : "#d8d1c7"}"></span>
-              </div>`).join("")}
+                <div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;color:var(--ink)">${c.name}</div><div style="font-size:11px;color:var(--muted)">${c.detail}</div></div>
+                <span style="width:9px;height:9px;border-radius:50%;background:${c.on ? "var(--ok-ink)" : "#d8d1c7"};flex-shrink:0"></span>
+                <span style="color:var(--muted-2);font-size:12px">›</span>
+              </button>`).join("")}
           </div>
           <button class="btn soft block sm" style="margin-top:16px" data-nav2="connections">${D.manage}</button>
         </div>
