@@ -103,6 +103,8 @@ const I18N = {
 /* ── Estado ───────────────────────────────────────────────────────────── */
 const state = {
   lang: localStorage.getItem("lang") || "es",
+  autoApprove: localStorage.getItem("autoApprove") !== "0",
+  generating: false,
   screen: "landing",
   brands: [], brandId: localStorage.getItem("brandId") || null,
   posts: [], emails: [], plans: [], dataFor: null,
@@ -425,7 +427,7 @@ function renderShell(contentHtml, afterMount) {
       <header class="topbar">
         <div style="flex:1"><h1>${T.nav[state.screen] || ""}</h1><p class="sub">${subKey}</p></div>
         <button class="btn ghost sm" data-lang-toggle>🌐 ${state.lang.toUpperCase()}</button>
-        <button class="btn primary" data-nav="create">✦ ${T.newPlan}</button>
+        <button class="btn primary" data-nav="create">${state.generating ? `<span class="spinner"></span> ${state.lang === "en" ? "Generating…" : "Generando…"}` : `✦ ${T.newPlan}`}</button>
       </header>
       <div class="content" id="content">${contentHtml}</div>
     </main>
@@ -611,11 +613,16 @@ function renderCreate() {
           </div>` : ""}
         </div>
 
+        <label style="display:flex;align-items:center;gap:9px;margin-top:16px;cursor:pointer;font-size:13.5px;font-weight:600">
+          <input type="checkbox" id="autoApproveChk" ${state.autoApprove ? "checked" : ""} style="width:auto" />
+          ${state.lang === "en" ? "Schedule automatically when ready (goes straight to calendar & queue)" : "Agendar automáticamente al terminar (va directo al calendario y la cola)"}
+        </label>
         ${state.sub ? `<p class="hint" style="margin:14px 0 0;text-align:center">
           ${state.sub.planName} · ${state.lang === "en" ? "generations this month" : "generaciones este mes"}: <b>${state.sub.gensUsed}/${state.sub.gensMax}</b>
           ${state.sub.trialEndsAt ? ` · ${state.lang === "en" ? "trial ends" : "prueba termina"} ${new Date(state.sub.trialEndsAt).toLocaleDateString(state.lang === "en" ? "en-US" : "es-CL")}` : ""}
         </p>` : ""}
-        <button class="btn primary lg block" id="genBtn" style="margin-top:14px">✦ ${C.generate}</button>
+        <button class="btn primary lg block" id="genBtn" style="margin-top:14px" ${state.generating ? "disabled" : ""}>${state.generating ? `<span class="spinner"></span> ${C.generating}` : `✦ ${C.generate}`}</button>
+        ${state.generating ? `<p class="hint" style="text-align:center;margin-top:10px">${state.lang === "en" ? "You can keep browsing — we'll notify you when it's ready." : "Puedes seguir navegando por la app — te avisamos cuando esté listo."}</p>` : ""}
       </div>
 
       ${state.plans.length ? `<div class="card" style="margin-top:20px"><h2>${C.prev}</h2>
@@ -680,26 +687,43 @@ function renderCreate() {
       const { plan } = await api(`/api/plans/${b.dataset.openPlan}`);
       state.draft = plan; go("draft");
     }));
-    $("#genBtn").addEventListener("click", async (e) => {
-      const btn = e.currentTarget;
+    $("#autoApproveChk")?.addEventListener("change", (e) => {
+      state.autoApprove = e.currentTarget.checked;
+      localStorage.setItem("autoApprove", state.autoApprove ? "1" : "0");
+    });
+    $("#genBtn").addEventListener("click", () => {
+      if (state.generating) return;
       o.goal = $("#goalInput").value.trim();
       o.tone = $("#toneInput").value;
-      btn.disabled = true; btn.innerHTML = `<span class="spinner"></span> ${C.generating}`;
-      try {
-        const { plan } = await api("/api/plans", { method: "POST", body: {
-          brandId: brand.id, goal: o.goal, tone: o.tone, imageMode: o.imageMode || "web",
-          pinterest: !!o.pinOn,
-          postsPerWeek: 7, includeEmails: o.emailOn, emailsPerWeek: o.emailOn ? (o.emailsPerWeek || 2) : 0,
-        } });
-        if (o.fbOn !== !!brand.instagram?.postToFacebook) {
-          api(`/api/brands/${brand.id}`, { method: "PUT", body: { instagram: { postToFacebook: o.fbOn } } }).catch(() => {});
-        }
-        state.draft = plan; state.dataFor = null;
-        go("draft");
-      } catch (err) {
-        toast(err.message, true);
-        btn.disabled = false; btn.textContent = `✦ ${C.generate}`;
+      if (o.fbOn !== !!brand.instagram?.postToFacebook) {
+        api(`/api/brands/${brand.id}`, { method: "PUT", body: { instagram: { postToFacebook: o.fbOn } } }).catch(() => {});
       }
+      state.generating = true;
+      render();
+      toast(state.lang === "en" ? "Generating in the background — feel free to keep browsing ✨" : "Generando en segundo plano — puedes seguir navegando ✨");
+      // La generación (y el agendado automático) corren en el servidor:
+      // aunque cierres el navegador, el plan igual se crea.
+      api("/api/plans", { method: "POST", body: {
+        brandId: brand.id, goal: o.goal, tone: o.tone, imageMode: o.imageMode || "web",
+        pinterest: !!o.pinOn, autoApprove: state.autoApprove,
+        postsPerWeek: 7, includeEmails: o.emailOn, emailsPerWeek: o.emailOn ? (o.emailsPerWeek || 2) : 0,
+      } }).then(async (r) => {
+        state.generating = false;
+        await loadBrandData(true).catch(() => {});
+        if (r.autoApproved) {
+          toast(state.lang === "en" ? "✅ Plan ready! It's on your calendar and queue." : "✅ ¡Plan listo! Ya está en tu calendario y en la cola.");
+          if (["create", "dashboard", "calendar", "queue"].includes(state.screen)) { state.screen = "calendar"; }
+        } else {
+          state.draft = r.plan;
+          toast(state.lang === "en" ? "✅ Plan ready to review." : "✅ Plan listo para revisar.");
+          if (state.screen === "create") state.screen = "draft";
+        }
+        render();
+      }).catch((err) => {
+        state.generating = false;
+        toast(err.message, true);
+        render();
+      });
     });
   });
 }
@@ -1184,7 +1208,7 @@ function renderSettings() {
         </div>
         <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0">
           <div><div style="font-weight:600;font-size:14px">${S.auto}</div><div class="hint">${S.autoHint}</div></div>
-          <span class="badge muted">${t().common.soon}</span>
+          <label style="cursor:pointer"><input type="checkbox" id="autoApproveSet" ${state.autoApprove ? "checked" : ""} style="width:auto" /></label>
         </div>
       </div>
     </div>`;
@@ -1196,6 +1220,10 @@ function renderSettings() {
     }));
     $("[data-add]").addEventListener("click", () => { state.editBrand = null; go("brandForm"); });
     $$("[data-lang]").forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+    $("#autoApproveSet")?.addEventListener("change", (e) => {
+      state.autoApprove = e.currentTarget.checked;
+      localStorage.setItem("autoApprove", state.autoApprove ? "1" : "0");
+    });
   });
 }
 

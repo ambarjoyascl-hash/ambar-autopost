@@ -4,7 +4,7 @@
 //                                Body: { brandId, startDate?, postsPerWeek?,
 //                                        includeEmails?, emailsPerWeek? }
 import { checkAuth, readJson, requireBrand, withErrors } from "../../lib/api-helpers.js";
-import { generatePlan, listPlans } from "../../lib/plan.js";
+import { generatePlan, listPlans, approvePlan } from "../../lib/plan.js";
 import { consumeGeneration } from "../../lib/limits.js";
 
 export default withErrors(async function handler(req, res) {
@@ -22,6 +22,12 @@ export default withErrors(async function handler(req, res) {
     if (!(await requireBrand(req, res, user, body.brandId))) return;
     if (!user.admin) await consumeGeneration(user.uid, user.email);
     const plan = await generatePlan(body.brandId, body);
+    // Auto-agendar en el servidor: aunque el cliente cierre el navegador,
+    // el contenido queda en calendario y cola.
+    if (body.autoApprove) {
+      const approved = await approvePlan(plan.id);
+      return res.status(201).json({ plan, autoApproved: true, ...approved });
+    }
     return res.status(201).json({ plan });
   }
 
