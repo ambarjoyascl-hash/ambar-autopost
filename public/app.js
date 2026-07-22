@@ -1007,18 +1007,24 @@ function renderConnections() {
       <p style="margin:0 0 18px" class="hint">${C.socialHint}</p>
       <div class="conn-grid" style="margin-bottom:32px">
         ${connCard("ig", "Instagram", C.igDetail, ig.connected,
-          `<button class="btn ${ig.connected ? "ghost" : "primary"} block" id="fbConnect">${ig.connected ? (C.change || C.reconnect) : C.connect}</button>`)}
+          ig.connected
+            ? `<button class="btn ghost block" disabled>✓ ${C.connected}</button><div style="text-align:center;margin-top:8px"><a href="#" id="fbConnect" class="hint">${state.lang === "en" ? "change account" : "cambiar cuenta"}</a></div>`
+            : `<button class="btn primary block" id="fbConnect">${C.connect}</button>`)}
         ${connCard("fb", "Facebook", C.fbDetail, ig.postToFacebook,
           `<button class="btn ${ig.postToFacebook ? "ghost" : "soft"} block" id="fbToggle" ${ig.connected ? "" : "disabled"}>${ig.postToFacebook ? C.connected + " ✓" : C.activate}</button>`)}
         ${connCard("pin", "Pinterest", (brand.pinterest?.connected ? `@${esc(brand.pinterest.username)} · ${esc(brand.pinterest.boardName)}` : C.pinDetail), brand.pinterest?.connected,
-          `<button class="btn ${brand.pinterest?.connected ? "ghost" : "primary"} block" id="pinConnect">${brand.pinterest?.connected ? (C.change || C.reconnect) : C.connect}</button>`)}
+          brand.pinterest?.connected
+            ? `<button class="btn ghost block" disabled>✓ ${C.connected}</button><div style="text-align:center;margin-top:8px"><a href="#" id="pinConnect" class="hint">${state.lang === "en" ? "change account" : "cambiar cuenta"}</a></div>`
+            : `<button class="btn primary block" id="pinConnect">${C.connect}</button>`)}
       </div>
 
       <h2 style="margin:0 0 4px;font-size:16px;font-weight:800">${C.store}</h2>
       <p style="margin:0 0 18px" class="hint">${C.storeHint}</p>
       <div class="conn-grid" style="margin-bottom:16px">
-        ${connCard("email", "Shopify", C.shopifyDetail, shop.connected,
-          `<button class="btn ${shop.connected ? "ghost" : "primary"} block" id="shopifyToggle">${shop.connected ? C.reconnect : C.connect}</button>`)}
+        ${connCard("email", "Shopify", shop.connected ? esc(shop.storeDomain || C.shopifyDetail) : C.shopifyDetail, shop.connected,
+          shop.connected
+            ? `<button class="btn ghost block" disabled>✓ ${C.connected}</button><div style="text-align:center;margin-top:8px"><a href="#" id="shopifyToggle" class="hint">${state.lang === "en" ? "change store" : "cambiar tienda"}</a></div>`
+            : `<button class="btn primary block" id="shopifyToggle">${C.connect}</button>`)}
         ${connCard("email", "Web", C.webDetail, !!brand.websiteUrl,
           `<button class="btn soft block" data-edit-brand>${brand.websiteUrl ? esc(brand.websiteUrl).slice(0, 30) : C.connect}</button>`)}
       </div>
@@ -1067,6 +1073,7 @@ function renderConnections() {
 
   renderShell(html, () => {
     $("#fbConnect").addEventListener("click", async (e) => {
+      e.preventDefault();
       const btn = e.currentTarget; const label = btn.textContent;
       btn.disabled = true; btn.innerHTML = `<span class="spinner"></span>`;
       try {
@@ -1077,6 +1084,7 @@ function renderConnections() {
       btn.disabled = false; btn.textContent = label;
     });
     $("#pinConnect").addEventListener("click", async (e) => {
+      e.preventDefault();
       const btn = e.currentTarget; const label = btn.textContent;
       btn.disabled = true; btn.innerHTML = `<span class="spinner"></span>`;
       try {
@@ -1091,7 +1099,8 @@ function renderConnections() {
       await api(`/api/brands/${brand.id}`, { method: "PUT", body: { instagram: { postToFacebook: !ig.postToFacebook } } });
       await loadBrands(); render();
     });
-    $("#shopifyToggle").addEventListener("click", () => {
+    $("#shopifyToggle").addEventListener("click", (e) => {
+      e.preventDefault();
       const el = $("#shopifyFields");
       el.style.display = el.style.display === "none" ? "block" : "none";
     });
