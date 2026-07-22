@@ -13,11 +13,13 @@ import { testInstagramCredentials } from "../../lib/meta.js";
 import { testShopify } from "../../lib/shopify.js";
 import { handleFacebookOauth } from "../../lib/meta-oauth.js";
 import { handlePinterestOauth } from "../../lib/pinterest-oauth.js";
+import { handleShopifyOauth } from "../../lib/shopify-oauth.js";
 
 export default withErrors(async function handler(req, res) {
   const { id } = req.query;
   if (id === "facebook-oauth") return handleFacebookOauth(req, res);
   if (id === "pinterest-oauth") return handlePinterestOauth(req, res);
+  if (id === "shopify-oauth") return handleShopifyOauth(req, res);
 
   const user = await checkAuth(req, res);
   if (!user) return;

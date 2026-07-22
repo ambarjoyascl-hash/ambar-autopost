@@ -1023,13 +1023,17 @@ function renderConnections() {
           `<button class="btn soft block" data-edit-brand>${brand.websiteUrl ? esc(brand.websiteUrl).slice(0, 30) : C.connect}</button>`)}
       </div>
       <div id="shopifyFields" class="card" style="display:none;margin-bottom:32px">
-        <p class="hint">Shopify → <b>Ajustes → Apps y canales de venta → Desarrollar apps → Crear app</b> ("Sincro") → pestaña <b>API de Admin</b> → permisos de lectura de productos → <b>Instalar app</b> → copia el token.</p>
-        <div class="row">
-          <div class="field"><label>Dominio</label><input id="f_shopDomain" value="${esc(shop.storeDomain || "")}" placeholder="tu-tienda.myshopify.com" /></div>
-          <div class="field"><label>API version</label><input id="f_shopVer" value="${esc(shop.apiVersion || "2024-04")}" /></div>
-        </div>
-        <div class="field"><label>Token</label><input id="f_shopToken" placeholder="${tokenPh(shop.connected)}" /></div>
-        <button class="btn primary sm" id="saveShopify">Guardar y probar</button>
+        <div class="field"><label>Dominio de la tienda</label><input id="f_shopDomain" value="${esc(shop.storeDomain || "")}" placeholder="tu-tienda.myshopify.com" /></div>
+        <button class="btn primary" id="shopifyOauth">🛍️ Conectar con Shopify</button>
+        <p class="hint" style="margin:8px 0 0">Se abrirá tu Shopify para autorizar el acceso de solo lectura a tus productos.</p>
+        <details style="margin-top:14px">
+          <summary class="hint" style="cursor:pointer">Conexión manual con token (avanzado)</summary>
+          <div class="row" style="margin-top:10px">
+            <div class="field"><label>API version</label><input id="f_shopVer" value="${esc(shop.apiVersion || "2024-04")}" /></div>
+            <div class="field"><label>Token</label><input id="f_shopToken" placeholder="${tokenPh(shop.connected)}" /></div>
+          </div>
+          <button class="btn ghost sm" id="saveShopify">Guardar y probar</button>
+        </details>
       </div>
 
       <div class="inspo-card" style="margin-bottom:24px">
@@ -1090,6 +1094,16 @@ function renderConnections() {
     $("#shopifyToggle").addEventListener("click", () => {
       const el = $("#shopifyFields");
       el.style.display = el.style.display === "none" ? "block" : "none";
+    });
+    $("#shopifyOauth").addEventListener("click", async (e) => {
+      const btn = e.currentTarget; const label = btn.textContent;
+      btn.disabled = true; btn.innerHTML = `<span class="spinner"></span>`;
+      try {
+        const { url } = await api("/api/brands/shopify-oauth", { method: "POST", body: { brandId: brand.id, shop: $("#f_shopDomain").value.trim() } });
+        window.open(url, "_blank");
+        toast("Autoriza en la pestaña de Shopify; el panel se actualizará solo al volver.");
+      } catch (err) { toast(err.message, true); }
+      btn.disabled = false; btn.textContent = label;
     });
     $("#saveShopify").addEventListener("click", async (e) => {
       const btn = e.currentTarget; btn.disabled = true; btn.innerHTML = `<span class="spinner"></span>`;
