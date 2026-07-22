@@ -5,6 +5,7 @@
 import { db } from "../../lib/firebase-admin.js";
 import { publishPost } from "../../lib/publish.js";
 import { getBrandCredentials, getPublishingLimit, refreshBrandToken } from "../../lib/meta.js";
+import { refreshPinterestToken } from "../../lib/pinterest.js";
 import { listBrands } from "../../lib/brands.js";
 import { checkCron } from "../../lib/api-helpers.js";
 
@@ -62,9 +63,10 @@ async function publishDue(res) {
       await doc.ref.update({
         status: "published",
         publishedAt: Date.now(),
-        error: null,
+        error: out.pinError ? `Pinterest: ${out.pinError}` : null,
         igMediaId: out.igMediaId || null,
         fbPostId: out.fbPostId || null,
+        pinId: out.pinId || null,
       });
       results.push({ id: doc.id, ok: true });
     } catch (err) {
@@ -77,15 +79,25 @@ async function publishDue(res) {
 }
 
 async function refreshTokens(res) {
-  const brands = await listBrands({ redacted: false });
+  // admin:true — el cron debe ver TODAS las marcas (multi-cliente).
+  const brands = await listBrands({ redacted: false, admin: true });
   const results = [];
   for (const brand of brands) {
-    if (!brand.instagram?.longLivedUserToken) continue;
-    try {
-      await refreshBrandToken(brand.id);
-      results.push({ brand: brand.name, ok: true });
-    } catch (err) {
-      results.push({ brand: brand.name, ok: false, error: String(err.message || err) });
+    if (brand.instagram?.longLivedUserToken) {
+      try {
+        await refreshBrandToken(brand.id);
+        results.push({ brand: brand.name, meta: true });
+      } catch (err) {
+        results.push({ brand: brand.name, meta: false, error: String(err.message || err) });
+      }
+    }
+    if (brand.pinterest?.refreshToken) {
+      try {
+        await refreshPinterestToken(brand.id);
+        results.push({ brand: brand.name, pinterest: true });
+      } catch (err) {
+        results.push({ brand: brand.name, pinterest: false, error: String(err.message || err) });
+      }
     }
   }
   return res.status(200).json({ ok: true, refreshedAt: Date.now(), results });

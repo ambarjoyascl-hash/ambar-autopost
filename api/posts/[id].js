@@ -39,9 +39,10 @@ export default withErrors(async function handler(req, res) {
       await ref.update({
         status: "published",
         publishedAt: Date.now(),
-        error: null,
+        error: out.pinError ? `Pinterest: ${out.pinError}` : null,
         igMediaId: out.igMediaId || null,
         fbPostId: out.fbPostId || null,
+        pinId: out.pinId || null,
       });
       return res.status(200).json({ ok: true, ...out });
     } catch (err) {

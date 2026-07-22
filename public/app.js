@@ -459,7 +459,7 @@ function renderDashboard() {
     { ch: "ig", name: "Instagram", detail: ig.connected ? T.conn.connected : T.conn.notConnected, on: !!ig.connected },
     { ch: "fb", name: "Facebook", detail: ig.postToFacebook ? T.conn.connected : T.conn.notConnected, on: !!ig.postToFacebook },
     { ch: "email", name: "Shopify / Email", detail: shop.connected ? T.conn.connected : T.conn.notConnected, on: !!shop.connected },
-    { ch: "pin", name: "Pinterest", detail: T.conn.soon, on: false },
+    { ch: "pin", name: "Pinterest", detail: brand?.pinterest?.connected ? `@${brand.pinterest.username}` : T.conn.notConnected, on: !!brand?.pinterest?.connected },
   ];
   const inspo = brand?.voice?.inspo || [];
 
@@ -525,7 +525,7 @@ function renderCreate() {
   if (!brand) return renderNoBrand();
   const shop = brand.shopify || {};
   const hasSource = !!(brand.websiteUrl || shop.connected);
-  state.createOpts = state.createOpts || { emailOn: true, fbOn: !!brand.instagram?.postToFacebook, tone: "" };
+  state.createOpts = state.createOpts || { emailOn: true, fbOn: !!brand.instagram?.postToFacebook, pinOn: !!brand.pinterest?.connected, tone: "" };
   const o = state.createOpts;
 
   const chanToggle = (id, name, on, enabled = true) => `
@@ -567,7 +567,7 @@ function renderCreate() {
             ${chanToggle("ig", "Instagram", true)}
             ${chanToggle("email", "Email", o.emailOn)}
             ${chanToggle("fb", "Facebook", o.fbOn, !!brand.instagram?.connected)}
-            ${chanToggle("pin", "Pinterest", false, false)}
+            ${chanToggle("pin", "Pinterest", !!o.pinOn, !!brand.pinterest?.connected)}
           </div>
         </div>
 
@@ -624,6 +624,7 @@ function renderCreate() {
       const id = b.dataset.chan;
       if (id === "email") { o.emailOn = !o.emailOn; render(); }
       if (id === "fb") { o.fbOn = !o.fbOn; render(); }
+      if (id === "pin") { o.pinOn = !o.pinOn; render(); }
     }));
 
     // ── Subida de fotos/videos propios ──
@@ -679,6 +680,7 @@ function renderCreate() {
       try {
         const { plan } = await api("/api/plans", { method: "POST", body: {
           brandId: brand.id, goal: o.goal, tone: o.tone, imageMode: o.imageMode || "web",
+          pinterest: !!o.pinOn,
           postsPerWeek: 7, includeEmails: o.emailOn, emailsPerWeek: o.emailOn ? (o.emailsPerWeek || 2) : 0,
         } });
         if (o.fbOn !== !!brand.instagram?.postToFacebook) {
@@ -989,8 +991,8 @@ function renderConnections() {
           `<button class="btn ${ig.connected ? "ghost" : "primary"} block" id="fbConnect">${ig.connected ? C.reconnect : C.connect}</button>`)}
         ${connCard("fb", "Facebook", C.fbDetail, ig.postToFacebook,
           `<button class="btn ${ig.postToFacebook ? "ghost" : "soft"} block" id="fbToggle" ${ig.connected ? "" : "disabled"}>${ig.postToFacebook ? C.connected + " ✓" : C.activate}</button>`)}
-        ${connCard("pin", "Pinterest", C.pinDetail, false,
-          `<button class="btn ghost block" disabled>${C.soon}</button>`)}
+        ${connCard("pin", "Pinterest", (brand.pinterest?.connected ? `@${esc(brand.pinterest.username)} · ${esc(brand.pinterest.boardName)}` : C.pinDetail), brand.pinterest?.connected,
+          `<button class="btn ${brand.pinterest?.connected ? "ghost" : "primary"} block" id="pinConnect">${brand.pinterest?.connected ? C.reconnect : C.connect}</button>`)}
       </div>
 
       <h2 style="margin:0 0 4px;font-size:16px;font-weight:800">${C.store}</h2>
@@ -1048,6 +1050,16 @@ function renderConnections() {
         const { url } = await api("/api/brands/facebook-oauth", { method: "POST", body: { brandId: brand.id } });
         window.open(url, "_blank");
         toast(C.fbNote);
+      } catch (err) { toast(err.message, true); }
+      btn.disabled = false; btn.textContent = label;
+    });
+    $("#pinConnect").addEventListener("click", async (e) => {
+      const btn = e.currentTarget; const label = btn.textContent;
+      btn.disabled = true; btn.innerHTML = `<span class="spinner"></span>`;
+      try {
+        const { url } = await api("/api/brands/pinterest-oauth", { method: "POST", body: { brandId: brand.id } });
+        window.open(url, "_blank");
+        toast(state.lang === "en" ? "Finish connecting in the Pinterest tab, then reload." : "Completa la conexión en la pestaña de Pinterest y luego recarga el panel.");
       } catch (err) { toast(err.message, true); }
       btn.disabled = false; btn.textContent = label;
     });

@@ -12,10 +12,12 @@ import { updateBrand, deleteBrand, redactBrand } from "../../lib/brands.js";
 import { testInstagramCredentials } from "../../lib/meta.js";
 import { testShopify } from "../../lib/shopify.js";
 import { handleFacebookOauth } from "../../lib/meta-oauth.js";
+import { handlePinterestOauth } from "../../lib/pinterest-oauth.js";
 
 export default withErrors(async function handler(req, res) {
   const { id } = req.query;
   if (id === "facebook-oauth") return handleFacebookOauth(req, res);
+  if (id === "pinterest-oauth") return handlePinterestOauth(req, res);
 
   const user = await checkAuth(req, res);
   if (!user) return;
