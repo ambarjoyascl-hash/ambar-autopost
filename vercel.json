@@ -1,3 +1,8 @@
 {
-  "framework": null
+  "framework": null,
+  "functions": {
+    "api/plans/index.js": { "maxDuration": 60 },
+    "api/cron/[task].js": { "maxDuration": 60 },
+    "api/posts/[id].js": { "maxDuration": 60 }
+  }
 }
