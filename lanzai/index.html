@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LanzAi — Tienes la idea hace meses. El martes la lanzas.</title>
+<meta name="description" content="Taller presencial en Santiago. Una tarde y sales con tu negocio publicado en internet, hecho por ti. Martes 11 de agosto, 20 cupos.">
+<meta property="og:title" content="LanzAi — Taller presencial, martes 11 de agosto">
+<meta property="og:description" content="Llegas con tu idea. Te vas con el sitio publicado, andando, hecho por ti. Sin saber programar.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14161A; --paper:#FFFFFF; --wash:#EFF0F3;
+    --cobalt:#1B3BE0; --mute:#71767E; --rule:#D5D8DE; --live:#00875A;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Archivo',system-ui,sans-serif;color:var(--ink);background:var(--paper);
+       -webkit-font-smoothing:antialiased;line-height:1.5}
+  .wrap{max-width:780px;margin:0 auto;padding:0 26px}
+
+  .topbar{background:var(--ink);color:#fff;padding:12px 0;font-size:12.5px;font-weight:600;
+          position:sticky;top:0;z-index:20}
+  .topbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .brand{font-family:'Anton',sans-serif;font-weight:400;font-size:16px;display:inline-flex;align-items:stretch}
+  .brand .ai{background:var(--cobalt);padding:.06em .16em;margin-left:.04em}
+  .topbar span.when{color:#A7ACB6}
+
+  .hero{padding:54px 0 40px}
+  h1{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(40px,8vw,72px);
+     line-height:.92;text-transform:uppercase;text-wrap:balance}
+  h1 em{font-style:normal;display:block;color:var(--cobalt)}
+  .standfirst{margin-top:22px;font-size:18px;line-height:1.5;color:#3F444C;max-width:47ch}
+  .standfirst b{font-weight:700;color:var(--ink)}
+  .who{margin-top:22px;padding-top:16px;border-top:1px solid var(--rule);
+       font-size:15.5px;color:#3F444C;max-width:47ch}
+  .who b{font-family:'Anton',sans-serif;font-weight:400;font-size:18px;text-transform:uppercase;color:var(--ink)}
+
+  .buy{margin-top:32px}
+  .btn{display:inline-block;background:var(--ink);color:#fff;text-decoration:none;
+       font-family:'Anton',sans-serif;font-weight:400;font-size:20px;letter-spacing:.03em;
+       text-transform:uppercase;padding:18px 36px}
+  .btn:hover{background:var(--cobalt)}
+  .btn:focus-visible{outline:3px solid var(--cobalt);outline-offset:3px}
+  .buy small{display:block;margin-top:11px;font-size:13px;color:var(--mute)}
+
+  section{padding:42px 0;border-top:3px solid var(--ink)}
+  h2{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(26px,5vw,38px);
+     line-height:1;text-transform:uppercase;margin-bottom:20px}
+  h2 span{color:var(--cobalt)}
+  p.lead{font-size:17px;color:#3F444C;max-width:58ch;margin-bottom:20px}
+  p.lead b{color:var(--ink);font-weight:700}
+
+  /* ---------- navegador falso ---------- */
+  .browser{border:1px solid var(--rule);background:#fff;box-shadow:0 14px 34px rgba(20,22,26,.09)}
+  .chrome{background:var(--wash);border-bottom:1px solid var(--rule);padding:9px 12px;
+          display:flex;align-items:center;gap:9px}
+  .dots{display:flex;gap:5px;flex:none}
+  .dots i{width:9px;height:9px;border-radius:50%;background:#C9CDD4;display:block}
+  .addr{flex:1;background:#fff;border:1px solid var(--rule);border-radius:20px;
+        padding:5px 12px;font-size:11.5px;color:#3F444C;display:flex;align-items:center;gap:7px;
+        overflow:hidden;white-space:nowrap}
+  .addr .lock{width:7px;height:7px;border-radius:50%;background:var(--live);flex:none}
+  .screen{padding:26px 22px}
+  .screen .sh{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(22px,4.6vw,32px);
+              line-height:1;text-transform:uppercase}
+  .screen .sp{font-size:13.5px;color:#5F656E;margin-top:9px;max-width:38ch}
+  .screen .row{display:flex;gap:9px;margin-top:16px;flex-wrap:wrap}
+  .chip{background:var(--wash);border:1px solid var(--rule);padding:7px 12px;font-size:12px;font-weight:600}
+  .chip.go{background:var(--cobalt);color:#fff;border-color:var(--cobalt)}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:18px}
+  .card{background:var(--wash);border:1px solid var(--rule);padding:13px}
+  .card b{display:block;font-size:12.5px}
+  .card small{font-size:11.5px;color:#6C727B}
+  .caption{font-size:13px;color:var(--mute);margin-top:13px;text-align:center}
+
+  /* ---------- antes / después ---------- */
+  .ba{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+  .ba > div{padding:22px 20px}
+  .ba .antes{background:var(--wash)}
+  .ba .desp{background:var(--ink);color:#fff}
+  .ba h3{font-family:'Anton',sans-serif;font-weight:400;font-size:13px;letter-spacing:.08em;
+         text-transform:uppercase;margin-bottom:14px;color:var(--mute)}
+  .ba .desp h3{color:#8FA3FF}
+  .ba li{margin-left:17px;margin-bottom:10px;font-size:15px;line-height:1.42}
+  .ba .desp li{color:#DDE1E8}
+
+  /* ---------- listas ---------- */
+  ul.plain{list-style:none}
+  ul.plain li{padding:14px 0;border-bottom:1px solid var(--rule);font-size:16.5px;
+              font-weight:600;display:flex;gap:12px;align-items:baseline}
+  ul.plain li::before{content:"—";color:var(--cobalt);font-weight:700;flex:none}
+  ul.plain li small{display:block;font-weight:400;font-size:14px;color:#5F656E;margin-top:4px;line-height:1.45}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+  .col{background:var(--paper);padding:20px}
+  .col h3{font-family:'Anton',sans-serif;font-weight:400;font-size:14px;letter-spacing:.07em;
+          text-transform:uppercase;margin-bottom:13px}
+  .col.si h3{color:var(--cobalt)}
+  .col.no h3{color:var(--mute)}
+  .col li{margin-left:17px;margin-bottom:9px;font-size:15px;line-height:1.45}
+
+  /* ---------- timeline ---------- */
+  .step{display:grid;grid-template-columns:62px 1fr;gap:0 16px;padding:13px 0;border-bottom:1px solid var(--rule)}
+  .step .t{font-size:14px;font-weight:700;color:var(--cobalt);font-variant-numeric:tabular-nums;padding-top:2px}
+  .step .d{font-size:16.5px;font-weight:600;line-height:1.35}
+  .step .d small{display:block;font-size:13.5px;font-weight:400;color:#5F656E;margin-top:3px;line-height:1.45}
+  .liveblock{background:var(--cobalt);color:#fff;padding:22px 24px;display:grid;
+             grid-template-columns:62px 1fr;gap:0 16px;align-items:center}
+  .liveblock .t{font-size:14px;font-weight:700;color:#A9BAFF}
+  .liveblock .d{font-family:'Anton',sans-serif;font-weight:400;
+                font-size:clamp(22px,4.4vw,30px);text-transform:uppercase;line-height:1}
+  .liveblock .d small{display:block;font-family:'Archivo',sans-serif;font-size:12.5px;
+                      font-weight:600;color:#C3CEFF;text-transform:none;margin-top:8px;line-height:1.4}
+
+  /* ---------- honestidad ---------- */
+  .honest{border:3px solid var(--ink);padding:24px 22px}
+  .honest h3{font-family:'Anton',sans-serif;font-weight:400;font-size:19px;text-transform:uppercase;margin-bottom:13px}
+  .honest li{margin-left:17px;margin-bottom:10px;font-size:15px;line-height:1.5;color:#3F444C}
+  .honest p{margin-top:15px;font-size:15px;font-weight:600}
+
+  .sites{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .site{display:block;text-decoration:none;color:inherit;border:1px solid var(--rule);
+        background:#fff;transition:transform .15s ease,box-shadow .15s ease}
+  .site:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(20,22,26,.13)}
+  .site .sbody{padding:14px}
+  .site b{display:block;font-family:'Anton',sans-serif;font-weight:400;font-size:16px;
+          text-transform:uppercase;margin-bottom:5px}
+  .site small{font-size:12.5px;color:#5F656E;line-height:1.45;display:block}
+  @media (max-width:600px){.sites{grid-template-columns:1fr}}
+
+  .becas{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+  .bcol{background:var(--paper);padding:22px 20px}
+  .bcol:last-child{background:var(--ink);color:#fff}
+  .bcol h3{font-family:'Anton',sans-serif;font-weight:400;font-size:14px;letter-spacing:.07em;
+           text-transform:uppercase;margin-bottom:14px;color:var(--cobalt)}
+  .bcol:last-child h3{color:#8FA3FF}
+  .bcol li{margin-left:17px;margin-bottom:11px;font-size:14.5px;line-height:1.45}
+  .bcol:last-child li{color:#DDE1E8}
+  .bcol b{font-weight:700}
+  .bnote{font-size:13px;color:#A7ACB6;margin-top:14px}
+  .buy-beca{margin-top:16px}
+  .buy-beca .btn{background:var(--cobalt);font-size:16px;padding:14px 24px}
+  .buy-beca .btn:hover{background:#fff;color:var(--ink)}
+  @media (max-width:600px){.becas{grid-template-columns:1fr}}
+
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:520px}
+  .opt{display:block;text-align:center;text-decoration:none;border:2px solid var(--ink);
+       padding:16px 14px;background:#fff;color:var(--ink);cursor:pointer;font-family:inherit;width:100%}
+  .opt b{display:block;font-family:'Anton',sans-serif;font-weight:400;font-size:17px;
+         text-transform:uppercase;letter-spacing:.02em}
+  .opt small{display:block;font-size:12.5px;color:#5F656E;margin-top:5px}
+  .opt.pagado{background:var(--ink);color:#fff}
+  .opt.pagado small{color:#A7ACB6}
+  .opt.pagado:hover{background:var(--cobalt);border-color:var(--cobalt)}
+  .opt.gratis{border-color:var(--cobalt);color:var(--cobalt)}
+  .opt.gratis small{color:#5F656E}
+  .opt.gratis:hover{background:var(--cobalt);color:#fff}
+  .opt.gratis:hover small{color:#C3CEFF}
+  .opt:focus-visible{outline:3px solid var(--cobalt);outline-offset:3px}
+  @media (max-width:600px){.opts{grid-template-columns:1fr}}
+
+  .modal{position:fixed;inset:0;background:rgba(20,22,26,.75);display:none;
+         align-items:center;justify-content:center;padding:20px;z-index:100}
+  .modal.open{display:flex}
+  .modalbox{background:#fff;max-width:520px;width:100%;padding:30px 28px;
+            max-height:90vh;overflow:auto}
+  .modalbox h3{font-family:'Anton',sans-serif;font-weight:400;font-size:26px;
+               text-transform:uppercase;line-height:1;margin-bottom:14px}
+  .modalbox h3 span{color:var(--cobalt)}
+  .modalbox p{font-size:15px;color:#3F444C;line-height:1.55;margin-bottom:18px}
+  .pledge{background:var(--wash);border-left:4px solid var(--cobalt);padding:18px 18px;margin-bottom:18px}
+  .pledge label{display:flex;gap:12px;align-items:flex-start;cursor:pointer;
+                font-size:15.5px;font-weight:600;line-height:1.45}
+  .pledge input{width:22px;height:22px;flex:none;margin-top:1px;accent-color:var(--cobalt);cursor:pointer}
+  .modalbox .go{display:block;width:100%;text-align:center;text-decoration:none;border:none;
+                font-family:'Anton',sans-serif;font-weight:400;font-size:19px;text-transform:uppercase;
+                letter-spacing:.03em;padding:16px;background:var(--cobalt);color:#fff;cursor:pointer}
+  .modalbox .go[disabled]{background:var(--rule);color:#9AA0A8;cursor:not-allowed}
+  .modalbox .cancel{display:block;width:100%;background:none;border:none;margin-top:12px;
+                    font-family:inherit;font-size:13.5px;color:var(--mute);cursor:pointer;padding:8px}
+
+  .price{background:var(--wash);padding:30px 26px;text-align:center}
+  .price .amount{font-family:'Anton',sans-serif;font-weight:400;font-size:58px;line-height:1}
+  .price .per{font-size:14px;color:var(--mute);margin-top:7px}
+  .price .inc{font-size:15px;color:#3F444C;margin-top:16px;max-width:42ch;margin-left:auto;margin-right:auto}
+
+  details{border-bottom:1px solid var(--rule);padding:14px 0}
+  summary{font-size:16px;font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:14px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";color:var(--cobalt);font-weight:700;font-size:20px;line-height:1}
+  details[open] summary::after{content:"–"}
+  details p{margin-top:11px;font-size:15px;color:#3F444C;line-height:1.55;max-width:58ch}
+
+  .soldout{background:var(--ink);color:#fff;padding:26px;margin-top:32px}
+  .soldout h3{font-family:'Anton',sans-serif;font-weight:400;font-size:24px;text-transform:uppercase;margin-bottom:10px}
+  .soldout p{font-size:15px;color:#C6CAD2;margin-bottom:18px;max-width:44ch}
+  .soldout .btn{background:var(--cobalt)}
+  .soldout .btn:hover{background:#fff;color:var(--ink)}
+
+  footer{background:var(--ink);color:#8D939C;padding:32px 0;font-size:12.5px;line-height:1.7;margin-top:40px}
+  footer b{color:#fff;font-weight:700}
+
+  @media (max-width:600px){
+    .wrap{padding:0 20px}
+    .cols,.ba{grid-template-columns:1fr}
+    .grid3{grid-template-columns:1fr}
+    .btn{display:block;text-align:center}
+    .step,.liveblock{grid-template-columns:52px 1fr;gap:0 12px}
+    .hero{padding:38px 0 32px}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span class="brand">Lanz<span class="ai">Ai</span></span>
+    <span class="when">Martes 11 de agosto · Santiago</span>
+  </div>
+</div>
+
+<div class="wrap" id="top">
+
+  <div class="hero">
+    <h1>Tienes la idea hace meses.<em>El martes la lanzas.</em></h1>
+    <p class="standfirst">
+      Falta quién la haga. Una tarde, tu notebook, y <b>sin escribir una línea de código</b>:
+      le hablas a Claude en español —como le explicarías la idea a un socio— y él la construye.
+    </p>
+    <p class="who">
+      Lo hago yo, <b>Gina Strauss</b>. Tengo mis propios negocios andando en internet
+      y las páginas las hice yo, con esto mismo. En sala, con un ayudante, para 20 personas:
+      si te trabas, me siento al lado tuyo.
+    </p>
+    <div class="buy" id="cta-arriba"></div>
+  </div>
+
+  <section>
+    <h2>Esto es lo que te <span>llevas puesto</span></h2>
+    <p class="lead">No apuntes. No un curso que vas a ver después. Una dirección de internet, viva, que puedes mandar por WhatsApp esa misma noche.</p>
+
+    <div class="browser">
+      <div class="chrome">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="addr"><span class="lock"></span>tunegocio.cl</div>
+      </div>
+      <div class="screen">
+        <div class="sh">Tu negocio,<br>por fin en internet</div>
+        <div class="sp">Tus textos. Tus precios. Tus fotos. Publicado y andando.</div>
+        <div class="row">
+          <span class="chip go">Escríbeme por WhatsApp</span>
+          <span class="chip">Ver precios</span>
+        </div>
+        <div class="grid3">
+          <div class="card"><b>Tus servicios</b><small>Lo que ofreces, claro</small></div>
+          <div class="card"><b>Formulario</b><small>Te llega al correo</small></div>
+          <div class="card"><b>Cómo pagarte</b><small>Transferencia o WhatsApp</small></div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Así se ve lo que sale de la tarde. Con tu contenido, no con este.</p>
+  </section>
+
+  <section>
+    <h2>Qué ganas <span>de verdad</span></h2>
+
+    <div class="ba">
+      <div class="antes">
+        <h3>Hoy</h3>
+        <ul>
+          <li>La idea vive en tu cabeza y en notas del teléfono</li>
+          <li>Pediste una cotización y te fuiste de espaldas</li>
+          <li>Cualquier cambio depende de que otro tenga tiempo</li>
+          <li>Llevas meses diciendo "el otro mes lo hago"</li>
+        </ul>
+      </div>
+      <div class="desp">
+        <h3>El martes a las 19:00</h3>
+        <ul>
+          <li>Existe. Tiene dirección y cualquiera puede entrar</li>
+          <li>Lo hiciste tú, en una tarde, y sabes cómo se hace</li>
+          <li>Cambias un precio a las 11 de la noche, sin pedirle permiso a nadie</li>
+          <li>Dejó de ser una idea. Es un link que le mandas a alguien</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="lead" style="margin-top:26px">
+      Encargar una página parte en <b>varios cientos de lucas</b> y se demora semanas.
+      Y lo caro no es la plata: es que después <b>cada palabra que quieras cambiar depende
+      de que otro tenga tiempo</b>. Le escribes, esperas, le pagas de nuevo. Y esperas otra vez.
+    </p>
+    <p class="lead">
+      Lo que te llevas de esta tarde no es el sitio. Es <b>dejar de depender de nadie</b> para
+      mover tu propio negocio. El sitio es la prueba de que puedes.
+    </p>
+  </section>
+
+
+  <section>
+    <h2>Con qué <span>credencial</span></h2>
+    <p class="lead">
+      No soy profesora de computación. Tengo negocios funcionando en internet, y estas
+      páginas las hice yo — con la misma herramienta que te voy a enseñar el martes.
+    </p>
+
+    <div class="sites">
+      <a class="site" href="https://www.ambarjoyas.cl" target="_blank" rel="noopener">
+        <div class="chrome"><div class="dots"><i></i><i></i><i></i></div>
+          <div class="addr"><span class="lock"></span>ambarjoyas.cl</div></div>
+        <div class="sbody">
+          <b>Ámbar Joyas</b>
+          <small>Tienda con catálogo, carro y pagos. Más de 80 reseñas de clientas reales.</small>
+        </div>
+      </a>
+
+      <a class="site" href="https://molk.cl" target="_blank" rel="noopener">
+        <div class="chrome"><div class="dots"><i></i><i></i><i></i></div>
+          <div class="addr"><span class="lock"></span>molk.cl</div></div>
+        <div class="sbody">
+          <b>MØLK Helados</b>
+          <small>Helado vegano: 24 sabores, pedidos, despacho a domicilio y pago por transferencia.</small>
+        </div>
+      </a>
+
+      <a class="site" href="#top">
+        <div class="chrome"><div class="dots"><i></i><i></i><i></i></div>
+          <div class="addr"><span class="lock"></span>lanzai.cl</div></div>
+        <div class="sbody">
+          <b>Esta misma página</b>
+          <small>La que estás leyendo. También la hice así, y el martes vas a saber cómo.</small>
+        </div>
+      </a>
+    </div>
+  </section>
+
+
+  <section>
+    <h2>5 cupos <span>gratis</span> para estudiantes</h2>
+    <p class="lead">
+      Sin costo. Porque a esa edad tener algo propio andando en internet te cambia el año,
+      y la plata no debería ser el motivo por el que no.
+    </p>
+
+    <div class="becas">
+      <div class="bcol">
+        <h3>Qué necesitas</h3>
+        <ul>
+          <li>Ser estudiante y tener ganas de construir algo tuyo</li>
+          <li>Un notebook</li>
+          <li>Una idea, aunque sea chica</li>
+          <li>Si eres menor de 18, vienes con un adulto — te explico cuando me escribas</li>
+        </ul>
+      </div>
+      <div class="bcol">
+        <h3>Para postular</h3>
+        <ul>
+          <li>Tu nombre y tu edad</li>
+          <li>Dónde estudias</li>
+          <li>En dos líneas: qué quieres construir</li>
+        </ul>
+        <p class="bnote">Van los 5 primeros que calcen. Te respondo el mismo día.</p>
+        <div class="buy-beca" id="cta-beca"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Cómo se ve <span>la tarde</span></h2>
+    <div class="step">
+      <div class="t">16:00</div>
+      <div class="d">Llegas con la máquina lista<small>Te mando la preparación al reservar. Se hace en casa, en media hora.</small></div>
+    </div>
+    <div class="step">
+      <div class="t">16:20</div>
+      <div class="d">Le cuentas tu idea<small>En español, como se la contarías a un socio. Sale la primera versión.</small></div>
+    </div>
+    <div class="step">
+      <div class="t">17:00</div>
+      <div class="d">La publicas<small>Dirección propia, abierta, andando. Acá es donde se pone real.</small></div>
+    </div>
+    <div class="step">
+      <div class="t">17:40</div>
+      <div class="d">Le pones lo tuyo<small>Tus textos, tus fotos, tus precios. Deja de ser un ejemplo.</small></div>
+    </div>
+    <div class="step">
+      <div class="t">18:20</div>
+      <div class="d">Que te puedan contactar y pagarte<small>Botón de WhatsApp, transferencia, o el medio que ya uses hoy.</small></div>
+    </div>
+    <div class="liveblock">
+      <div class="t">19:00</div>
+      <div class="d">En línea<small>Tu idea, funcionando, hecha por ti — y sabiendo cómo seguir mañana solo.</small></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Qué construye <span>la gente</span></h2>
+    <p class="lead">Llegas con una de estas en mente. Si tu idea no está acá, igual sirve — son ejemplos, no un menú.</p>
+    <ul class="plain">
+      <li><div>Servicio profesional<small>Qué haces, por qué tú, y un formulario que te llega al correo</small></div></li>
+      <li><div>Reservas o citas<small>El cliente pide día y hora, y te llega el aviso</small></div></li>
+      <li><div>Catálogo o carta<small>Tus productos con foto, descripción y precio, que se ve bien en el celular</small></div></li>
+      <li><div>Marca personal<small>Quién eres, qué has hecho, cómo te contactan</small></div></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Para quién <span>es</span></h2>
+    <div class="cols">
+      <div class="col si">
+        <h3>Sí, es para ti</h3>
+        <ul>
+          <li>Tienes una idea concreta dando vueltas hace tiempo</li>
+          <li>Te cotizaron una página y dijiste "no puede ser"</li>
+          <li>Sabes usar un computador y nada más — con eso basta</li>
+          <li>Prefieres hacerlo tú antes que andar rogándole a alguien</li>
+        </ul>
+      </div>
+      <div class="col no">
+        <h3>No, mejor no</h3>
+        <ul>
+          <li>Buscas que alguien te haga la página</li>
+          <li>Ya programas y quieres algo avanzado</li>
+          <li>No tienes idea todavía, vienes a buscar una</li>
+          <li>No puedes dejar el computador listo antes</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Lo que <span>no</span> te voy a prometer</h2>
+    <div class="honest">
+      <h3>Seamos claros</h3>
+      <ul>
+        <li><b>No sale perfecto.</b> Sale publicado y andando, que es harto mejor. Lo bonito viene después, y ya vas a saber cómo.</li>
+        <li><b>No vas a automatizar tu empresa.</b> Eso es otro taller. Acá dejamos tu sitio arriba y andando.</li>
+        <li><b>Las cosas van a fallar.</b> A todos. Eso es parte del método, y te voy a enseñar exactamente cómo desatascarte — es la habilidad más útil de la tarde.</li>
+        <li><b>No es magia.</b> Es una herramienta que hace lo que le pides, y hay que aprender a pedirle bien.</li>
+      </ul>
+      <p>Prefiero que llegues sabiendo esto a que llegues esperando otra cosa.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Valor</h2>
+    <div class="price">
+      <div class="amount">$150.000</div>
+      <div class="per">por persona · 15 cupos pagados · primera edición</div>
+      <p class="inc">Incluye la guía impresa, café, y la preparación que te llega apenas reservas.</p>
+    </div>
+    <div class="buy" id="cta-abajo"></div>
+  </section>
+
+  <section>
+    <h2>Preguntas</h2>
+
+    <details>
+      <summary>¿De verdad no necesito saber programar?</summary>
+      <p>No. Le hablas a Claude en español, como le explicarías la idea a un socio, y él escribe el código. Tu trabajo es pedir bien y revisar el resultado. Eso se aprende en la primera hora.</p>
+    </details>
+
+    <details>
+      <summary>¿Qué es eso de Claude Pro y por qué se paga aparte?</summary>
+      <p>Es la suscripción a la herramienta que construye, unos US$20 al mes. Va a tu propia cuenta, no a la mía, y puedes cancelarla después del taller si no la vas a seguir usando. Lo que construyas es 100% tuyo.</p>
+    </details>
+
+    <details>
+      <summary>¿El sitio sigue siendo mío después?</summary>
+      <p>Sí, entero. Queda en tu cuenta, con tu dirección. Yo no tengo control sobre él ni te cobro nada por mantenerlo. Si mañana quieres cambiarlo, lo cambias tú.</p>
+    </details>
+
+    <details>
+      <summary>¿Por qué tengo que preparar algo antes?</summary>
+      <p>Porque instalar en la sala nos come la tarde. Te mando la preparación apenas reservas — son 30 minutos, y si te trabas te ayudo por WhatsApp esos días. Llegando con eso hecho, empiezas a construir desde el minuto uno.</p>
+    </details>
+
+    <details>
+      <summary>¿Y si no alcanzo a terminar?</summary>
+      <p>Lo importante queda publicado antes de las 17:30, así que hay margen. Si igual quedas a medias, te doy una videollamada de 30 minutos la semana siguiente para dejarlo cerrado. Nadie se va con la idea a medio hacer.</p>
+    </details>
+
+    <details>
+      <summary>¿Cuánto cuesta mantener el sitio después?</summary>
+      <p>Publicarlo es gratis. Si quieres tu propio dominio, tipo tunegocio.cl, son unos $10.000 al año y te enseño a comprarlo. Nada más.</p>
+    </details>
+
+    <details>
+      <summary>¿Dónde es exactamente?</summary>
+      <p>En Santiago. La dirección exacta te llega al correo apenas reservas, junto con la preparación.</p>
+    </details>
+
+    <details>
+      <summary>¿Puedo transferir mi cupo si no puedo ir?</summary>
+      <p>Sí. El cupo no es reembolsable, pero lo puedes pasar a otra persona o correrlo a la próxima fecha. Avísame antes y lo arreglamos.</p>
+    </details>
+
+    <details>
+      <summary>¿Por qué el cobro aparece como Ámbar Joyas?</summary>
+      <p>Porque el pago va por mi tienda, que es la misma cuenta. Es normal, no es un error. Si ves ese nombre en tu cartola, es este taller.</p>
+    </details>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <span class="brand" style="color:#fff">Lanz<span class="ai">Ai</span></span><br><br>
+    <b>Martes 11 de agosto · 16:00 a 19:00 hrs · Santiago</b><br>
+    20 cupos · Primera edición<br>
+    lanzai.cl<br>
+    El pago se procesa a través de Ámbar Joyas SpA.
+  </div>
+</footer>
+
+<!-- ================= Modal cupo de estudiante ================= -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mtit">
+  <div class="modalbox">
+    <h3 id="mtit">Cupo de <span>estudiante</span></h3>
+    <p>
+      Los 5 cupos de estudiante son gratis. No se pagan con plata — se pagan devolviendo la mano.
+    </p>
+    <div class="pledge">
+      <label>
+        <input type="checkbox" id="pledge">
+        <span>Me comprometo a volver a un próximo taller a ayudar a otras personas a construir lo suyo.</span>
+      </label>
+    </div>
+    <button class="go" id="goBeca" disabled>Postular a mi cupo</button>
+    <button class="cancel" id="cancelBeca">Cancelar</button>
+  </div>
+</div>
+
+<script>
+  // ---------------------------------------------------------------
+  //  Lo único que necesitas editar
+  // ---------------------------------------------------------------
+  const CONFIG = {
+    // Link directo al carro con el cupo ya agregado.
+    // Se salta la página del producto en la joyería.
+    linkCompra: "https://www.ambarjoyas.cl/cart/53091064316193:1",
+
+    // Si el de arriba falla, usa la página del producto:
+    // https://www.ambarjoyas.cl/products/ejecutai-taller-presencial-martes-11-de-agosto
+
+    // Tu WhatsApp, con código de país y sin signos. Ej: 56912345678
+    whatsapp: "56900000000",
+
+    // Ponlo en true cuando se llenen los 20 cupos
+    agotado: false
+  };
+  // ---------------------------------------------------------------
+
+  const modal    = document.getElementById('modal');
+  const chk      = document.getElementById('pledge');
+  const goBeca   = document.getElementById('goBeca');
+
+  // -------- Botón de compra (cupos pagados) --------
+  function pintarPagado(){
+    ['cta-arriba', 'cta-abajo'].forEach(id => {
+      const z = document.getElementById(id);
+      if (!z) return;
+      z.innerHTML = '';
+
+      if (CONFIG.agotado){
+        const box = document.createElement('div');
+        box.className = 'soldout';
+        box.innerHTML =
+          '<h3>Cupos agotados</h3>' +
+          '<p>Se llenaron los 20 cupos de esta edición. Escríbeme y te aviso apenas abra la próxima fecha.</p>';
+        const a = document.createElement('a');
+        a.className = 'btn';
+        a.href = 'https://wa.me/' + CONFIG.whatsapp +
+          '?text=' + encodeURIComponent('Hola Gina! Quiero que me avises de la próxima fecha del taller LanzAi.');
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.textContent = 'Avísame de la próxima fecha';
+        box.appendChild(a);
+        z.appendChild(box);
+        return;
+      }
+
+      const a = document.createElement('a');
+      a.className = 'btn';
+      a.href = CONFIG.linkCompra;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.textContent = 'Reservar mi cupo';
+
+      const s = document.createElement('small');
+      s.textContent = '$150.000 · pago seguro vía Ámbar Joyas · quedan cupos';
+
+      z.appendChild(a);
+      z.appendChild(s);
+    });
+  }
+
+  // -------- Cupo de estudiante (beca) --------
+  function linkBeca(){
+    const msg = "Hola Gina! Quiero postular a un cupo de estudiante para el taller del 11 de agosto."
+      + "%0A%0AMe comprometo a volver a ayudar a otros en un próximo taller."
+      + "%0A%0AMi nombre:%0AMi edad:%0ADónde estudio:%0AQué quiero construir:";
+    return "https://wa.me/" + CONFIG.whatsapp + "?text=" + msg;
+  }
+
+  function abrirModal(e){
+    if (e) e.preventDefault();
+    chk.checked = false;
+    goBeca.disabled = true;
+    modal.classList.add('open');
+    chk.focus();
+  }
+  function cerrarModal(){ modal.classList.remove('open'); }
+
+  chk.addEventListener('change', () => { goBeca.disabled = !chk.checked; });
+  goBeca.addEventListener('click', () => {
+    if (!chk.checked) return;
+    window.open(linkBeca(), '_blank', 'noopener');
+    cerrarModal();
+  });
+  document.getElementById('cancelBeca').addEventListener('click', cerrarModal);
+  modal.addEventListener('click', e => { if (e.target === modal) cerrarModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarModal(); });
+
+  function pintarBeca(){
+    const z = document.getElementById('cta-beca');
+    if (!z) return;
+    const b = document.createElement('button');
+    b.className = 'btn';
+    b.textContent = 'Postular a un cupo';
+    b.addEventListener('click', abrirModal);
+    z.innerHTML = '';
+    z.appendChild(b);
+  }
+
+  pintarPagado();
+  pintarBeca();
+</script>
+
+</body>
+</html>
