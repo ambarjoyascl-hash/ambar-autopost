@@ -5,7 +5,7 @@
 //                                        includeEmails?, emailsPerWeek? }
 import { checkAuth, readJson, requireBrand, withErrors } from "../../lib/api-helpers.js";
 import { generatePlan, listPlans, approvePlan } from "../../lib/plan.js";
-import { consumeGeneration } from "../../lib/limits.js";
+import { consumeGeneration, refundGeneration } from "../../lib/limits.js";
 
 export default withErrors(async function handler(req, res) {
   const user = await checkAuth(req, res);
@@ -21,7 +21,15 @@ export default withErrors(async function handler(req, res) {
     const body = await readJson(req);
     if (!(await requireBrand(req, res, user, body.brandId))) return;
     if (!user.admin) await consumeGeneration(user.uid, user.email);
-    const plan = await generatePlan(body.brandId, body);
+    let plan;
+    try {
+      plan = await generatePlan(body.brandId, body);
+    } catch (err) {
+      // El cupo se descuenta antes de generar; si el plan no llegó a crearse
+      // hay que devolverlo, o un fallo de la IA le come generaciones al usuario.
+      if (!user.admin) await refundGeneration(user.uid).catch(() => {});
+      throw err;
+    }
     // Auto-agendar en el servidor: aunque el cliente cierre el navegador,
     // el contenido queda en calendario y cola.
     if (body.autoApprove) {
