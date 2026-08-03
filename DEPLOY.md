@@ -86,7 +86,13 @@ En *Project → Settings → Environment Variables*, agrega estas (entorno
 | `FIREBASE_CLIENT_EMAIL` | JSON del service account |
 | `FIREBASE_PRIVATE_KEY` | JSON del service account (ver nota abajo) |
 | `CRON_SECRET` | El que generaste en el Paso 2 |
+| `BLOB_READ_WRITE_TOKEN` | La pone Vercel sola al conectar un store de Blob (*Storage → Blob*, o `vercel blob create-store <nombre> --access public`). Sin ella no se pueden subir fotos ni videos propios. |
 | `SHOPIFY_API_VERSION` | `2024-04` (opcional; las credenciales de Shopify se guardan por marca desde el panel) |
+
+> **Ojo:** `vercel env pull` y `vercel blob create-store` **sobrescriben `.env.local`**
+> sin avisar. Las variables marcadas como *sensitive* en Vercel no se pueden
+> volver a leer, así que guarda siempre una copia en `CLAVES-PANEL.txt`
+> (gitignoreado) antes de correr esos comandos.
 
 > **Nota sobre `FIREBASE_PRIVATE_KEY`:** pega la clave completa, incluyendo
 > `-----BEGIN PRIVATE KEY-----` y `-----END PRIVATE KEY-----`. Si el campo de

@@ -8,6 +8,7 @@
     "node": ">=18"
   },
   "dependencies": {
+    "@vercel/blob": "^2.6.1",
     "firebase-admin": "^12.0.0"
   }
 }

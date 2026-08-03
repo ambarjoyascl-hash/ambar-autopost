@@ -14,23 +14,15 @@ import {
   sendPasswordResetEmail,
   signOut,
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import {
-  getStorage,
-  ref as storageRef,
-  uploadBytes,
-  getDownloadURL,
-} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDWOTFFnh9kyiPbgr9PssYNakdBUA-f0O4",
   authDomain: "ambar-autopost.firebaseapp.com",
   projectId: "ambar-autopost",
-  storageBucket: "ambar-autopost.firebasestorage.app",
   appId: "1:3976211763:web:b60cd8e2fbfadffa786246",
 };
 const fbApp = initializeApp(firebaseConfig);
 const auth = getAuth(fbApp);
-const storage = getStorage(fbApp);
 
 /* ── i18n ─────────────────────────────────────────────────────────────── */
 const I18N = {
@@ -653,9 +645,19 @@ function renderCreate() {
         if (f.size > 100 * 1024 * 1024) { toast(`${f.name}: máx 100 MB`, true); continue; }
         prog.textContent = `Subiendo ${i + 1}/${list.length}: ${f.name}…`;
         try {
-          const path = `uploads/${auth.currentUser.uid}/${brand.id}/${Date.now()}-${f.name.replace(/[^\w.\-]+/g, "_")}`;
-          const snap = await uploadBytes(storageRef(storage, path), f);
-          const url = await getDownloadURL(snap.ref);
+          // El archivo NO pasa por nuestra API (tope de 4.5 MB): pedimos una URL
+          // prefirmada y lo mandamos directo a Vercel Blob.
+          const { presignedUrl } = await api("/api/brands/upload", {
+            method: "POST",
+            body: { brandId: brand.id, filename: f.name, contentType: f.type, size: f.size },
+          });
+          const put = await fetch(presignedUrl, {
+            method: "PUT",
+            headers: { "Content-Type": f.type },
+            body: f,
+          });
+          if (!put.ok) throw new Error(`error al subir (${put.status})`);
+          const { url } = await put.json();
           added.push({ url, type: f.type.startsWith("video") ? "video" : "image", name: f.name, createdAt: Date.now() });
         } catch (err) {
           toast(`${f.name}: ${err.message || "error al subir"}`, true);
