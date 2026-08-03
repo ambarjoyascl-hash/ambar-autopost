@@ -611,7 +611,6 @@ function renderCreate() {
         </label>
         ${state.sub ? `<p class="hint" style="margin:14px 0 0;text-align:center">
           ${state.sub.planName} · ${state.lang === "en" ? "generations this month" : "generaciones este mes"}: <b>${state.sub.gensUsed}/${state.sub.gensMax}</b>
-          ${state.sub.trialEndsAt ? ` · ${state.lang === "en" ? "trial ends" : "prueba termina"} ${new Date(state.sub.trialEndsAt).toLocaleDateString(state.lang === "en" ? "en-US" : "es-CL")}` : ""}
         </p>` : ""}
         <button class="btn primary lg block" id="genBtn" style="margin-top:14px" ${state.generating ? "disabled" : ""}>${state.generating ? `<span class="spinner"></span> ${C.generating}` : `✦ ${C.generate}`}</button>
         ${state.generating ? `<p class="hint" style="text-align:center;margin-top:10px">${state.lang === "en" ? "You can keep browsing — we'll notify you when it's ready." : "Puedes seguir navegando por la app — te avisamos cuando esté listo."}</p>` : ""}
