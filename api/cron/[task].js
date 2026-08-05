@@ -6,8 +6,11 @@ import { db } from "../../lib/firebase-admin.js";
 import { publishPost } from "../../lib/publish.js";
 import { getBrandCredentials, getPublishingLimit, refreshBrandToken } from "../../lib/meta.js";
 import { refreshPinterestToken } from "../../lib/pinterest.js";
-import { listBrands } from "../../lib/brands.js";
+import { listBrands, getBrand } from "../../lib/brands.js";
 import { checkCron } from "../../lib/api-helpers.js";
+import { getSubscribedCustomers } from "../../lib/shopify.js";
+import { enviarCampana } from "../../lib/mailer.js";
+import { pieDeBaja } from "../../lib/email-template.js";
 
 export default async function handler(req, res) {
   if (!checkCron(req, res)) return;
@@ -102,7 +105,108 @@ async function publishDue(res) {
     }
   }
 
-  return res.status(200).json({ processed: results.length, results });
+  // El mismo pase manda los correos que llegaron a su hora, para no depender de
+  // otro workflow que haya que configurar aparte.
+  let emails = [];
+  try {
+    emails = await sendDueEmails(now);
+  } catch (err) {
+    emails = [{ error: String(err.message || err) }];
+  }
+
+  return res.status(200).json({ processed: results.length, results, emails });
+}
+
+/**
+ * Manda las campañas cuya hora llegó.
+ *
+ * Solo envía si la marca tiene el envío activado (`brand.email.enabled`). Es a
+ * propósito: sin ese interruptor, activar SES dispararía de golpe todos los
+ * correos que ya estaban en "listo", a toda la base. Hay que encenderlo a mano
+ * por marca.
+ *
+ * El envío es reanudable: guarda la lista de destinatarios y por dónde va, así
+ * que si no alcanza a terminar dentro del tiempo de la función, el siguiente
+ * pase del cron continúa donde quedó.
+ */
+async function sendDueEmails(now) {
+  const snap = await db
+    .collection("emails")
+    .where("scheduledFor", "<=", now)
+    .orderBy("scheduledFor")
+    .limit(10)
+    .get();
+
+  const out = [];
+  for (const doc of snap.docs) {
+    const email = { id: doc.id, ...doc.data() };
+    if (!["ready", "sending"].includes(email.status)) continue;
+
+    const brand = await getBrand(email.brandId);
+    if (!brand) continue;
+    if (!brand.email?.enabled) {
+      out.push({ id: doc.id, skipped: "envio-desactivado" });
+      continue;
+    }
+
+    try {
+      // La audiencia se congela en el primer pase: si se recalculara en cada
+      // pase, un cliente nuevo correría los índices y alguien recibiría dos
+      // veces el mismo correo (o ninguno).
+      let audiencia = email.audiencia;
+      if (!audiencia) {
+        const { destinatarios, revisados } = await getSubscribedCustomers(brand);
+        audiencia = destinatarios;
+        await doc.ref.set(
+          { audiencia, audienciaDe: revisados, status: "sending", enviados: 0, cursor: 0 },
+          { merge: true }
+        );
+      }
+
+      if (!audiencia.length) {
+        await doc.ref.set({ status: "error", error: "No hay clientes suscritos a los que enviar." }, { merge: true });
+        out.push({ id: doc.id, error: "sin destinatarios" });
+        continue;
+      }
+
+      const r = await enviarCampana({
+        brand,
+        email,
+        destinatarios: audiencia,
+        desde: email.cursor || 0,
+        render: (_dest, urlBaja) =>
+          pieDeBaja({ html: email.html, plainText: email.plainText, brand, urlBaja }),
+      });
+
+      const enviados = (email.enviados || 0) + r.enviados;
+      const patch = {
+        enviados,
+        cursor: r.siguiente,
+        ultimoIntento: Date.now(),
+        fallos: [...(email.fallos || []), ...r.fallos].slice(-50),
+      };
+
+      if (r.abortado) {
+        // Fallo de la cuenta (dominio sin verificar, claves malas, envío
+        // pausado): no seguir quemando la lista contra el mismo error.
+        patch.status = "error";
+        patch.error = r.abortado;
+      } else if (r.completo) {
+        patch.status = "sent";
+        patch.sentAt = Date.now();
+        patch.error = null;
+      } else {
+        patch.status = "sending";
+      }
+
+      await doc.ref.set(patch, { merge: true });
+      out.push({ id: doc.id, enviados: r.enviados, total: audiencia.length, estado: patch.status });
+    } catch (err) {
+      await doc.ref.set({ status: "error", error: String(err.message || err) }, { merge: true });
+      out.push({ id: doc.id, error: String(err.message || err) });
+    }
+  }
+  return out;
 }
 
 async function refreshTokens(res) {

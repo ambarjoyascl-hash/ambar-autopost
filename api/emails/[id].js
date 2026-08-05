@@ -2,12 +2,18 @@
 // GET    /api/emails/:id  → email completo (incluye html y plainText)
 // PUT    /api/emails/:id  → cambia estado (ej. {status:"sent"}) o edita campos
 // DELETE /api/emails/:id  → elimina el email
+// GET/POST /api/emails/unsubscribe → baja de la lista (id reservado). NO lleva
+//        sesión: lo abre el cliente desde su correo, y va firmado.
 import { checkAuth, readJson, requireBrand, withErrors } from "../../lib/api-helpers.js";
 import { db } from "../../lib/firebase-admin.js";
+import { handleUnsubscribe } from "../../lib/unsubscribe.js";
 
 const EDITABLE = ["subject", "previewText", "status"];
 
 export default withErrors(async function handler(req, res) {
+  const { id: reservado } = req.query;
+  if (reservado === "unsubscribe") return handleUnsubscribe(req, res);
+
   const user = await checkAuth(req, res);
   if (!user) return;
   const { id } = req.query;
