@@ -70,8 +70,35 @@ async function publishDue(res) {
       });
       results.push({ id: doc.id, ok: true });
     } catch (err) {
-      await doc.ref.update({ status: "error", error: String(err.message || err) });
-      results.push({ id: doc.id, ok: false, error: String(err.message || err) });
+      // Un fallo pasajero (token caído, cuota, red) NO debe quemar el post: se
+      // deja en pending para reintentar cuando el problema se arregle. Solo se
+      // marca error lo que no tiene arreglo solo, o lo que ya llegó demasiado
+      // tarde como para publicarlo (un "solo por hoy" cinco días después, no).
+      const msg = String(err.message || err);
+      const pasajero =
+        /access token|session has been invalidated|rate limit|too many|quota|timeout|ETIMEDOUT|ECONNRESET|fetch failed|socket|temporarily|\b5\d\d\b/i.test(msg);
+      const intentos = (post.attempts || 0) + 1;
+      const tardeMs = Date.now() - (post.scheduledFor || 0);
+      const demasiadoTarde = tardeMs > 48 * 3600 * 1000;
+
+      if (pasajero && !demasiadoTarde) {
+        await doc.ref.update({
+          status: "pending",
+          attempts: intentos,
+          error: msg,
+          lastTriedAt: Date.now(),
+        });
+        results.push({ id: doc.id, retry: true, attempts: intentos, error: msg });
+      } else {
+        await doc.ref.update({
+          status: "error",
+          attempts: intentos,
+          error: demasiadoTarde
+            ? `No se pudo publicar dentro de las 48 h siguientes a su horario. Último fallo: ${msg}`
+            : msg,
+        });
+        results.push({ id: doc.id, ok: false, error: msg });
+      }
     }
   }
 
