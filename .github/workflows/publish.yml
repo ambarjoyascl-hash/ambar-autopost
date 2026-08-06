@@ -27,15 +27,17 @@ jobs:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
           URL="${CRON_URL:-https://social-media-autopost.vercel.app}"
+          URL="${URL%/}"   # sin esto, una barra final deja "//api/..." y Vercel responde 308
           if [ -z "$CRON_SECRET" ]; then
             echo "::error::Falta el secret CRON_SECRET en Settings → Secrets and variables → Actions."
             exit 1
           fi
           echo "POST $URL/api/cron/publish"
-          code=$(curl -s -o /tmp/out.json -w "%{http_code}" \
+          code=$(curl -sL -o /tmp/out.json -w "%{http_code}" \
             -H "Authorization: Bearer $CRON_SECRET" \
             "$URL/api/cron/publish")
           echo "HTTP $code"; cat /tmp/out.json || true
+          [ "$code" = "200" ] || echo "::warning::El endpoint respondió $code, no 200."
           # Un 401 significa que el secret no coincide con el de Vercel: eso sí
           # hay que verlo. Los demás errores pueden ser transitorios.
           [ "$code" = "401" ] && { echo "::error::CRON_SECRET no coincide con el de Vercel."; exit 1; }
