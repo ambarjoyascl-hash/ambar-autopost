@@ -4,9 +4,8 @@
 # refresco de tokens a una GitHub Action gratuita. Corre una vez por semana y
 # llama al endpoint /api/cron/refresh-token de tu app.
 #
-# Usa los mismos secretos que la Action de publicación:
-#   - Secret  CRON_SECRET  → el mismo valor que pusiste en Vercel.
-#   - Variable CRON_URL    → https://TU-APP.vercel.app  (sin barra final)
+# Usa lo mismo que la Action de publicación: el secret CRON_SECRET (obligatorio)
+# y, opcionalmente, la variable CRON_URL para apuntar a otra URL.
 name: refresh-meta-token
 
 on:
@@ -23,13 +22,15 @@ jobs:
           CRON_URL: ${{ vars.CRON_URL }}
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
-          if [ -z "$CRON_URL" ] || [ -z "$CRON_SECRET" ]; then
-            echo "CRON_URL o CRON_SECRET no configurados; nada que hacer."
-            exit 0
+          URL="${CRON_URL:-https://social-media-autopost.vercel.app}"
+          if [ -z "$CRON_SECRET" ]; then
+            echo "::error::Falta el secret CRON_SECRET en Settings → Secrets and variables → Actions."
+            exit 1
           fi
-          echo "POST $CRON_URL/api/cron/refresh-token"
+          echo "POST $URL/api/cron/refresh-token"
           code=$(curl -s -o /tmp/out.json -w "%{http_code}" \
             -H "Authorization: Bearer $CRON_SECRET" \
-            "$CRON_URL/api/cron/refresh-token")
+            "$URL/api/cron/refresh-token")
           echo "HTTP $code"; cat /tmp/out.json || true
+          [ "$code" = "401" ] && { echo "::error::CRON_SECRET no coincide con el de Vercel."; exit 1; }
           exit 0

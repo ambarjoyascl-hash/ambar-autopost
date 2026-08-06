@@ -4,11 +4,12 @@
 # deploy). En su lugar, esta GitHub Action gratuita llama cada 5 min al endpoint
 # /api/cron/publish para publicar los posts cuya hora ya llegó.
 #
-# Para activarla, en GitHub → Settings → Secrets and variables → Actions añade:
-#   - Secret  CRON_SECRET  → el mismo valor que pusiste en Vercel.
-#   - Variable CRON_URL    → https://TU-APP.vercel.app  (sin barra final)
+# Lo único obligatorio es el secret CRON_SECRET (GitHub → Settings → Secrets and
+# variables → Actions), con el mismo valor que en Vercel. La URL sale de la
+# variable CRON_URL si existe; si no, se usa la de producción de más abajo.
 #
-# Si no las configuras, el job simplemente no hace nada (no falla ruidosamente).
+# Si falta el secret, el job FALLA a propósito: antes salía en verde sin haber
+# llamado a nada y el calendario se quedaba parado sin que se notara.
 name: publish-scheduled-posts
 
 on:
@@ -25,14 +26,17 @@ jobs:
           CRON_URL: ${{ vars.CRON_URL }}
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
-          if [ -z "$CRON_URL" ] || [ -z "$CRON_SECRET" ]; then
-            echo "CRON_URL o CRON_SECRET no configurados; nada que hacer."
-            exit 0
+          URL="${CRON_URL:-https://social-media-autopost.vercel.app}"
+          if [ -z "$CRON_SECRET" ]; then
+            echo "::error::Falta el secret CRON_SECRET en Settings → Secrets and variables → Actions."
+            exit 1
           fi
-          echo "POST $CRON_URL/api/cron/publish"
+          echo "POST $URL/api/cron/publish"
           code=$(curl -s -o /tmp/out.json -w "%{http_code}" \
             -H "Authorization: Bearer $CRON_SECRET" \
-            "$CRON_URL/api/cron/publish")
+            "$URL/api/cron/publish")
           echo "HTTP $code"; cat /tmp/out.json || true
-          # No fallamos el workflow por errores transitorios de la app.
+          # Un 401 significa que el secret no coincide con el de Vercel: eso sí
+          # hay que verlo. Los demás errores pueden ser transitorios.
+          [ "$code" = "401" ] && { echo "::error::CRON_SECRET no coincide con el de Vercel."; exit 1; }
           exit 0
