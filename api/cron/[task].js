@@ -78,8 +78,10 @@ async function publishDue(res) {
       // marca error lo que no tiene arreglo solo, o lo que ya llegó demasiado
       // tarde como para publicarlo (un "solo por hoy" cinco días después, no).
       const msg = String(err.message || err);
+      // Los permisos que faltan también son pasajeros: se arreglan en la app de
+      // Meta y el post vuelve a servir. Quemarlo obliga a rehacerlo a mano.
       const pasajero =
-        /access token|session has been invalidated|rate limit|too many|quota|timeout|ETIMEDOUT|ECONNRESET|fetch failed|socket|temporarily|\b5\d\d\b/i.test(msg);
+        /access token|session has been invalidated|rate limit|too many|quota|timeout|ETIMEDOUT|ECONNRESET|fetch failed|socket|temporarily|does not have permission|\(#10\)|\(#200\)|\b5\d\d\b/i.test(msg);
       const intentos = (post.attempts || 0) + 1;
       const tardeMs = Date.now() - (post.scheduledFor || 0);
       const demasiadoTarde = tardeMs > 48 * 3600 * 1000;
