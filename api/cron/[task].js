@@ -66,7 +66,10 @@ async function publishDue(res) {
       await doc.ref.update({
         status: "published",
         publishedAt: Date.now(),
-        error: out.pinError ? `Pinterest: ${out.pinError}` : null,
+        error: [
+          out.fbError && `Facebook: ${out.fbError}`,
+          out.pinError && `Pinterest: ${out.pinError}`,
+        ].filter(Boolean).join(" · ") || null,
         igMediaId: out.igMediaId || null,
         fbPostId: out.fbPostId || null,
         pinId: out.pinId || null,
