@@ -1031,7 +1031,7 @@ function renderConnections() {
       <h2 style="margin:0 0 4px;font-size:16px;font-weight:800">${C.social}</h2>
       <p style="margin:0 0 18px" class="hint">${C.socialHint}</p>
       <div class="conn-grid" style="margin-bottom:32px">
-        ${connCard("ig", "Instagram", C.igDetail, ig.connected,
+        ${connCard("ig", "Instagram", ig.connected && ig.username ? `@${esc(ig.username)}` : C.igDetail, ig.connected,
           ig.connected
             ? `<button class="btn ghost block" disabled>✓ ${C.connected}</button><div style="text-align:center;margin-top:8px"><a href="#" id="fbConnect" class="hint">${state.lang === "en" ? "change account" : "cambiar cuenta"}</a></div>`
             : `<button class="btn primary block" id="fbConnect">${C.connect}</button>`)}
