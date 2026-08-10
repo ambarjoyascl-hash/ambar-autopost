@@ -1,10 +1,14 @@
 // api/posts/[id].js
 // PUT    /api/posts/:id  → edita un post (caption, scheduledFor, status, ...)
-// POST   /api/posts/:id  → {action:"publish"} publica ahora
+// POST   /api/posts/:id  → {action:"publish"}    publica ahora
+//                          {action:"regenerate", instruction?} lo reemplaza por
+//                          uno nuevo, mismo día y hora ("Generar otro post")
 // DELETE /api/posts/:id  → elimina el post de la cola
 import { checkAuth, readJson, requireBrand, withErrors } from "../../lib/api-helpers.js";
 import { db } from "../../lib/firebase-admin.js";
 import { publishPost } from "../../lib/publish.js";
+import { regeneratePost } from "../../lib/plan.js";
+import { consumeGeneration, refundGeneration } from "../../lib/limits.js";
 
 const EDITABLE = ["caption", "altText", "imageUrl", "scheduledFor", "platform", "status"];
 
@@ -29,6 +33,20 @@ export default withErrors(async function handler(req, res) {
 
   if (req.method === "POST") {
     const body = await readJson(req);
+
+    if (body.action === "regenerate") {
+      // Gasta cupo igual que generar un plan: es una llamada a la IA. Si algo
+      // falla no llegó a cambiar nada, así que se devuelve el cupo.
+      if (!user.admin) await consumeGeneration(user.uid, user.email);
+      try {
+        const out = await regeneratePost(id, { instruction: body.instruction });
+        return res.status(200).json(out);
+      } catch (err) {
+        if (!user.admin) await refundGeneration(user.uid).catch(() => {});
+        throw err;
+      }
+    }
+
     if (body.action !== "publish") return res.status(400).json({ error: "Acción no reconocida." });
     const snap = await ref.get();
     if (!snap.exists) return res.status(404).json({ error: "Post no encontrado." });

@@ -52,6 +52,7 @@ const I18N = {
     create: { title: "Generar plan de contenido", subtitle: "Describe tu objetivo y la IA creará posts de Instagram y emails coordinados, con imágenes tomadas de tu web.", goalLabel: "¿Qué quieres lograr esta semana?", goalPh: "Ej: promocionar la nueva colección de plata con enfoque en regalos…", period: "Periodo", tone: "Tono", channels: "Canales a generar", imageSource: "Origen de las imágenes", pullWeb: "Tomar fotos desde mi web", connected: "Conectado", notConnected: "Configura la web o Shopify en Conexiones", generate: "Generar plan", generating: "Generando plan… (~30 s)", prev: "Planes anteriores", open: "Abrir", soon: "pronto", periods: ["1 semana", "2 semanas", "1 mes"], tones: ["Cercano y cálido", "Profesional", "Divertido", "Inspirador", "Minimalista"] },
     draft: { banner: "¡Plan generado! {n} piezas coordinadas listas para revisar.", approve: "✔ Aprobar y agendar", discard: "Descartar", back: "← Volver", scheduled: "Agendado", igTitle: "📸 Instagram", emTitle: "✉️ Emails (para Shopify Email)", approved: "Agendado: {p} posts y {e} emails" },
     queue: { all: "Todo", ig: "Instagram", email: "Email", published: "Publicados", publishNow: "Publicar ahora", view: "Ver / Copiar", del: "Eliminar", empty: "No hay contenido todavía. Genera un plan para llenar la cola." },
+    regen: { btn: "✦ Generar otro post", title: "Generar otro post", hint: "Se reemplaza el post de ese día por uno nuevo, con un producto distinto. El día y la hora no cambian.", label: "¿Algo en particular? (opcional)", ph: "ej: que sea de aros o collares, o algo de marca sin precio", cancel: "Cancelar", go: "Generar ✦", working: "Generando…", done: "✅ Listo, tienes un post nuevo para ese día." },
     ana: { published: "Publicados (total)", queue: "En cola", emailsReady: "Emails listos", errors: "Con error", activity: "Actividad de los últimos 7 días", top: "Últimas publicaciones", soon: "Las métricas de alcance e interacción de Instagram llegarán pronto.", none: "Aún no hay publicaciones." },
     pricing: { title: "Elige tu plan", subtitle: "Todos los planes incluyen Instagram, Facebook y email coordinados con IA. Solo cambia cuántas marcas puedes gestionar.", perMonth: "/mes", popular: "Más popular", choose: "Elegir plan", brands1: "1 marca", brandsN: "{n} marcas", soon: "Muy pronto podrás contratar tu plan desde aquí. Escríbenos para partir hoy.", features: ["Posts de Instagram con IA", "Emails coordinados", "Fotos desde tu web o Shopify", "Publicación automática", "Soporte por email"] },
     conn: { social: "Redes sociales", socialHint: "Conecta las cuentas donde Sincro publicará el contenido de esta marca.", store: "Email y tienda", storeHint: "Desde dónde se toman los productos y se preparan los emails.", connect: "Conectar", reconnect: "Reconectar", connected: "Conectado", notConnected: "Sin conectar", soon: "Próximamente", igDetail: "publica tus posts automáticamente", change: "Cambiar cuenta", fbDetail: "publica también en tu Página (usa la conexión de Instagram)", pinDetail: "pines automáticos de tus productos", shopifyDetail: "productos y precios exactos", webDetail: "fotos y productos de tu sitio", inspoLong: "Añade cuentas de Instagram de referencia. La IA analiza su estilo, tono y formatos para generar contenido alineado con esta marca.", inspoPh: "@usuario_de_instagram", activate: "Activar", advanced: "Opciones avanzadas (credenciales manuales de Instagram)", guide: "📖 Ver guía paso a paso", fbNote: "Completa la conexión en la pestaña de Facebook y luego recarga el panel." },
@@ -84,6 +85,7 @@ const I18N = {
     create: { title: "Generate content plan", subtitle: "Describe your goal and AI will create coordinated Instagram posts and emails, with images pulled from your website.", goalLabel: "What do you want to achieve this week?", goalPh: "e.g. promote the new silver collection with a gifting angle…", period: "Period", tone: "Tone", channels: "Channels to generate", imageSource: "Image source", pullWeb: "Pull photos from my website", connected: "Connected", notConnected: "Set up your website or Shopify in Connections", generate: "Generate plan", generating: "Generating plan… (~30 s)", prev: "Previous plans", open: "Open", soon: "soon", periods: ["1 week", "2 weeks", "1 month"], tones: ["Warm & friendly", "Professional", "Playful", "Inspiring", "Minimalist"] },
     draft: { banner: "Plan generated! {n} coordinated pieces ready to review.", approve: "✔ Approve & schedule", discard: "Discard", back: "← Back", scheduled: "Scheduled", igTitle: "📸 Instagram", emTitle: "✉️ Emails (for Shopify Email)", approved: "Scheduled: {p} posts and {e} emails" },
     queue: { all: "All", ig: "Instagram", email: "Email", published: "Published", publishNow: "Publish now", view: "View / Copy", del: "Delete", empty: "No content yet. Generate a plan to fill the queue." },
+    regen: { btn: "✦ Generate another post", title: "Generate another post", hint: "That day's post is replaced with a new one, using a different product. Day and time stay the same.", label: "Anything specific? (optional)", ph: "e.g. make it earrings or necklaces, or a brand post with no price", cancel: "Cancel", go: "Generate ✦", working: "Generating…", done: "✅ Done, that day has a new post." },
     ana: { published: "Published (total)", queue: "Queued", emailsReady: "Emails ready", errors: "Errored", activity: "Last 7 days of activity", top: "Latest publications", soon: "Instagram reach and engagement metrics coming soon.", none: "No publications yet." },
     pricing: { title: "Choose your plan", subtitle: "Every plan includes AI-coordinated Instagram, Facebook and email. Only the number of brands changes.", perMonth: "/mo", popular: "Most popular", choose: "Choose plan", brands1: "1 brand", brandsN: "{n} brands", soon: "Soon you'll be able to subscribe right here. Contact us to start today.", features: ["AI Instagram posts", "Coordinated emails", "Photos from your site or Shopify", "Automatic publishing", "Email support"] },
     conn: { social: "Social channels", socialHint: "Connect the accounts where Sincro will publish this brand's content.", store: "Email & store", storeHint: "Where products come from and emails are prepared.", connect: "Connect", reconnect: "Reconnect", connected: "Connected", notConnected: "Not connected", soon: "Coming soon", igDetail: "publishes your posts automatically", change: "Change account", fbDetail: "also publish to your Page (uses the Instagram connection)", pinDetail: "automatic product pins", shopifyDetail: "exact products and prices", webDetail: "photos and products from your site", inspoLong: "Add reference Instagram accounts. AI analyzes their style, tone and formats to generate aligned content.", inspoPh: "@instagram_handle", activate: "Enable", advanced: "Advanced options (manual Instagram credentials)", guide: "📖 Step-by-step guide", fbNote: "Finish connecting in the Facebook tab, then reload the panel." },
@@ -1323,6 +1325,7 @@ function openPostModal(post) {
       <p style="white-space:pre-line;font-size:13.5px;line-height:1.6;max-height:260px;overflow:auto">${esc(post.caption)}</p>
       ${post.error ? `<div class="notice">${esc(post.error)}</div>` : ""}
       <div class="btn-row" style="justify-content:flex-end">
+        ${["pending", "error"].includes(post.status) ? `<button class="btn ghost" data-mregen>${t().regen.btn}</button>` : ""}
         ${["pending", "error"].includes(post.status) ? `<button class="btn primary" data-mpub>${Q.publishNow}</button>` : ""}
         <button class="btn danger" data-mdel>${Q.del}</button>
         <button class="btn ghost" data-close>OK</button>
@@ -1339,10 +1342,57 @@ function openPostModal(post) {
     catch (err) { toast(err.message, true); }
     close(); refresh();
   });
+  const mr = bg.querySelector("[data-mregen]");
+  if (mr) mr.addEventListener("click", () => { close(); openRegenModal(post); });
   bg.querySelector("[data-mdel]").addEventListener("click", async () => {
     if (!confirm(t().common.confirmDel)) return;
     await api(`/api/posts/${post.id}`, { method: "DELETE" });
     close(); refresh();
+  });
+}
+
+/**
+ * "Generar otro post": cambia el contenido del post de ese día por uno nuevo.
+ * El día y la hora no se tocan — solo cambian producto, foto y texto.
+ */
+function openRegenModal(post) {
+  const R = t().regen;
+  const bg = document.createElement("div");
+  bg.className = "modal-bg";
+  bg.innerHTML = `
+    <div class="modal" style="max-width:520px">
+      <h3>${R.title}</h3>
+      <p class="hint">${fmtDate(post.scheduledFor)} · ${R.hint}</p>
+      <label style="display:block;margin-top:14px;font-size:13px;font-weight:600">${R.label}</label>
+      <textarea data-instr rows="2" placeholder="${esc(R.ph)}" style="width:100%;margin-top:6px"></textarea>
+      <div class="btn-row" style="margin-top:16px;justify-content:flex-end">
+        <button class="btn ghost" data-close>${R.cancel}</button>
+        <button class="btn primary" data-go>${R.go}</button>
+      </div>
+    </div>`;
+  document.body.appendChild(bg);
+  const close = () => bg.remove();
+  const field = bg.querySelector("[data-instr]");
+  field.focus();
+  bg.addEventListener("click", (e) => { if (e.target === bg) close(); });
+  bg.querySelector("[data-close]").addEventListener("click", close);
+  bg.querySelector("[data-go]").addEventListener("click", async (e) => {
+    const btn = e.currentTarget;
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner"></span> ${R.working}`;
+    try {
+      await api(`/api/posts/${post.id}`, {
+        method: "POST",
+        body: { action: "regenerate", instruction: field.value.trim() },
+      });
+      toast(R.done);
+      close(); refresh();
+    } catch (err) {
+      // El post sigue como estaba: el servidor solo escribe si la IA respondió.
+      toast(err.message, true);
+      btn.disabled = false;
+      btn.textContent = R.go;
+    }
   });
 }
 
