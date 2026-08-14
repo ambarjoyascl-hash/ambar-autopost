@@ -5,6 +5,8 @@
 // POST   /api/emails/:id  → {action:"send"}  envía la campaña a la audiencia
 //                           {action:"test", to} manda una prueba a una sola
 //                           dirección, sin tocar el estado de la campaña
+//                           {action:"rewrite", instruction?} reescribe el texto
+//                           a partir de los productos que la campaña lleva
 // PUT    /api/emails/:id  → cambia estado (ej. {status:"sent"}) o edita campos
 // DELETE /api/emails/:id  → elimina el email
 // GET/POST /api/emails/unsubscribe → baja de la lista (id reservado). NO lleva
@@ -15,6 +17,7 @@ import { handleUnsubscribe } from "../../lib/unsubscribe.js";
 import { getBrand } from "../../lib/brands.js";
 import { renderEmail } from "../../lib/email-template.js";
 import { procesarCampana, remitente } from "../../lib/mailer.js";
+import { rewriteEmail } from "../../lib/plan.js";
 
 const EDITABLE = ["subject", "previewText", "status"];
 
@@ -48,6 +51,12 @@ export default withErrors(async function handler(req, res) {
   if (req.method === "POST") {
     const body = await readJson(req);
     const accion = body.action;
+    if (accion === "rewrite") {
+      const r = await rewriteEmail(id, { instruction: body.instruction });
+      const { audiencia, ...limpio } = r.email;
+      return res.status(200).json({ email: limpio });
+    }
+
     const brand = await getBrand(email.brandId);
     if (!brand) return res.status(404).json({ error: "Marca no encontrada." });
 

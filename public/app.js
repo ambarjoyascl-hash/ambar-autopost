@@ -1787,6 +1787,7 @@ function openEmailModal(email, persisted = false) {
         <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
           <input id="testTo" value="${esc(mail.testTo || auth.currentUser?.email || "")}" placeholder="${en ? "your@email.com" : "tucorreo@ejemplo.cl"}"
                  style="flex:1;min-width:190px;padding:10px 13px;border:1px solid #cdd6ea;border-radius:11px;font-size:13.5px;background:#fff" />
+          <button class="btn ghost sm" data-rewrite>${en ? "Rewrite text" : "Reescribir el texto"}</button>
           <button class="btn ghost sm" data-test>${en ? "Send test" : "Enviar prueba"}</button>
           <button class="btn primary sm" data-send>${enCurso ? (en ? "Resume sending" : "Seguir enviando") : (en ? "Send to everyone" : "Enviar a toda la lista")}</button>
         </div>
@@ -1813,6 +1814,22 @@ function openEmailModal(email, persisted = false) {
   bg.querySelectorAll("[data-copy]").forEach((b) => b.addEventListener("click", () => {
     navigator.clipboard.writeText(email.html || "").then(() => toast(en ? "Copied ✓" : "Copiado ✓"));
   }));
+
+  const rew = bg.querySelector("[data-rewrite]");
+  if (rew) rew.addEventListener("click", async (e) => {
+    const btn = e.currentTarget; const label = btn.textContent;
+    btn.disabled = true; btn.innerHTML = `<span class="spinner"></span>`;
+    try {
+      const r = await api(`/api/emails/${email.id}`, { method: "POST", body: { action: "rewrite" } });
+      close();
+      toast(en ? "Text rewritten ✓" : "Texto reescrito ✓");
+      openEmailModal(r.email, true);
+      refresh();
+    } catch (err) {
+      toast(err.message, true);
+      btn.disabled = false; btn.textContent = label;
+    }
+  });
 
   const test = bg.querySelector("[data-test]");
   if (test) test.addEventListener("click", async (e) => {
