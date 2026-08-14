@@ -49,7 +49,7 @@ const I18N = {
     },
     auth: { login: "Entrar", signup: "Crear cuenta", email: "Email", pw: "Contraseña", pw2: "Repite la contraseña", pwMin: "Contraseña (mínimo 6 caracteres)", google: "Continuar con Google", first: "¿Primera vez aquí?", have: "¿Ya tienes cuenta?", forgot: "¿Olvidaste tu contraseña?", welcome: "Cuenta creada ✓ ¡Bienvenida!" },
     dash: { statsWeek: "Piezas esta semana", published: "Publicados", pending: "En cola", emails: "Emails listos", upcoming: "Próximo contenido coordinado", viewCalendar: "Ver calendario", channels: "Canales de la marca", manage: "Gestionar canales", inspiration: "Cuentas de inspiración", inspirationHint: "La IA estudia estas cuentas para inspirar el tono y estilo de cada marca.", nothing: "Nada agendado aún. Genera tu primer plan ✦" },
-    create: { title: "Generar plan de contenido", subtitle: "Describe tu objetivo y la IA creará posts de Instagram y emails coordinados, con imágenes tomadas de tu web.", goalLabel: "¿Qué quieres lograr esta semana?", goalPh: "Ej: promocionar la nueva colección de plata con enfoque en regalos…", period: "Periodo", tone: "Tono", channels: "Canales a generar", imageSource: "Origen de las imágenes", pullWeb: "Tomar fotos desde mi web", connected: "Conectado", notConnected: "Configura la web o Shopify en Conexiones", generate: "Generar plan", generating: "Generando plan… (~30 s)", prev: "Planes anteriores", open: "Abrir", soon: "pronto", periods: ["1 semana", "2 semanas", "1 mes"], tones: ["Cercano y cálido", "Profesional", "Divertido", "Inspirador", "Minimalista"] },
+    create: { title: "Generar plan de contenido", subtitle: "Describe tu objetivo y la IA creará posts de Instagram y emails coordinados, con imágenes tomadas de tu web.", goalLabel: "¿Qué quieres lograr con este plan?", goalPh: "Ej: promocionar la nueva colección de plata con enfoque en regalos…", period: "¿Cuánto contenido?", startLabel: "¿Desde qué día?", startHint: "El plan arranca ese día. Puedes dejarlo programado con meses de anticipación.", tone: "Tono", channels: "Canales a generar", imageSource: "Origen de las imágenes", pullWeb: "Tomar fotos desde mi web", connected: "Conectado", notConnected: "Configura la web o Shopify en Conexiones", generate: "Generar plan", generating: "Generando plan… (~30 s)", prev: "Planes anteriores", open: "Abrir", soon: "pronto", periods: ["1 semana", "2 semanas", "1 mes", "2 meses", "3 meses"], until: "Hasta el", tones: ["Cercano y cálido", "Profesional", "Divertido", "Inspirador", "Minimalista"] },
     draft: { banner: "¡Plan generado! {n} piezas coordinadas listas para revisar.", approve: "✔ Aprobar y agendar", discard: "Descartar", back: "← Volver", scheduled: "Agendado", igTitle: "📸 Instagram", emTitle: "✉️ Emails (para Shopify Email)", approved: "Agendado: {p} posts y {e} emails" },
     queue: { all: "Todo", ig: "Instagram", email: "Email", published: "Publicados", publishNow: "Publicar ahora", view: "Ver / Copiar", del: "Eliminar", empty: "No hay contenido todavía. Genera un plan para llenar la cola." },
     regen: { btn: "✦ Generar otro post", title: "Generar otro post", hint: "Se reemplaza el post de ese día por uno nuevo, con un producto distinto. El día y la hora no cambian.", label: "¿Algo en particular? (opcional)", ph: "ej: que sea de aros o collares, o algo de marca sin precio", cancel: "Cancelar", go: "Generar ✦", working: "Generando…", done: "✅ Listo, tienes un post nuevo para ese día." },
@@ -82,7 +82,7 @@ const I18N = {
     },
     auth: { login: "Log in", signup: "Create account", email: "Email", pw: "Password", pw2: "Repeat password", pwMin: "Password (min. 6 characters)", google: "Continue with Google", first: "First time here?", have: "Already have an account?", forgot: "Forgot your password?", welcome: "Account created ✓ Welcome!" },
     dash: { statsWeek: "Pieces this week", published: "Published", pending: "Queued", emails: "Emails ready", upcoming: "Upcoming coordinated content", viewCalendar: "View calendar", channels: "Brand channels", manage: "Manage channels", inspiration: "Inspiration accounts", inspirationHint: "AI studies these accounts to inspire each brand's tone and style.", nothing: "Nothing scheduled yet. Generate your first plan ✦" },
-    create: { title: "Generate content plan", subtitle: "Describe your goal and AI will create coordinated Instagram posts and emails, with images pulled from your website.", goalLabel: "What do you want to achieve this week?", goalPh: "e.g. promote the new silver collection with a gifting angle…", period: "Period", tone: "Tone", channels: "Channels to generate", imageSource: "Image source", pullWeb: "Pull photos from my website", connected: "Connected", notConnected: "Set up your website or Shopify in Connections", generate: "Generate plan", generating: "Generating plan… (~30 s)", prev: "Previous plans", open: "Open", soon: "soon", periods: ["1 week", "2 weeks", "1 month"], tones: ["Warm & friendly", "Professional", "Playful", "Inspiring", "Minimalist"] },
+    create: { title: "Generate content plan", subtitle: "Describe your goal and AI will create coordinated Instagram posts and emails, with images pulled from your website.", goalLabel: "What do you want to achieve with this plan?", goalPh: "e.g. promote the new silver collection with a gifting angle…", period: "How much content?", startLabel: "Starting when?", startHint: "The plan starts that day. You can schedule it months ahead.", tone: "Tone", channels: "Channels to generate", imageSource: "Image source", pullWeb: "Pull photos from my website", connected: "Connected", notConnected: "Set up your website or Shopify in Connections", generate: "Generate plan", generating: "Generating plan… (~30 s)", prev: "Previous plans", open: "Open", soon: "soon", periods: ["1 week", "2 weeks", "1 month", "2 months", "3 months"], until: "Through", tones: ["Warm & friendly", "Professional", "Playful", "Inspiring", "Minimalist"] },
     draft: { banner: "Plan generated! {n} coordinated pieces ready to review.", approve: "✔ Approve & schedule", discard: "Discard", back: "← Back", scheduled: "Scheduled", igTitle: "📸 Instagram", emTitle: "✉️ Emails (for Shopify Email)", approved: "Scheduled: {p} posts and {e} emails" },
     queue: { all: "All", ig: "Instagram", email: "Email", published: "Published", publishNow: "Publish now", view: "View / Copy", del: "Delete", empty: "No content yet. Generate a plan to fill the queue." },
     regen: { btn: "✦ Generate another post", title: "Generate another post", hint: "That day's post is replaced with a new one, using a different product. Day and time stay the same.", label: "Anything specific? (optional)", ph: "e.g. make it earrings or necklaces, or a brand post with no price", cancel: "Cancel", go: "Generate ✦", working: "Generating…", done: "✅ Done, that day has a new post." },
@@ -104,6 +104,7 @@ const state = {
   posts: [], emails: [], plans: [], dataFor: null,
   draft: null, justApproved: false,
   queueFilter: "all",
+  calWeek: 0,
   menus: {},
 };
 const t = () => I18N[state.lang] || I18N.es;
@@ -134,6 +135,59 @@ function fmtDate(ms) {
   if (!ms) return "—";
   try { return new Date(ms).toLocaleString(state.lang === "en" ? "en-US" : "es-CL", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }); }
   catch { return "—"; }
+}
+/* ── Fechas del plan ──────────────────────────────────────────────────────
+ * Las fechas del plan son días sueltos ("2026-08-14"), no instantes: se tratan
+ * como texto y se arman a mano. Pasarlas por `new Date("2026-08-14")` las lee
+ * como UTC y en Chile muestran el día anterior.
+ * PERIODS son las semanas detrás de los botones de periodo (1 mes = 4 semanas);
+ * el tope de 12 es el mismo MAX_WEEKS del servidor.                          */
+const PERIODS = [1, 2, 4, 8, 12];
+function todayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+function addDaysStr(dateStr, n) {
+  const [y, m, d] = String(dateStr).split("-").map(Number);
+  const t = new Date(y, m - 1, d);
+  t.setDate(t.getDate() + n);
+  return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "0")}-${String(t.getDate()).padStart(2, "0")}`;
+}
+/** Cuántas semanas de calendario separan un instante del lunes de esta semana.
+ *  Es el desplazamiento que necesita el calendario para mostrarlo. */
+function semanasDesdeHoy(ms) {
+  const lunes = new Date(); lunes.setHours(0, 0, 0, 0);
+  lunes.setDate(lunes.getDate() - ((lunes.getDay() + 6) % 7));
+  const d = new Date(ms);
+  // La resta va sobre días de calendario, no sobre milisegundos: con el cambio
+  // de hora una semana no dura 7 × 24 h y el cálculo se corría un día.
+  const dias = Math.round(
+    (Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(lunes.getFullYear(), lunes.getMonth(), lunes.getDate())) / 864e5
+  );
+  return Math.floor(dias / 7);
+}
+/** Días enteros entre dos fechas "YYYY-MM-DD" (b - a). */
+function daysApart(a, b) {
+  const [ay, am, ad] = String(a).split("-").map(Number);
+  const [by, bm, bd] = String(b).split("-").map(Number);
+  if (!ay || !by) return 0;
+  return Math.round((Date.UTC(by, bm - 1, bd) - Date.UTC(ay, am - 1, ad)) / 864e5);
+}
+function fmtDay(dateStr, withYear = false) {
+  const [y, m, d] = String(dateStr).split("-").map(Number);
+  if (!y) return "—";
+  return new Date(y, m - 1, d).toLocaleDateString(state.lang === "en" ? "en-US" : "es-CL",
+    { day: "numeric", month: "short", ...(withYear ? { year: "numeric" } : {}) });
+}
+/** "84 posts · 24 emails · 15 ago → 6 nov": lo que va a salir antes de generar. */
+function planSummary(o) {
+  const wk = o.weeks || 1;
+  const posts = 7 * wk;
+  const emails = o.emailOn ? (o.emailsPerWeek || 2) * wk : 0;
+  const end = addDaysStr(o.startDate, wk * 7 - 1);
+  const en = state.lang === "en";
+  return `${posts} posts${emails ? ` · ${emails} emails` : ""} · ${fmtDay(o.startDate)} → ${fmtDay(end, true)}` +
+    (wk >= 8 ? ` · ${en ? "generating takes about a minute" : "generarlo demora cerca de un minuto"}` : "");
 }
 function toast(msg, isErr = false) {
   const el = document.getElementById("toast");
@@ -529,8 +583,11 @@ function renderCreate() {
   if (!brand) return renderNoBrand();
   const shop = brand.shopify || {};
   const hasSource = !!(brand.websiteUrl || shop.connected);
-  state.createOpts = state.createOpts || { emailOn: true, fbOn: !!brand.instagram?.postToFacebook, pinOn: !!brand.pinterest?.connected, tone: "" };
+  state.createOpts = state.createOpts || { emailOn: true, fbOn: !!brand.instagram?.postToFacebook, pinOn: !!brand.pinterest?.connected, tone: "", weeks: 1 };
   const o = state.createOpts;
+  // Una fecha de ayer (la pestaña quedó abierta de un día para otro) haría que
+  // el servidor rechace el plan: se corrige sola al volver a esta pantalla.
+  if (!o.startDate || o.startDate < todayStr()) o.startDate = todayStr();
 
   const chanToggle = (id, name, on, enabled = true) => `
     <button class="btn ${on ? "" : "ghost"}" data-chan="${id}" ${enabled ? "" : "disabled"}
@@ -550,11 +607,17 @@ function renderCreate() {
         <div class="field"><label>${C.goalLabel}</label>
           <textarea id="goalInput" placeholder="${C.goalPh}">${esc(o.goal || "")}</textarea></div>
 
+        <div class="field"><label>${C.period}</label>
+          <div style="display:flex;gap:6px;background:var(--bg);border:1px solid #e2dcd2;border-radius:11px;padding:4px;flex-wrap:wrap">
+            ${PERIODS.map((wk, i) => `<button class="btn sm ${o.weeks === wk ? "primary" : "ghost"}" data-weeks="${wk}" style="flex:1;min-width:80px">${C.periods[i]}</button>`).join("")}
+          </div>
+          <div class="hint" style="margin-top:7px">${planSummary(o)}</div>
+        </div>
+
         <div class="row">
-          <div class="field"><label>${C.period}</label>
-            <div style="display:flex;gap:6px;background:var(--bg);border:1px solid #e2dcd2;border-radius:11px;padding:4px">
-              ${C.periods.map((p, i) => `<button class="btn sm ${i === 0 ? "primary" : "ghost"}" style="flex:1;${i > 0 ? "opacity:.5" : ""}" ${i > 0 ? "disabled title='" + T.common.soon + "'" : ""}>${p}</button>`).join("")}
-            </div>
+          <div class="field"><label>${C.startLabel}</label>
+            <input type="date" id="startInput" value="${esc(o.startDate)}" min="${todayStr()}" max="${addDaysStr(todayStr(), 365)}" />
+            <div class="hint">${C.startHint}</div>
           </div>
           <div class="field"><label>${C.tone}</label>
             <select id="toneInput">${C.tones.map((tn) => `<option ${o.tone === tn ? "selected" : ""}>${tn}</option>`).join("")}</select>
@@ -621,14 +684,21 @@ function renderCreate() {
       ${state.plans.length ? `<div class="card" style="margin-top:20px"><h2>${C.prev}</h2>
         ${state.plans.slice(0, 6).map((p) => `
           <div class="email-item"><div class="info">
-            <div class="subj">${esc(p.startDate)} ${statusBadge(p.status)}</div>
+            <div class="subj">${fmtDay(p.startDate)}${p.endDate ? ` → ${fmtDay(p.endDate, true)}` : ""} ${p.weeks > 1 ? `<span class="badge muted">${p.weeks} ${state.lang === "en" ? "weeks" : "semanas"}</span>` : ""} ${statusBadge(p.status)}</div>
             <div class="prev">${(p.posts || []).length} posts · ${(p.emails || []).length} emails · ${fmtDate(p.createdAt)}</div>
           </div><button class="btn ghost sm" data-open-plan="${p.id}">${C.open}</button></div>`).join("")}
       </div>` : ""}
     </div>`;
 
   renderShell(html, () => {
+    // Cualquier botón de esta pantalla vuelve a dibujarla entera, así que lo
+    // escrito a mano se guarda antes o se pierde al primer clic.
+    const capturar = () => {
+      const g = $("#goalInput"); if (g) o.goal = g.value.trim();
+      const tn = $("#toneInput"); if (tn) o.tone = tn.value;
+    };
     $$("[data-chan]").forEach((b) => b.addEventListener("click", () => {
+      capturar();
       const id = b.dataset.chan;
       if (id === "email") { o.emailOn = !o.emailOn; render(); }
       if (id === "fb") { o.fbOn = !o.fbOn; render(); }
@@ -684,8 +754,27 @@ function renderCreate() {
       await api(`/api/brands/${brand.id}`, { method: "PUT", body: { media: next } });
       await loadBrands(); render();
     }));
-    $$("[data-imgmode]").forEach((b) => b.addEventListener("click", () => { o.imageMode = b.dataset.imgmode; render(); }));
-    $$("[data-epw]").forEach((b) => b.addEventListener("click", () => { o.emailsPerWeek = Number(b.dataset.epw); render(); }));
+    $$("[data-weeks]").forEach((b) => b.addEventListener("click", () => {
+      capturar();
+      o.weeks = Number(b.dataset.weeks);
+      render();
+    }));
+    $("#startInput")?.addEventListener("change", (e) => {
+      const v = e.currentTarget.value;
+      if (!v || v < todayStr()) {
+        toast(state.lang === "en" ? "Pick today or a later date." : "Elige hoy o un día más adelante.", true);
+      } else {
+        o.startDate = v;
+      }
+      capturar();
+      render();
+    });
+    $$("[data-imgmode]").forEach((b) => b.addEventListener("click", () => { capturar(); o.imageMode = b.dataset.imgmode; render(); }));
+    $$("[data-epw]").forEach((b) => b.addEventListener("click", () => {
+      capturar();
+      o.emailsPerWeek = Number(b.dataset.epw);
+      render();
+    }));
     $$("[data-open-plan]").forEach((b) => b.addEventListener("click", async () => {
       const { plan } = await api(`/api/plans/${b.dataset.openPlan}`);
       state.draft = plan; go("draft");
@@ -696,19 +785,26 @@ function renderCreate() {
     });
     $("#genBtn").addEventListener("click", () => {
       if (state.generating) return;
-      o.goal = $("#goalInput").value.trim();
-      o.tone = $("#toneInput").value;
+      capturar();
+      const sd = $("#startInput")?.value;
+      if (sd && sd >= todayStr()) o.startDate = sd;
+      if (o.startDate < todayStr()) o.startDate = todayStr();
       if (o.fbOn !== !!brand.instagram?.postToFacebook) {
         api(`/api/brands/${brand.id}`, { method: "PUT", body: { instagram: { postToFacebook: o.fbOn } } }).catch(() => {});
       }
       state.generating = true;
       render();
-      toast(state.lang === "en" ? "Generating in the background — feel free to keep browsing ✨" : "Generando en segundo plano — puedes seguir navegando ✨");
+      toast((o.weeks || 1) >= 4
+        ? (state.lang === "en"
+            ? `Generating ${o.weeks} weeks in the background — this one takes a bit longer ✨`
+            : `Generando ${o.weeks} semanas en segundo plano — este demora un poco más ✨`)
+        : (state.lang === "en" ? "Generating in the background — feel free to keep browsing ✨" : "Generando en segundo plano — puedes seguir navegando ✨"));
       // La generación (y el agendado automático) corren en el servidor:
       // aunque cierres el navegador, el plan igual se crea.
       api("/api/plans", { method: "POST", body: {
         brandId: brand.id, goal: o.goal, tone: o.tone, imageMode: o.imageMode || "web",
         pinterest: !!o.pinOn, autoApprove: state.autoApprove,
+        startDate: o.startDate, weeks: o.weeks || 1,
         postsPerWeek: 7, includeEmails: o.emailOn, emailsPerWeek: o.emailOn ? (o.emailsPerWeek || 2) : 0,
       } }).then(async (r) => {
         state.generating = false;
@@ -738,33 +834,60 @@ function renderDraft() {
   if (!plan) return go("create");
   const isDraft = plan.status === "draft";
   const n = (plan.posts || []).length + (plan.emails || []).length;
+  const en = state.lang === "en";
+
+  const card = (p) => `
+        <div class="post-card">
+          <div class="thumb" style="${p.imageUrl ? `background-image:url('${esc(p.imageUrl)}')` : ""}"></div>
+          <div class="body">
+            <div class="meta"><span>${fmtDay(p.date)} · ${esc(p.time || "")}</span><span class="badge muted">${esc(p.theme || "")}</span></div>
+            <div class="caption">${esc(p.caption)}</div>
+          </div>
+        </div>`;
+
+  // Un plan de tres meses son 84 tarjetas seguidas. Se cortan por semana para
+  // poder revisarlo por tramos en vez de scrollear a ciegas.
+  const semanaDe = (date) => Math.floor(daysApart(plan.startDate, date) / 7);
+  const postsHtml = (() => {
+    const posts = plan.posts || [];
+    if (!posts.length) return `<p class="hint">—</p>`;
+    if (!(plan.weeks > 1)) return `<div class="grid">${posts.map(card).join("")}</div>`;
+    const grupos = new Map();
+    for (const p of posts) {
+      const w = semanaDe(p.date);
+      if (!grupos.has(w)) grupos.set(w, []);
+      grupos.get(w).push(p);
+    }
+    return [...grupos.entries()].sort((a, b) => a[0] - b[0]).map(([w, items]) => `
+      <div style="display:flex;align-items:center;gap:10px;margin:22px 0 12px">
+        <span class="badge">${en ? "Week" : "Semana"} ${w + 1}</span>
+        <span class="hint">${fmtDay(items[0].date)} → ${fmtDay(items[items.length - 1].date, true)} · ${items.length} posts</span>
+      </div>
+      <div class="grid">${items.map(card).join("")}</div>`).join("");
+  })();
 
   const html = `
-    <div class="notice ok" style="display:flex;align-items:center;gap:12px">
+    <div class="notice ok" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
       <span style="font-size:18px">✓</span> ${D.banner.replace("{n}", n)}
+      ${plan.weeks > 1 ? `<span class="badge muted">${fmtDay(plan.startDate)} → ${fmtDay(plan.endDate, true)}</span>` : ""}
       <div style="margin-left:auto" class="btn-row">
         <button class="btn ghost sm" data-back>${D.back}</button>
         ${isDraft ? `<button class="btn danger sm" data-discard>${D.discard}</button>
         <button class="btn ok sm" data-approve>${D.approve}</button>` : `<span class="badge ok">${D.scheduled}</span>`}
       </div>
     </div>
+    ${(plan.warnings || []).length ? `<div class="notice warn" style="margin-top:12px">
+      <b>${en ? "Heads up" : "Ojo con esto"}:</b>
+      <ul style="margin:6px 0 0;padding-left:18px">${plan.warnings.map((w) => `<li>${esc(w)}</li>`).join("")}</ul>
+    </div>` : ""}
     <h3 style="margin:18px 0 12px">${D.igTitle}</h3>
-    <div class="grid">
-      ${(plan.posts || []).map((p) => `
-        <div class="post-card">
-          <div class="thumb" style="${p.imageUrl ? `background-image:url('${esc(p.imageUrl)}')` : ""}"></div>
-          <div class="body">
-            <div class="meta"><span>${esc(p.date || "")} · ${esc(p.time || "")}</span><span class="badge muted">${esc(p.theme || "")}</span></div>
-            <div class="caption">${esc(p.caption)}</div>
-          </div>
-        </div>`).join("") || `<p class="hint">—</p>`}
-    </div>
+    ${postsHtml}
     <h3 style="margin:26px 0 12px">${D.emTitle}</h3>
     <div>
       ${(plan.emails || []).map((e, i) => `
         <div class="email-item"><div class="info">
           <div class="subj">${esc(e.subject)}</div>
-          <div class="prev">${esc(e.date || "")} · ${esc(e.previewText || "")}</div>
+          <div class="prev">${fmtDay(e.date)} · ${esc(e.previewText || "")}</div>
         </div><button class="btn ghost sm" data-draft-email="${i}">Ver</button></div>`).join("") || `<p class="hint">—</p>`}
     </div>`;
 
@@ -784,6 +907,10 @@ function renderDraft() {
       try {
         const r = await api(`/api/plans/${plan.id}`, { method: "POST", body: { action: "approve" } });
         toast(D.approved.replace("{p}", r.scheduledPosts).replace("{e}", r.emails));
+        // Un plan que arranca en tres semanas más no se ve en la semana actual:
+        // el calendario se abre donde empieza el plan.
+        const primera = (plan.posts || []).map((p) => p.scheduledFor).filter(Boolean).sort((a, b) => a - b)[0];
+        state.calWeek = primera ? Math.max(0, semanasDesdeHoy(primera)) : 0;
         state.draft = null; state.justApproved = true;
         await loadBrandData(true); go("calendar");
       } catch (err) { toast(err.message, true); btn.disabled = false; btn.textContent = D.approve; }
@@ -794,21 +921,40 @@ function renderDraft() {
 /* ── CALENDAR ─────────────────────────────────────────────────────────── */
 function renderCalendar() {
   const T = t();
-  const now = new Date();
-  const monday = new Date(now); monday.setHours(0, 0, 0, 0);
-  monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
+  const en = state.lang === "en";
+  // La semana visible. Con planes de varios meses el calendario tiene que poder
+  // moverse: sin esto, todo lo agendado más allá del domingo era invisible.
+  const off = state.calWeek || 0;
+  const monday = new Date(); monday.setHours(0, 0, 0, 0);
+  monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7) + off * 7);
   const days = [...Array(7)].map((_, i) => { const d = new Date(monday); d.setDate(d.getDate() + i); return d; });
   const dows = state.lang === "en" ? ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] : ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
   const pieces = [...state.posts.map((p) => ({ ...p, _ch: "ig" })), ...state.emails.map((e) => ({ ...e, _ch: "email" }))];
+
+  const finSemana = new Date(days[6]); finSemana.setDate(finSemana.getDate() + 1);
+  const weekStart = monday.getTime(), weekEnd = finSemana.getTime();
+  const enSemana = pieces.filter((p) => (p.scheduledFor || 0) >= weekStart && (p.scheduledFor || 0) < weekEnd).length;
+  const proximo = pieces.filter((p) => (p.scheduledFor || 0) >= weekEnd).sort((a, b) => a.scheduledFor - b.scheduledFor)[0];
+  const anterior = pieces.filter((p) => (p.scheduledFor || 0) < weekStart).sort((a, b) => b.scheduledFor - a.scheduledFor)[0];
+  const rango = `${monday.toLocaleDateString(en ? "en-US" : "es-CL", { day: "numeric", month: "short" })} → ${days[6].toLocaleDateString(en ? "en-US" : "es-CL", { day: "numeric", month: "short", year: "numeric" })}`;
 
   const banner = state.justApproved ? `<div class="notice ok" style="display:flex;align-items:center;gap:10px"><span style="font-size:18px">✓</span> ${t().draft.banner.replace("{n}", "")}</div>` : "";
   state.justApproved = false;
 
   const html = `
     ${banner}
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+      <button class="btn ghost sm" data-cal-move="-1" ${anterior ? "" : "disabled"}>‹</button>
+      <button class="btn ${off === 0 ? "primary" : "ghost"} sm" data-cal-move="0">${en ? "This week" : "Esta semana"}</button>
+      <button class="btn ghost sm" data-cal-move="1" ${proximo ? "" : "disabled"}>›</button>
+      <div style="font-weight:700;font-size:14px">${rango}</div>
+      <div class="hint">${enSemana} ${en ? "scheduled" : "agendadas"}${off !== 0 ? ` · ${off > 0 ? "+" : ""}${off} ${en ? "wk" : "sem"}` : ""}</div>
+      ${!enSemana && proximo ? `<button class="btn ghost sm" style="margin-left:auto" data-cal-next>${en ? "Jump to next content →" : "Ir al próximo contenido →"}</button>` : ""}
+    </div>
     <div class="week-grid">
       ${days.map((d, i) => {
-        const start = d.getTime(), end = start + 864e5;
+        const manana = new Date(d); manana.setDate(manana.getDate() + 1);
+        const start = d.getTime(), end = manana.getTime();
         const items = pieces.filter((p) => (p.scheduledFor || 0) >= start && (p.scheduledFor || 0) < end)
           .sort((a, b) => (a.scheduledFor || 0) - (b.scheduledFor || 0));
         const isToday = new Date().toDateString() === d.toDateString();
@@ -830,6 +976,15 @@ function renderCalendar() {
     </div>`;
 
   renderShell(html, () => {
+    $$("[data-cal-move]").forEach((b) => b.addEventListener("click", () => {
+      const step = Number(b.dataset.calMove);
+      state.calWeek = step === 0 ? 0 : (state.calWeek || 0) + step;
+      render();
+    }));
+    $("[data-cal-next]")?.addEventListener("click", () => {
+      state.calWeek = semanasDesdeHoy(proximo.scheduledFor);
+      render();
+    });
     $$("[data-item]").forEach((b) => b.addEventListener("click", () => {
       const [ch, id] = b.dataset.item.split(":");
       if (ch === "email") {

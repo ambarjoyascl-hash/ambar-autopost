@@ -1,8 +1,11 @@
 // api/plans/index.js
 // GET  /api/plans?brandId=...  → lista de planes (borradores y agendados)
-// POST /api/plans              → genera un borrador de plan semanal (con IA)
-//                                Body: { brandId, startDate?, postsPerWeek?,
-//                                        includeEmails?, emailsPerWeek? }
+// POST /api/plans              → genera un borrador de plan (con IA)
+//                                Body: { brandId, startDate?, weeks?,
+//                                        postsPerWeek?, includeEmails?,
+//                                        emailsPerWeek? }
+//                                `weeks` va de 1 a 12 (hasta ~3 meses de una);
+//                                `startDate` es el día en que arranca el plan.
 import { checkAuth, readJson, requireBrand, withErrors } from "../../lib/api-helpers.js";
 import { generatePlan, listPlans, approvePlan } from "../../lib/plan.js";
 import { consumeGeneration, refundGeneration } from "../../lib/limits.js";
