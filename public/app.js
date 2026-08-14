@@ -30,7 +30,7 @@ const I18N = {
     tagline: "Un mensaje, todas tus redes", brand: "Marca activa", addBrand: "Añadir marca",
     newPlan: "Crear nuevo calendario de publicaciones", add: "Añadir", moreLabel: "Más", logout: "Salir",
     nav: { dashboard: "Panel", create: "Crear plan", calendar: "Calendario", queue: "Cola", analytics: "Analíticas", pricing: "Planes", connections: "Conexiones", settings: "Ajustes" },
-    subs: { dashboard: "Contenido coordinado de", create: "Genera la semana con IA", calendar: "Instagram + email de esta semana", queue: "Todas las piezas de contenido", analytics: "Actividad de tu contenido", pricing: "Planes de Sincro", connections: "Cuentas conectadas de", settings: "Marcas y preferencias" },
+    subs: { dashboard: "Contenido coordinado de", create: "Genera el contenido con IA", calendar: "Instagram y emails agendados", queue: "Todas las piezas de contenido", analytics: "Actividad de tu contenido", pricing: "Planes de Sincro", connections: "Cuentas conectadas de", settings: "Marcas y preferencias" },
     land: {
       menu: { what: "Qué es", how: "Cómo funciona", features: "Funciones", pricing: "Precios" },
       enter: "Entrar a la app", heroBadge: "Marketing en sincronía", heroTitle: "Todas tus redes, un solo mensaje.",
@@ -50,8 +50,8 @@ const I18N = {
     auth: { login: "Entrar", signup: "Crear cuenta", email: "Email", pw: "Contraseña", pw2: "Repite la contraseña", pwMin: "Contraseña (mínimo 6 caracteres)", google: "Continuar con Google", first: "¿Primera vez aquí?", have: "¿Ya tienes cuenta?", forgot: "¿Olvidaste tu contraseña?", welcome: "Cuenta creada ✓ ¡Bienvenida!" },
     dash: { statsWeek: "Piezas esta semana", published: "Publicados", pending: "En cola", emails: "Emails listos", upcoming: "Próximo contenido coordinado", viewCalendar: "Ver calendario", channels: "Canales de la marca", manage: "Gestionar canales", inspiration: "Cuentas de inspiración", inspirationHint: "La IA estudia estas cuentas para inspirar el tono y estilo de cada marca.", nothing: "Nada agendado aún. Genera tu primer plan ✦" },
     create: { title: "Generar plan de contenido", subtitle: "Describe tu objetivo y la IA creará posts de Instagram y emails coordinados, con imágenes tomadas de tu web.", goalLabel: "¿Qué quieres lograr con este plan?", goalPh: "Ej: promocionar la nueva colección de plata con enfoque en regalos…", period: "¿Cuánto contenido?", startLabel: "¿Desde qué día?", startHint: "El plan arranca ese día. Puedes dejarlo programado con meses de anticipación.", tone: "Tono", channels: "Canales a generar", imageSource: "Origen de las imágenes", pullWeb: "Tomar fotos desde mi web", connected: "Conectado", notConnected: "Configura la web o Shopify en Conexiones", generate: "Generar plan", generating: "Generando plan… (~30 s)", prev: "Planes anteriores", open: "Abrir", soon: "pronto", periods: ["1 semana", "2 semanas", "1 mes", "2 meses", "3 meses"], until: "Hasta el", tones: ["Cercano y cálido", "Profesional", "Divertido", "Inspirador", "Minimalista"] },
-    draft: { banner: "¡Plan generado! {n} piezas coordinadas listas para revisar.", approve: "✔ Aprobar y agendar", discard: "Descartar", back: "← Volver", scheduled: "Agendado", igTitle: "📸 Instagram", emTitle: "✉️ Emails (para Shopify Email)", approved: "Agendado: {p} posts y {e} emails" },
-    queue: { all: "Todo", ig: "Instagram", email: "Email", published: "Publicados", publishNow: "Publicar ahora", view: "Ver / Copiar", del: "Eliminar", empty: "No hay contenido todavía. Genera un plan para llenar la cola." },
+    draft: { banner: "¡Plan generado! {n} piezas coordinadas listas para revisar.", approve: "✔ Aprobar y agendar", discard: "Descartar", back: "← Volver", scheduled: "Agendado", igTitle: "📸 Instagram", emTitle: "✉️ Campañas de email", approved: "Agendado: {p} posts y {e} emails" },
+    queue: { all: "Todo", ig: "Instagram", email: "Email", published: "Publicados", publishNow: "Publicar ahora", view: "Ver / Enviar", del: "Eliminar", empty: "No hay contenido todavía. Genera un plan para llenar la cola." },
     regen: { btn: "✦ Generar otro post", title: "Generar otro post", hint: "Se reemplaza el post de ese día por uno nuevo, con un producto distinto. El día y la hora no cambian.", label: "¿Algo en particular? (opcional)", ph: "ej: que sea de aros o collares, o algo de marca sin precio", cancel: "Cancelar", go: "Generar ✦", working: "Generando…", done: "✅ Listo, tienes un post nuevo para ese día." },
     ana: { published: "Publicados (total)", queue: "En cola", emailsReady: "Emails listos", errors: "Con error", activity: "Actividad de los últimos 7 días", top: "Últimas publicaciones", soon: "Las métricas de alcance e interacción de Instagram llegarán pronto.", none: "Aún no hay publicaciones." },
     pricing: { title: "Elige tu plan", subtitle: "Todos los planes incluyen Instagram, Facebook y email coordinados con IA. Solo cambia cuántas marcas puedes gestionar.", perMonth: "/mes", popular: "Más popular", choose: "Elegir plan", brands1: "1 marca", brandsN: "{n} marcas", soon: "Muy pronto podrás contratar tu plan desde aquí. Escríbenos para partir hoy.", features: ["Posts de Instagram con IA", "Emails coordinados", "Fotos desde tu web o Shopify", "Publicación automática", "Soporte por email"] },
@@ -63,7 +63,7 @@ const I18N = {
     tagline: "One message, every channel", brand: "Active brand", addBrand: "Add brand",
     newPlan: "Create new posting calendar", add: "Add", moreLabel: "More", logout: "Log out",
     nav: { dashboard: "Dashboard", create: "Create plan", calendar: "Calendar", queue: "Queue", analytics: "Analytics", pricing: "Plans", connections: "Connections", settings: "Settings" },
-    subs: { dashboard: "Coordinated content for", create: "Generate the week with AI", calendar: "Instagram + email this week", queue: "All content pieces", analytics: "Your content activity", pricing: "Sincro plans", connections: "Connected accounts for", settings: "Brands and preferences" },
+    subs: { dashboard: "Coordinated content for", create: "Generate your content with AI", calendar: "Instagram + email this week", queue: "All content pieces", analytics: "Your content activity", pricing: "Sincro plans", connections: "Connected accounts for", settings: "Brands and preferences" },
     land: {
       menu: { what: "What it is", how: "How it works", features: "Features", pricing: "Pricing" },
       enter: "Open the app", heroBadge: "Marketing in sync", heroTitle: "Every channel, one message.",
@@ -83,8 +83,8 @@ const I18N = {
     auth: { login: "Log in", signup: "Create account", email: "Email", pw: "Password", pw2: "Repeat password", pwMin: "Password (min. 6 characters)", google: "Continue with Google", first: "First time here?", have: "Already have an account?", forgot: "Forgot your password?", welcome: "Account created ✓ Welcome!" },
     dash: { statsWeek: "Pieces this week", published: "Published", pending: "Queued", emails: "Emails ready", upcoming: "Upcoming coordinated content", viewCalendar: "View calendar", channels: "Brand channels", manage: "Manage channels", inspiration: "Inspiration accounts", inspirationHint: "AI studies these accounts to inspire each brand's tone and style.", nothing: "Nothing scheduled yet. Generate your first plan ✦" },
     create: { title: "Generate content plan", subtitle: "Describe your goal and AI will create coordinated Instagram posts and emails, with images pulled from your website.", goalLabel: "What do you want to achieve with this plan?", goalPh: "e.g. promote the new silver collection with a gifting angle…", period: "How much content?", startLabel: "Starting when?", startHint: "The plan starts that day. You can schedule it months ahead.", tone: "Tone", channels: "Channels to generate", imageSource: "Image source", pullWeb: "Pull photos from my website", connected: "Connected", notConnected: "Set up your website or Shopify in Connections", generate: "Generate plan", generating: "Generating plan… (~30 s)", prev: "Previous plans", open: "Open", soon: "soon", periods: ["1 week", "2 weeks", "1 month", "2 months", "3 months"], until: "Through", tones: ["Warm & friendly", "Professional", "Playful", "Inspiring", "Minimalist"] },
-    draft: { banner: "Plan generated! {n} coordinated pieces ready to review.", approve: "✔ Approve & schedule", discard: "Discard", back: "← Back", scheduled: "Scheduled", igTitle: "📸 Instagram", emTitle: "✉️ Emails (for Shopify Email)", approved: "Scheduled: {p} posts and {e} emails" },
-    queue: { all: "All", ig: "Instagram", email: "Email", published: "Published", publishNow: "Publish now", view: "View / Copy", del: "Delete", empty: "No content yet. Generate a plan to fill the queue." },
+    draft: { banner: "Plan generated! {n} coordinated pieces ready to review.", approve: "✔ Approve & schedule", discard: "Discard", back: "← Back", scheduled: "Scheduled", igTitle: "📸 Instagram", emTitle: "✉️ Email campaigns", approved: "Scheduled: {p} posts and {e} emails" },
+    queue: { all: "All", ig: "Instagram", email: "Email", published: "Published", publishNow: "Publish now", view: "View / Send", del: "Delete", empty: "No content yet. Generate a plan to fill the queue." },
     regen: { btn: "✦ Generate another post", title: "Generate another post", hint: "That day's post is replaced with a new one, using a different product. Day and time stay the same.", label: "Anything specific? (optional)", ph: "e.g. make it earrings or necklaces, or a brand post with no price", cancel: "Cancel", go: "Generate ✦", working: "Generating…", done: "✅ Done, that day has a new post." },
     ana: { published: "Published (total)", queue: "Queued", emailsReady: "Emails ready", errors: "Errored", activity: "Last 7 days of activity", top: "Latest publications", soon: "Instagram reach and engagement metrics coming soon.", none: "No publications yet." },
     pricing: { title: "Choose your plan", subtitle: "Every plan includes AI-coordinated Instagram, Facebook and email. Only the number of brands changes.", perMonth: "/mo", popular: "Most popular", choose: "Choose plan", brands1: "1 brand", brandsN: "{n} brands", soon: "Soon you'll be able to subscribe right here. Contact us to start today.", features: ["AI Instagram posts", "Coordinated emails", "Photos from your site or Shopify", "Automatic publishing", "Email support"] },
@@ -1169,6 +1169,8 @@ function renderConnections() {
   const brand = currentBrand();
   if (!brand) return renderNoBrand();
   const ig = brand.instagram || {}, shop = brand.shopify || {};
+  const mail = brand.email || {}, kit = brand.brandKit || {};
+  const en = state.lang === "en";
   const inspo = brand.voice?.inspo || [];
   const tokenPh = (has) => (has ? "•••••• (guardado)" : "");
 
@@ -1227,6 +1229,98 @@ function renderConnections() {
         </details>
       </div>
 
+      <h2 style="margin:0 0 4px;font-size:16px;font-weight:800">${en ? "Email campaigns" : "Campañas de email"}</h2>
+      <p style="margin:0 0 18px" class="hint">${en
+        ? "Sincro sends the campaigns itself. Nothing is copied anywhere else."
+        : "Sincro manda las campañas por su cuenta. No hay que copiar nada a ninguna otra parte."}</p>
+      <div class="card" style="margin-bottom:32px">
+        <div class="row">
+          <div class="field"><label>${en ? "Sender" : "Remitente"}</label>
+            <input id="f_emailFrom" value="${esc(mail.from || "")}" placeholder="Ámbar Joyas &lt;ventas@ambarjoyas.cl&gt;" />
+            <div class="hint">${en ? "Must be an address verified in Amazon SES." : "Tiene que ser una dirección verificada en Amazon SES."}</div>
+          </div>
+          <div class="field"><label>${en ? "Reply to" : "Responder a"}</label>
+            <input id="f_emailReply" value="${esc(mail.replyTo || "")}" placeholder="hola@tumarca.cl" />
+            <div class="hint">${en ? "Where replies land. Optional." : "A dónde llegan las respuestas. Opcional."}</div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;padding:13px 15px;border:1px solid #e2dcd2;border-radius:13px;background:var(--bg);margin:6px 0 16px">
+          <span class="chip" style="width:32px;height:32px;background:var(--ok-bg);color:var(--ok-ink)">◉</span>
+          <div style="flex:1">
+            <div style="font-weight:700;font-size:13px">${en ? "Audience" : "Audiencia"}</div>
+            <div class="hint" id="audienciaTxt">${shop.connected
+              ? (en ? "Subscribed customers from your Shopify store." : "Clientes suscritos de tu tienda Shopify.")
+              : (en ? "Connect Shopify to get your subscriber list." : "Conecta Shopify para tener la lista de suscritos.")}</div>
+          </div>
+          <button class="btn ghost sm" id="verAudiencia" ${shop.connected ? "" : "disabled"}>${en ? "Count" : "Contar"}</button>
+        </div>
+
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:13.5px;font-weight:600;line-height:1.5">
+          <input type="checkbox" id="f_emailEnabled" ${mail.enabled ? "checked" : ""} style="width:auto;margin-top:3px" />
+          <span>${en ? "Send automatically when each campaign is due" : "Enviar solo, en la fecha de cada campaña"}
+            <div class="hint" style="font-weight:400">${en
+              ? "With this on, every scheduled campaign goes out to the whole list without asking again."
+              : "Con esto encendido, cada campaña agendada sale sola a toda la lista, sin volver a preguntar."}</div>
+          </span>
+        </label>
+        <div class="btn-row" style="margin-top:16px">
+          <button class="btn primary sm" id="saveEmailCfg">${en ? "Save" : "Guardar"}</button>
+        </div>
+      </div>
+
+      <h2 style="margin:0 0 4px;font-size:16px;font-weight:800">${en ? "Email look & feel" : "Identidad visual de los emails"}</h2>
+      <p style="margin:0 0 18px" class="hint">${en
+        ? "Logo, colors and typeface used in every campaign. Detect them from your website and adjust anything."
+        : "El logo, los colores y la tipografía con que salen las campañas. Se detectan de tu web y puedes corregir lo que quieras."}</p>
+      <div class="card" style="margin-bottom:32px">
+        <div class="btn-row" style="margin-bottom:16px">
+          <button class="btn soft sm" id="detectKit">✦ ${en ? "Detect from my website" : "Detectar de mi web"}</button>
+          <span class="hint" id="kitAvisos" style="align-self:center"></span>
+        </div>
+        <div class="row">
+          <div class="field"><label>${en ? "Logo (image address)" : "Logo (dirección de la imagen)"}</label>
+            <input id="f_kitLogo" value="${esc(kit.logoUrl || "")}" placeholder="https://…/logo.png" />
+            <div class="hint">${en ? "PNG or JPG — Gmail does not draw SVG." : "PNG o JPG: Gmail no dibuja los SVG."}</div>
+          </div>
+          <div class="field"><label>${en ? "Preview" : "Vista previa"}</label>
+            <div style="height:52px;border:1px solid #e2dcd2;border-radius:11px;background:#fff;display:flex;align-items:center;justify-content:center;padding:6px">
+              ${kit.logoUrl ? `<img src="${esc(kit.logoUrl)}" alt="logo" style="max-height:38px;max-width:100%" />` : `<span class="hint">${en ? "no logo yet" : "aún sin logo"}</span>`}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          ${[["color", en ? "Brand color" : "Color de la marca", "#b08d57"],
+             ["colorBg", en ? "Background" : "Fondo", "#f5f2ee"],
+             ["colorText", en ? "Text" : "Texto", "#1a1a1a"]]
+            .map(([k, label, def]) => `
+            <div class="field"><label>${label}</label>
+              <div style="display:flex;gap:8px;align-items:center">
+                <input type="color" id="f_kit_${k}" value="${esc(kit[k] || def)}" style="width:46px;height:40px;padding:2px;border:1px solid #e2dcd2;border-radius:9px;background:#fff;cursor:pointer" />
+                <input id="f_kit_${k}_hex" value="${esc(kit[k] || "")}" placeholder="${def}" style="flex:1" />
+              </div>
+            </div>`).join("")}
+        </div>
+        <div class="row">
+          <div class="field"><label>${en ? "Headings typeface" : "Tipografía de los títulos"}</label>
+            <input id="f_kitHeadingFont" value="${esc(kit.headingFont || "")}" placeholder="Playfair Display" /></div>
+          <div class="field"><label>${en ? "Body typeface" : "Tipografía del texto"}</label>
+            <input id="f_kitFont" value="${esc(kit.font || "")}" placeholder="Montserrat" /></div>
+        </div>
+        <div class="row">
+          <div class="field"><label>Instagram</label>
+            <input id="f_kitIg" value="${esc(kit.instagramUrl || "")}" placeholder="https://instagram.com/tumarca" /></div>
+          <div class="field"><label>${en ? "Footer note" : "Nota del pie"}</label>
+            <input id="f_kitFooter" value="${esc(kit.footerNote || "")}" placeholder="${en ? "Address, phone…" : "Dirección, teléfono…"}" /></div>
+        </div>
+        <div class="btn-row" style="margin-top:6px">
+          <button class="btn primary sm" id="saveKit">${en ? "Save" : "Guardar"}</button>
+          <span class="hint" style="align-self:center">${en
+            ? "Applies to every campaign, including the ones already scheduled."
+            : "Se aplica a todas las campañas, incluidas las que ya están agendadas."}</span>
+        </div>
+      </div>
+
       <div class="inspo-card" style="margin-bottom:24px">
         <h2>${T.dash.inspiration}</h2>
         <p style="margin:0 0 16px;font-size:13px;color:#5a6478;line-height:1.5">${C.inspoLong}</p>
@@ -1279,6 +1373,87 @@ function renderConnections() {
       } catch (err) { toast(err.message, true); }
       btn.disabled = false; btn.textContent = label;
     });
+    // ── Campañas de email ──
+    $("#verAudiencia")?.addEventListener("click", async (e) => {
+      const btn = e.currentTarget; btn.disabled = true; btn.innerHTML = `<span class="spinner"></span>`;
+      try {
+        const r = await api(`/api/emails?brandId=${brand.id}&audiencia=1`);
+        $("#audienciaTxt").textContent = r.sinShopify
+          ? (en ? "Connect Shopify first." : "Primero conecta Shopify.")
+          : (en
+              ? `${r.suscritos} subscribed of ${r.revisados} customers.`
+              : `${r.suscritos} suscritos de ${r.revisados} clientes.`);
+      } catch (err) { toast(err.message, true); }
+      btn.disabled = false; btn.textContent = en ? "Count" : "Contar";
+    });
+    $("#saveEmailCfg")?.addEventListener("click", async (e) => {
+      const btn = e.currentTarget; btn.disabled = true;
+      const enabled = $("#f_emailEnabled").checked;
+      // Encender el envío automático es lo único de esta pantalla que puede
+      // mandarle correo a miles de personas sin volver a preguntar.
+      if (enabled && !mail.enabled) {
+        const ok = confirm(en
+          ? "From now on every scheduled campaign will be sent to your whole list automatically. Continue?"
+          : "Desde ahora, cada campaña agendada se enviará sola a toda tu lista de clientes. ¿Seguimos?");
+        if (!ok) { btn.disabled = false; $("#f_emailEnabled").checked = false; return; }
+      }
+      try {
+        await api(`/api/brands/${brand.id}`, { method: "PUT", body: { email: {
+          enabled, from: $("#f_emailFrom").value.trim(), replyTo: $("#f_emailReply").value.trim(),
+        } } });
+        toast(en ? "Saved ✓" : "Guardado ✓");
+        await loadBrands(); render();
+      } catch (err) { toast(err.message, true); btn.disabled = false; }
+    });
+
+    // ── Identidad visual ──
+    // Los dos campos de cada color (rueda y hexadecimal) se siguen el uno al otro.
+    ["color", "colorBg", "colorText"].forEach((k) => {
+      const rueda = $(`#f_kit_${k}`), hex = $(`#f_kit_${k}_hex`);
+      if (!rueda || !hex) return;
+      rueda.addEventListener("input", () => { hex.value = rueda.value; });
+      hex.addEventListener("change", () => {
+        if (/^#[0-9a-fA-F]{6}$/.test(hex.value.trim())) rueda.value = hex.value.trim();
+      });
+    });
+    const leerKit = () => ({
+      logoUrl: $("#f_kitLogo").value.trim(),
+      color: $("#f_kit_color_hex").value.trim() || $("#f_kit_color").value,
+      colorBg: $("#f_kit_colorBg_hex").value.trim() || $("#f_kit_colorBg").value,
+      colorText: $("#f_kit_colorText_hex").value.trim() || $("#f_kit_colorText").value,
+      headingFont: $("#f_kitHeadingFont").value.trim(),
+      font: $("#f_kitFont").value.trim(),
+      instagramUrl: $("#f_kitIg").value.trim(),
+      footerNote: $("#f_kitFooter").value.trim(),
+    });
+    $("#detectKit")?.addEventListener("click", async (e) => {
+      const btn = e.currentTarget; const label = btn.innerHTML;
+      btn.disabled = true; btn.innerHTML = `<span class="spinner"></span> ${en ? "Reading your site…" : "Leyendo tu web…"}`;
+      try {
+        const { kit: k } = await api("/api/scrape", { method: "POST", body: { what: "brandkit", brandId: brand.id } });
+        const set = (id, v) => { const el = $(id); if (el && v) el.value = v; };
+        set("#f_kitLogo", k.logoUrl);
+        set("#f_kitHeadingFont", k.headingFont);
+        set("#f_kitFont", k.font);
+        set("#f_kitIg", k.instagramUrl);
+        ["color", "colorBg", "colorText"].forEach((c) => {
+          if (!k[c]) return;
+          set(`#f_kit_${c}`, k[c]); set(`#f_kit_${c}_hex`, k[c]);
+        });
+        $("#kitAvisos").textContent = (k.avisos || []).join(" ");
+        toast(en ? "Detected — check it and save." : "Detectado — revísalo y guarda.");
+      } catch (err) { toast(err.message, true); }
+      btn.disabled = false; btn.innerHTML = label;
+    });
+    $("#saveKit")?.addEventListener("click", async (e) => {
+      const btn = e.currentTarget; btn.disabled = true;
+      try {
+        await api(`/api/brands/${brand.id}`, { method: "PUT", body: { brandKit: leerKit() } });
+        toast(en ? "Saved ✓" : "Guardado ✓");
+        await loadBrands(); render();
+      } catch (err) { toast(err.message, true); btn.disabled = false; }
+    });
+
     const fbT = $("#fbToggle");
     if (fbT) fbT.addEventListener("click", async () => {
       await api(`/api/brands/${brand.id}`, { method: "PUT", body: { instagram: { postToFacebook: !ig.postToFacebook } } });
@@ -1554,21 +1729,53 @@ function openRegenModal(post) {
   });
 }
 
+/**
+ * Vista del email con su envío. Antes esta ventana solo servía para copiar el
+ * HTML y pegarlo en Shopify Email; desde el 14-ago-2026 Sincro manda las
+ * campañas por su cuenta (Amazon SES) y aquí se dispara el envío.
+ *
+ * "Enviar prueba" va a una sola dirección y no toca el estado de la campaña:
+ * es lo que hay que usar SIEMPRE antes de soltar el envío a toda la lista.
+ */
 function openEmailModal(email, persisted = false) {
+  const en = state.lang === "en";
+  const brand = currentBrand() || {};
+  const mail = brand.email || {};
+  const enviado = email.status === "sent";
+  const enCurso = email.status === "sending";
   const bg = document.createElement("div");
   bg.className = "modal-bg";
   bg.innerHTML = `
     <div class="modal">
-      <h3>${esc(email.subject)}</h3>
-      <p class="hint">Copia lo que necesites y pégalo en Shopify Email.</p>
-      <div class="btn-row" style="margin-bottom:14px">
-        <button class="btn ghost sm" data-copy="subject">Copiar asunto</button>
-        <button class="btn ghost sm" data-copy="html">Copiar HTML</button>
-        <button class="btn ghost sm" data-copy="text">Copiar texto</button>
-        ${persisted && email.status !== "sent" ? `<button class="btn primary sm" data-marksent>Marcar enviado</button>` : ""}
-      </div>
+      <h3 style="margin-bottom:4px">${esc(email.subject)}</h3>
+      <p class="hint" style="margin:0 0 14px">
+        ${esc(email.previewText || "")}
+        ${persisted ? ` · ${statusBadge(email.status)}` : ""}
+        ${email.enviados ? ` · ${email.enviados} ${en ? "sent" : "enviados"}` : ""}
+      </p>
+
+      ${persisted ? `
+      <div style="border:1px solid #e2dcd2;border-radius:13px;padding:14px;background:var(--bg);margin-bottom:14px">
+        ${enviado
+          ? `<div class="hint">${en ? "This campaign was already sent." : "Esta campaña ya se envió."}</div>`
+          : `
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <input id="testTo" value="${esc(mail.testTo || auth.currentUser?.email || "")}" placeholder="${en ? "your@email.com" : "tucorreo@ejemplo.cl"}"
+                 style="flex:1;min-width:190px;padding:10px 13px;border:1px solid #cdd6ea;border-radius:11px;font-size:13.5px;background:#fff" />
+          <button class="btn ghost sm" data-test>${en ? "Send test" : "Enviar prueba"}</button>
+          <button class="btn primary sm" data-send>${enCurso ? (en ? "Resume sending" : "Seguir enviando") : (en ? "Send to everyone" : "Enviar a toda la lista")}</button>
+        </div>
+        <div class="hint" style="margin-top:9px">${en
+          ? "The test goes to that address only and does not change the campaign."
+          : "La prueba va solo a esa dirección y no cambia el estado de la campaña."}</div>`}
+        ${email.error ? `<div class="hint" style="color:var(--err-ink);margin-top:8px">${esc(String(email.error).slice(0, 200))}</div>` : ""}
+      </div>` : ""}
+
       <iframe style="width:100%;height:420px;border:1px solid var(--line);border-radius:10px;background:#fff"></iframe>
-      <div class="btn-row" style="margin-top:16px;justify-content:flex-end"><button class="btn ghost" data-close>Cerrar</button></div>
+      <div class="btn-row" style="margin-top:16px;justify-content:space-between">
+        <button class="btn ghost sm" data-copy="html">${en ? "Copy HTML" : "Copiar HTML"}</button>
+        <button class="btn ghost" data-close>${en ? "Close" : "Cerrar"}</button>
+      </div>
     </div>`;
   document.body.appendChild(bg);
   bg.querySelector("iframe").srcdoc = email.html || "";
@@ -1576,14 +1783,42 @@ function openEmailModal(email, persisted = false) {
   bg.addEventListener("click", (e) => { if (e.target === bg) close(); });
   bg.querySelector("[data-close]").addEventListener("click", close);
   bg.querySelectorAll("[data-copy]").forEach((b) => b.addEventListener("click", () => {
-    const map = { subject: email.subject, html: email.html, text: email.plainText };
-    navigator.clipboard.writeText(map[b.dataset.copy] || "").then(() => toast("Copiado ✓"));
+    navigator.clipboard.writeText(email.html || "").then(() => toast(en ? "Copied ✓" : "Copiado ✓"));
   }));
-  const ms = bg.querySelector("[data-marksent]");
-  if (ms) ms.addEventListener("click", async () => {
-    await api(`/api/emails/${email.id}`, { method: "PUT", body: { status: "sent" } });
-    toast("Marcado como enviado");
-    close(); refresh();
+
+  const test = bg.querySelector("[data-test]");
+  if (test) test.addEventListener("click", async (e) => {
+    const btn = e.currentTarget; const label = btn.textContent;
+    const to = bg.querySelector("#testTo").value.trim();
+    btn.disabled = true; btn.innerHTML = `<span class="spinner"></span>`;
+    try {
+      await api(`/api/emails/${email.id}`, { method: "POST", body: { action: "test", to } });
+      // La dirección de prueba se recuerda para no reescribirla cada vez.
+      api(`/api/brands/${brand.id}`, { method: "PUT", body: { email: { testTo: to } } }).catch(() => {});
+      toast(en ? `Test sent to ${to} ✓` : `Prueba enviada a ${to} ✓`);
+    } catch (err) { toast(err.message, true); }
+    btn.disabled = false; btn.textContent = label;
+  });
+
+  const send = bg.querySelector("[data-send]");
+  if (send) send.addEventListener("click", async (e) => {
+    const btn = e.currentTarget; const label = btn.textContent;
+    // Esto sale a toda la lista y no se puede deshacer: se pregunta siempre.
+    const ok = confirm(en
+      ? `Send "${email.subject}" to every subscribed customer of ${brand.name}? This cannot be undone.`
+      : `¿Enviar "${email.subject}" a todos los clientes suscritos de ${brand.name}? Esto no se puede deshacer.`);
+    if (!ok) return;
+    btn.disabled = true; btn.innerHTML = `<span class="spinner"></span> ${en ? "Sending…" : "Enviando…"}`;
+    try {
+      const r = await api(`/api/emails/${email.id}`, { method: "POST", body: { action: "send" } });
+      toast(r.estado === "sent"
+        ? (en ? `Sent to ${r.total} people 🎉` : `Enviada a ${r.total} personas 🎉`)
+        : (en ? `${r.enviados} of ${r.total} sent — the rest continues on its own.` : `${r.enviados} de ${r.total} enviados — el resto sigue solo.`));
+      close(); refresh();
+    } catch (err) {
+      toast(err.message, true);
+      btn.disabled = false; btn.textContent = label;
+    }
   });
 }
 

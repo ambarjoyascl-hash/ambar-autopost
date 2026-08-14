@@ -8,9 +8,7 @@ import { getBrandCredentials, getPublishingLimit, refreshBrandToken } from "../.
 import { refreshPinterestToken } from "../../lib/pinterest.js";
 import { listBrands, getBrand } from "../../lib/brands.js";
 import { checkCron } from "../../lib/api-helpers.js";
-import { getSubscribedCustomers } from "../../lib/shopify.js";
-import { enviarCampana } from "../../lib/mailer.js";
-import { pieDeBaja } from "../../lib/email-template.js";
+import { procesarCampana } from "../../lib/mailer.js";
 
 export default async function handler(req, res) {
   if (!checkCron(req, res)) return;
@@ -155,57 +153,11 @@ async function sendDueEmails(now) {
     }
 
     try {
-      // La audiencia se congela en el primer pase: si se recalculara en cada
-      // pase, un cliente nuevo correría los índices y alguien recibiría dos
-      // veces el mismo correo (o ninguno).
-      let audiencia = email.audiencia;
-      if (!audiencia) {
-        const { destinatarios, revisados } = await getSubscribedCustomers(brand);
-        audiencia = destinatarios;
-        await doc.ref.set(
-          { audiencia, audienciaDe: revisados, status: "sending", enviados: 0, cursor: 0 },
-          { merge: true }
-        );
-      }
-
-      if (!audiencia.length) {
-        await doc.ref.set({ status: "error", error: "No hay clientes suscritos a los que enviar." }, { merge: true });
-        out.push({ id: doc.id, error: "sin destinatarios" });
-        continue;
-      }
-
-      const r = await enviarCampana({
-        brand,
-        email,
-        destinatarios: audiencia,
-        desde: email.cursor || 0,
-        render: (_dest, urlBaja) =>
-          pieDeBaja({ html: email.html, plainText: email.plainText, brand, urlBaja }),
-      });
-
-      const enviados = (email.enviados || 0) + r.enviados;
-      const patch = {
-        enviados,
-        cursor: r.siguiente,
-        ultimoIntento: Date.now(),
-        fallos: [...(email.fallos || []), ...r.fallos].slice(-50),
-      };
-
-      if (r.abortado) {
-        // Fallo de la cuenta (dominio sin verificar, claves malas, envío
-        // pausado): no seguir quemando la lista contra el mismo error.
-        patch.status = "error";
-        patch.error = r.abortado;
-      } else if (r.completo) {
-        patch.status = "sent";
-        patch.sentAt = Date.now();
-        patch.error = null;
-      } else {
-        patch.status = "sending";
-      }
-
-      await doc.ref.set(patch, { merge: true });
-      out.push({ id: doc.id, enviados: r.enviados, total: audiencia.length, estado: patch.status });
+      // Todo el envío (audiencia, reanudación, pie de baja, redibujado con la
+      // identidad actual de la marca) vive en lib/mailer.js, compartido con el
+      // botón "Enviar ahora" del panel.
+      const r = await procesarCampana({ ref: doc.ref, email, brand });
+      out.push({ id: doc.id, ...r });
     } catch (err) {
       await doc.ref.set({ status: "error", error: String(err.message || err) }, { merge: true });
       out.push({ id: doc.id, error: String(err.message || err) });
