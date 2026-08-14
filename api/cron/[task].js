@@ -160,6 +160,14 @@ async function sendDueEmails(now) {
     // envío: encenderlo habría soltado todas juntas a la lista completa, con
     // promociones de la semana pasada. Es la misma regla de 48 h que ya tenían
     // los posts de Instagram.
+    // Un correo cuyo texto no habla de su producto tampoco sale solo: hay que
+    // reescribirlo desde el panel. Es la regla de Gina y no admite excepción,
+    // porque el daño (una clienta que compra otra cosa) ya no se deshace.
+    if (email.textoDesalineado) {
+      out.push({ id: doc.id, skipped: "texto-desalineado" });
+      continue;
+    }
+
     const atraso = Date.now() - (email.scheduledFor || 0);
     if (email.status === "ready" && atraso > VENCE_MS) {
       const dias = Math.floor(atraso / 864e5);

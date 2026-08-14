@@ -1768,6 +1768,9 @@ function openEmailModal(email, persisted = false) {
   const mail = brand.email || {};
   const enviado = email.status === "sent";
   const enCurso = email.status === "sending";
+  // Un correo cuyo texto no habla de su producto no puede salir: llega a miles
+  // de clientas y termina en devoluciones. Se arregla con "Reescribir el texto".
+  const desalineado = email.textoDesalineado || "";
   const bg = document.createElement("div");
   bg.className = "modal-bg";
   bg.innerHTML = `
@@ -1789,11 +1792,17 @@ function openEmailModal(email, persisted = false) {
                  style="flex:1;min-width:190px;padding:10px 13px;border:1px solid #cdd6ea;border-radius:11px;font-size:13.5px;background:#fff" />
           <button class="btn ghost sm" data-rewrite>${en ? "Rewrite text" : "Reescribir el texto"}</button>
           <button class="btn ghost sm" data-test>${en ? "Send test" : "Enviar prueba"}</button>
-          <button class="btn primary sm" data-send>${enCurso ? (en ? "Resume sending" : "Seguir enviando") : (en ? "Send to everyone" : "Enviar a toda la lista")}</button>
+          <button class="btn primary sm" data-send ${desalineado ? "disabled" : ""}>${enCurso ? (en ? "Resume sending" : "Seguir enviando") : (en ? "Send to everyone" : "Enviar a toda la lista")}</button>
         </div>
         <div class="hint" style="margin-top:9px">${en
           ? "The test goes to that address only and does not change the campaign."
-          : "La prueba va solo a esa dirección y no cambia el estado de la campaña."}</div>`}
+          : "La prueba va solo a esa dirección y no cambia el estado de la campaña."}</div>
+        ${desalineado ? `<div style="margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--err-bg);color:var(--err-ink);font-size:12.5px;line-height:1.5">
+          <b>${en ? "This text does not match its product" : "Este texto no corresponde a su producto"}:</b>
+          ${esc(desalineado)}.<br>${en
+            ? "Rewrite it before sending — sending it as is means customers buying something else than they read."
+            : "Reescríbelo antes de enviarlo: si sale así, la clienta compra pensando en algo distinto a lo que recibe."}
+        </div>` : ""}`}
         ${email.error ? `<div class="hint" style="color:var(--err-ink);margin-top:8px">${esc(String(email.error).slice(0, 200))}</div>` : ""}
         ${persisted && !enviado && email.bloques === undefined ? `<div class="hint" style="margin-top:8px">${en
           ? "Heads up: this campaign was generated before the new design, so it will go out with the old plain layout. Generate a new plan to get the branded one."
