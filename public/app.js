@@ -125,6 +125,8 @@ const STATUS = {
   error: ["err", { es: "Error", en: "Error" }],
   ready: ["warn", { es: "Listo", en: "Ready" }],
   sent: ["ok", { es: "Enviado", en: "Sent" }],
+  sending: ["warn", { es: "Enviando", en: "Sending" }],
+  expired: ["muted", { es: "Vencida", en: "Expired" }],
   draft: ["muted", { es: "Borrador", en: "Draft" }],
   scheduled: ["ok", { es: "Agendado", en: "Scheduled" }],
 };
@@ -1392,9 +1394,32 @@ function renderConnections() {
       // Encender el envío automático es lo único de esta pantalla que puede
       // mandarle correo a miles de personas sin volver a preguntar.
       if (enabled && !mail.enabled) {
-        const ok = confirm(en
-          ? "From now on every scheduled campaign will be sent to your whole list automatically. Continue?"
-          : "Desde ahora, cada campaña agendada se enviará sola a toda tu lista de clientes. ¿Seguimos?");
+        // Lo importante no es la advertencia genérica sino CUÁNTAS saldrían de
+        // inmediato: al encenderlo por primera vez puede haber campañas
+        // esperando desde hace días.
+        const ahora = Date.now();
+        const yaVencen = state.emails.filter(
+          (x) => x.status === "ready" && (x.scheduledFor || 0) <= ahora && ahora - (x.scheduledFor || 0) <= 48 * 3600e3
+        ).length;
+        const ok = confirm(
+          (en
+            ? "From now on every scheduled campaign will be sent to your whole list automatically."
+            : "Desde ahora, cada campaña agendada se enviará sola a toda tu lista de clientes.") +
+          (yaVencen
+            ? (en
+                ? `
+
+${yaVencen} campaign(s) are already due and will go out within the hour.`
+                : `
+
+${yaVencen} campaña(s) ya cumplieron su fecha y saldrán dentro de la próxima hora.`)
+            : "") +
+          (en ? `
+
+Continue?` : `
+
+¿Seguimos?`)
+        );
         if (!ok) { btn.disabled = false; $("#f_emailEnabled").checked = false; return; }
       }
       try {
@@ -1769,6 +1794,9 @@ function openEmailModal(email, persisted = false) {
           ? "The test goes to that address only and does not change the campaign."
           : "La prueba va solo a esa dirección y no cambia el estado de la campaña."}</div>`}
         ${email.error ? `<div class="hint" style="color:var(--err-ink);margin-top:8px">${esc(String(email.error).slice(0, 200))}</div>` : ""}
+        ${persisted && !enviado && email.bloques === undefined ? `<div class="hint" style="margin-top:8px">${en
+          ? "Heads up: this campaign was generated before the new design, so it will go out with the old plain layout. Generate a new plan to get the branded one."
+          : "Ojo: esta campaña se generó antes del diseño nuevo, así que saldrá con el formato viejo (sin logo ni colores). Genera un plan nuevo para tenerlas con la cara de la marca."}</div>` : ""}
       </div>` : ""}
 
       <iframe style="width:100%;height:420px;border:1px solid var(--line);border-radius:10px;background:#fff"></iframe>

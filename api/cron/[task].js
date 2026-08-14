@@ -132,6 +132,9 @@ async function publishDue(res) {
  * que si no alcanza a terminar dentro del tiempo de la función, el siguiente
  * pase del cron continúa donde quedó.
  */
+/** Después de esto una campaña ya no sale sola (mismas 48 h que los posts). */
+const VENCE_MS = 48 * 3600 * 1000;
+
 async function sendDueEmails(now) {
   const snap = await db
     .collection("emails")
@@ -149,6 +152,23 @@ async function sendDueEmails(now) {
     if (!brand) continue;
     if (!brand.email?.enabled) {
       out.push({ id: doc.id, skipped: "envio-desactivado" });
+      continue;
+    }
+
+    // Una campaña muy vencida NO se manda. Al 14-ago-2026 había 15 campañas en
+    // "listo" con fechas de días anteriores, esperando a que se encendiera el
+    // envío: encenderlo habría soltado todas juntas a la lista completa, con
+    // promociones de la semana pasada. Es la misma regla de 48 h que ya tenían
+    // los posts de Instagram.
+    const atraso = Date.now() - (email.scheduledFor || 0);
+    if (email.status === "ready" && atraso > VENCE_MS) {
+      const dias = Math.floor(atraso / 864e5);
+      await doc.ref.set({
+        status: "expired",
+        error: `No se envió a tiempo: su fecha era hace ${dias} día${dias === 1 ? "" : "s"}. ` +
+          `Si todavía la quieres mandar, ábrela y usa "Enviar a toda la lista".`,
+      }, { merge: true });
+      out.push({ id: doc.id, skipped: "vencida" });
       continue;
     }
 
