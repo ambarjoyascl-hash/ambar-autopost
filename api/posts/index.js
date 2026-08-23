@@ -22,14 +22,26 @@ export default withErrors(async function handler(req, res) {
   if (req.method === "POST") {
     const body = await readJson(req);
     if (!(await requireBrand(req, res, user, body.brandId))) return;
-    if (!body.imageUrl) return res.status(400).json({ error: "Falta imageUrl." });
+    // Un reel llega con videoUrl en vez de imageUrl; lo demás (imagen suelta o
+    // carrusel) sigue exigiendo imagen.
+    const esReel = ["reel", "reels", "video"].includes(body.type);
+    if (esReel) {
+      if (!body.videoUrl) return res.status(400).json({ error: "Falta videoUrl para un reel." });
+    } else if (!body.imageUrl) {
+      return res.status(400).json({ error: "Falta imageUrl." });
+    }
     const now = Date.now();
     const doc = {
       brandId: body.brandId,
       platform: body.platform || "instagram",
       type: body.type || "image",
-      imageUrl: body.imageUrl,
+      imageUrl: body.imageUrl || null,
       imageUrls: body.imageUrls || null,
+      // Reels: el video y, opcional, la portada. `shareToFeed` deja el reel
+      // también en la grilla del perfil.
+      videoUrl: body.videoUrl || null,
+      coverUrl: body.coverUrl || null,
+      shareToFeed: body.shareToFeed === false ? false : true,
       caption: body.caption || "",
       altText: body.altText || "",
       scheduledFor: body.scheduledFor || now,
